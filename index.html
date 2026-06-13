@@ -892,6 +892,20 @@
   .surprise-card::-webkit-scrollbar { width: 4px; }
   .surprise-card::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
+  .surprise-card.rolling {
+    animation: surpriseShake 0.35s ease infinite;
+  }
+
+  @keyframes surpriseShake {
+    0%, 100% { transform: rotate(0); }
+    25% { transform: rotate(-0.6deg) translateX(-2px); }
+    75% { transform: rotate(0.6deg) translateX(2px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .surprise-card.rolling { animation: none; }
+  }
+
   .surprise-header {
     display: flex;
     align-items: flex-start;
@@ -1495,6 +1509,8 @@ const goodForMap = {
 
 let lastSurpriseIndex = -1;
 let currentSurprisePrompt = null;
+let surpriseTimers = [];
+let surpriseRolling = false;
 
 function getAllPrompts() {
   const all = [];
@@ -1505,30 +1521,59 @@ function getAllPrompts() {
 }
 
 function surpriseMe() {
-  const all = getAllPrompts();
+  document.getElementById('surprise-overlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  rollSurpriseSequence();
+}
+
+function resetSurpriseButtons() {
+  const copyBtn = document.getElementById('surprise-copy-btn');
+  const rollBtn = document.getElementById('surprise-roll-btn');
+  if (copyBtn) {
+    copyBtn.textContent = 'Copy prompt';
+    copyBtn.classList.remove('copied');
+  }
+  if (rollBtn) rollBtn.textContent = '🎲 Roll again';
+}
+
+function pickSurprisePrompt(all) {
   let idx;
   do { idx = Math.floor(Math.random() * all.length); }
   while (idx === lastSurpriseIndex && all.length > 1);
   lastSurpriseIndex = idx;
-  renderSurpriseCard(all[idx]);
-  document.getElementById('surprise-overlay').classList.add('active');
-  document.body.style.overflow = 'hidden';
+  return all[idx];
+}
+
+function rollSurpriseSequence() {
+  if (surpriseRolling) return;
+  const all = getAllPrompts();
+  const card = document.getElementById('surprise-card');
+  const rollBtn = document.getElementById('surprise-roll-btn');
+  const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+  const steps = reduce ? 1 : 7;
+
+  surpriseTimers.forEach(clearTimeout);
+  surpriseTimers = [];
+  surpriseRolling = true;
+  resetSurpriseButtons();
+  card.classList.add('rolling');
+  if (rollBtn) rollBtn.textContent = 'Rolling...';
+
+  for (let i = 0; i < steps; i++) {
+    surpriseTimers.push(setTimeout(() => {
+      renderSurpriseCard(pickSurprisePrompt(all));
+
+      if (i === steps - 1) {
+        surpriseRolling = false;
+        card.classList.remove('rolling');
+        resetSurpriseButtons();
+      }
+    }, reduce ? 0 : 70 * i * (1 + i * 0.18)));
+  }
 }
 
 function rollAgain() {
-  const all = getAllPrompts();
-  let idx;
-  do { idx = Math.floor(Math.random() * all.length); }
-  while (idx === lastSurpriseIndex && all.length > 1);
-  lastSurpriseIndex = idx;
-  const card = document.getElementById('surprise-card');
-  card.style.animation = 'none';
-  card.offsetHeight;
-  card.style.animation = 'fadeUp 0.22s ease both';
-  renderSurpriseCard(all[idx]);
-  const btn = document.getElementById('surprise-copy-btn');
-  btn.textContent = 'Copy prompt';
-  btn.classList.remove('copied');
+  rollSurpriseSequence();
 }
 
 function renderSurpriseCard(p) {
@@ -1555,6 +1600,11 @@ function personaliseThis() {
 }
 
 function closeSurprise() {
+  surpriseTimers.forEach(clearTimeout);
+  surpriseTimers = [];
+  surpriseRolling = false;
+  document.getElementById('surprise-card').classList.remove('rolling');
+  resetSurpriseButtons();
   document.getElementById('surprise-overlay').classList.remove('active');
   document.body.style.overflow = '';
 }
