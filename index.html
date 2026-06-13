@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MA&A AI Prompt Library</title>
+
+<style>
+  /* ── Sage Webfonts ── */
+  @font-face {
+    font-family: "Sage Headline";
+    src: url("fonts/Sage_Headline-Black.woff2") format("woff2"),
+         url("fonts/Sage_Headline-Black.woff") format("woff");
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Sage UI";
+    src: url("fonts/Sage_UI-Regular.woff2") format("woff2"),
+         url("fonts/Sage_UI-Regular.woff") format("woff");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Sage UI";
+    src: url("fonts/Sage_UI-Medium.woff2") format("woff2"),
+         url("fonts/Sage_UI-Medium.woff") format("woff");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Sage UI";
+    src: url("fonts/Sage_UI-Bold.woff2") format("woff2"),
+         url("fonts/Sage_UI-Bold.woff") format("woff");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Sage Text";
+    src: url("fonts/Sage_Text-Light.woff2") format("woff2"),
+         url("fonts/Sage_Text-Light.woff") format("woff");
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Sage Text";
+    src: url("fonts/Sage_Text-Light_Italic.woff2") format("woff2"),
+         url("fonts/Sage_Text-Light_Italic.woff") format("woff");
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Sage Text";
+    src: url("fonts/Sage_Text-Regular.woff2") format("woff2"),
+         url("fonts/Sage_Text-Regular.woff") format("woff");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Sage Text";
+    src: url("fonts/Sage_Text-Regular_Italic.woff2") format("woff2"),
+         url("fonts/Sage_Text-Regular_Italic.woff") format("woff");
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Sage Text";
+    src: url("fonts/Sage_Text-Medium.woff2") format("woff2"),
+         url("fonts/Sage_Text-Medium.woff") format("woff");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Sage Text";
+    src: url("fonts/Sage_Text-Medium_Italic.woff2") format("woff2"),
+         url("fonts/Sage_Text-Medium_Italic.woff") format("woff");
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Sage Text";
+    src: url("fonts/Sage_Text-Bold.woff2") format("woff2"),
+         url("fonts/Sage_Text-Bold.woff") format("woff");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Sage Text";
+    src: url("fonts/Sage_Text-Bold_Italic.woff2") format("woff2"),
+         url("fonts/Sage_Text-Bold_Italic.woff") format("woff");
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+  }
+
+  :root {
+    --bg: #000000;
+    --surface: #181818;
+    --surface2: #212121;
+    --border: #2E2E2E;
+    --accent: #00D639;
+    --accent-dim: rgba(0,214,57,0.10);
+    --accent-border: rgba(0,214,57,0.35);
+    --text: #ffffff;
+    --text-muted: #D0D0D0;
+    --text-dim: #9A9A9A;
+    --success: #00D639;
+  }
+
+  body.light {
+    --bg: #f5f5f5;
+    --surface: #ffffff;
+    --surface2: #eeeeee;
+    --border: #dddddd;
+    --accent: #00b830;
+    --accent-dim: rgba(0,184,48,0.10);
+    --accent-border: rgba(0,184,48,0.3);
+    --text: #111111;
+    --text-muted: #444444;
+    --text-dim: #999999;
+    --success: #00913f;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  /* ── Navigation ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    height: 56px;
+    transition: background 0.3s, border-color 0.3s;
+  }
+
+  body.light nav { background: rgba(245,245,245,0.95); }
+
+  .nav-left { display: flex; align-items: center; gap: 20px; }
+
+  .nav-brand {
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .nav-right { display: flex; align-items: center; gap: 8px; }
+  .nav-tabs { display: flex; gap: 2px; }
+
+  .nav-tab {
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    color: var(--text);
+    background: none;
+    transition: color 0.2s, background 0.2s, border-color 0.2s;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .nav-tab:hover { color: var(--text); background: var(--surface); }
+  .nav-tab.active { color: var(--accent); background: var(--accent-dim); border-color: var(--accent-border); }
+
+  .theme-toggle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--accent-border);
+    background: var(--accent-dim);
+    color: var(--accent);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    flex-shrink: 0;
+  }
+
+  .theme-toggle:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+
+  /* ── Pages ── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ── Layout ── */
+  .wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ── Page headers ── */
+  header {
+    padding: 52px 0 40px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+  }
+
+  .header-tag {
+    font-family: "Courier New", monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .header-tag::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  h1 {
+    font-size: clamp(28px, 4.5vw, 48px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .subtitle {
+    color: var(--text-muted);
+    font-size: 15px;
+    max-width: 520px;
+    line-height: 1.65;
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Home grid ── */
+  .home-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  @media (max-width: 520px) { .home-grid { grid-template-columns: 1fr; } }
+
+  .home-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, transform 0.18s, box-shadow 0.2s;
+    animation: fadeUp 0.4s ease both;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 140px;
+  }
+
+  .home-card:hover {
+    border-color: rgba(0,214,57,0.55);
+    background: var(--surface2);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(0,214,57,0.08);
+  }
+
+  .home-card-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .home-card-title {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+
+  .home-card-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .home-card-count {
+    font-family: "Courier New", monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ── Search ── */
+  .search-bar { margin-bottom: 40px; position: relative; }
+
+  .search-bar input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 13px 18px 13px 46px;
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .search-bar input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+  }
+
+  .search-bar input::placeholder { color: var(--text-dim); }
+
+  .search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dim);
+    font-size: 17px;
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  /* ── Library categories ── */
+  .category { margin-bottom: 48px; animation: fadeUp 0.35s ease both; }
+
+  .category-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .category-label {
+    font-family: "Courier New", monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .category-line { flex: 1; height: 1px; background: rgba(0,214,57,0.3); }
+
+  .category-count {
+    font-family: "Courier New", monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  /* ── Prompt cards ── */
+  .cards-grid { display: grid; gap: 10px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    transition: border-color 0.2s, background 0.2s, transform 0.18s, box-shadow 0.2s;
+  }
+
+  .card:hover {
+    border-color: rgba(0,214,57,0.55);
+    background: var(--surface2);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,214,57,0.07);
+  }
+
+  .card-body { flex: 1; min-width: 0; }
+
+  .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  .card-meta {
+    font-family: "Courier New", monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+    opacity: 0.75;
+  }
+
+  .card-prompt {
+    font-family: "Courier New", monospace;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.85;
+  }
+
+  /* ── Copy button ── */
+  .copy-btn {
+    flex-shrink: 0;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 7px 14px;
+    font-family: "Courier New", monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    white-space: nowrap;
+    align-self: flex-start;
+    margin-top: 2px;
+  }
+
+  .copy-btn:hover { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+  .copy-btn.copied { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+
+  /* ── Source badges ── */
+  .source-badge {
+    display: inline-block;
+    font-family: "Courier New", monospace;
+    font-size: 9px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-left: 7px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+
+  .source-team {
+    background: var(--accent-dim);
+    color: var(--accent);
+    border: 1px solid var(--accent-border);
+  }
+
+  .source-starter {
+    background: var(--surface2);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+  }
+
+  /* ── No results ── */
+  .no-results {
+    text-align: center;
+    padding: 64px 20px;
+    color: var(--text-dim);
+    font-size: 14px;
+    display: none;
+  }
+
+  /* ── Personaliser ── */
+  .personaliser-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  @media (max-width: 640px) { .personaliser-layout { grid-template-columns: 1fr; } }
+
+  .prompt-selector {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    max-height: 560px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .prompt-selector::-webkit-scrollbar { width: 4px; }
+  .prompt-selector::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .selector-group-label {
+    font-family: "Courier New", monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 12px 16px 6px;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+  }
+
+  .selector-group-label:first-child { border-top: none; }
+
+  .selector-item {
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    border-left: 3px solid transparent;
+  }
+
+  .selector-item:hover { background: var(--surface2); color: var(--text); }
+  .selector-item.active { background: var(--accent-dim); color: var(--accent); border-left-color: var(--accent); }
+
+  /* ── Personaliser panel ── */
+  .personaliser-panel { position: sticky; top: 76px; display: flex; flex-direction: column; gap: 14px; }
+
+  .panel-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+
+  .panel-label {
+    font-family: "Courier New", monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  .var-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+  .var-row:last-child { margin-bottom: 0; }
+
+  .var-label { font-family: "Courier New", monospace; font-size: 11px; color: var(--text-muted); }
+  .var-label span { color: var(--accent); font-weight: 600; }
+
+  .var-input {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-family: "Courier New", monospace;
+    font-size: 12px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+  }
+
+  .var-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+  .var-input::placeholder { color: var(--text-dim); }
+
+  .preview-text {
+    font-family: "Courier New", monospace;
+    font-size: 12.5px;
+    line-height: 1.75;
+    color: var(--text-muted);
+    white-space: pre-wrap;
+    word-break: break-word;
+    min-height: 60px;
+  }
+
+  .preview-text .filled { color: var(--accent); font-weight: 600; }
+  .preview-text .unfilled { color: var(--text-dim); text-decoration: underline; text-decoration-style: dashed; }
+
+  .copy-final-btn {
+    width: 100%;
+    background: var(--accent);
+    border: none;
+    border-radius: 9px;
+    padding: 13px;
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #000;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.18s;
+  }
+
+  .copy-final-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .copy-final-btn.copied { background: var(--success); opacity: 1; }
+
+  .empty-hint {
+    color: var(--text-dim);
+    font-family: "Courier New", monospace;
+    font-size: 12px;
+    padding: 6px 0;
+    line-height: 1.6;
+  }
+
+  /* ── Feedback ── */
+  .feedback-wrap { max-width: 560px; }
+  .feedback-field { margin-bottom: 18px; }
+  .feedback-label { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+
+  .feedback-input, .feedback-textarea {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 13px;
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    resize: vertical;
+    line-height: 1.6;
+  }
+
+  .feedback-input:focus, .feedback-textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+  }
+
+  .feedback-input::placeholder, .feedback-textarea::placeholder {
+    color: var(--text-dim);
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
+  }
+
+  .feedback-submit {
+    background: var(--accent);
+    border: none;
+    border-radius: 9px;
+    padding: 12px 28px;
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #000;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.18s;
+  }
+
+  .feedback-submit:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  .feedback-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+  .feedback-email-link {
+    font-family: "Courier New", monospace;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .feedback-email-link:hover { text-decoration: underline; }
+
+  .feedback-direct {
+    font-family: "Courier New", monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  /* ── Success state ── */
+  .success-state { text-align: center; padding: 52px 20px; }
+  .success-icon { font-size: 40px; margin-bottom: 16px; }
+  .success-title { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; color: var(--text); }
+  .success-sub { font-size: 13px; color: var(--text-muted); line-height: 1.7; margin-bottom: 24px; }
+
+  .reset-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 20px;
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .reset-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding-top: 40px;
+    margin-top: 64px;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: "Courier New", monospace;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 24px 60px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 56px;
+  }
+
+  .hero-tag {
+    font-family: "Courier New", monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .hero-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+    animation: pulse 2s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  .hero-title {
+    font-family: "Sage Headline", sans-serif;
+    font-size: clamp(36px, 6vw, 62px);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 18px;
+  }
+
+  .hero-title span { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 400px;
+    line-height: 1.8;
+    margin-bottom: 32px;
+  }
+
+  .hero-btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+
+  /* ── Buttons ── */
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 28px;
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.18s;
+  }
+
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 22px;
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+
+  /* ── Explore label ── */
+  .explore-label {
+    font-family: "Courier New", monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 20px;
+  }
+
+  /* ── Surprise Me ── */
+  .btn-surprise {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+    white-space: nowrap;
+  }
+
+  .btn-surprise:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+
+  .search-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 40px;
+  }
+
+  .search-row .search-bar { margin-bottom: 0; flex: 1; }
+
+  /* ── Surprise Modal ── */
+  .surprise-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .surprise-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .surprise-card {
+    background: var(--surface);
+    border: 1px solid var(--accent-border);
+    border-radius: 16px;
+    padding: 28px;
+    max-width: 560px;
+    width: 100%;
+    max-height: 82vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    animation: fadeUp 0.22s ease both;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .surprise-card::-webkit-scrollbar { width: 4px; }
+  .surprise-card::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .surprise-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .surprise-title {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .surprise-close {
+    flex-shrink: 0;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    width: 30px;
+    height: 30px;
+    color: var(--text-dim);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    transition: border-color 0.2s, color 0.2s;
+    line-height: 1;
+  }
+
+  .surprise-close:hover { border-color: var(--accent); color: var(--accent); }
+
+  .surprise-meta { display: flex; flex-direction: column; gap: 5px; }
+
+  .surprise-category {
+    font-family: "Courier New", monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .surprise-tool {
+    font-family: "Courier New", monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+  }
+
+  .surprise-goodfor {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .surprise-divider {
+    height: 1px;
+    background: var(--border);
+  }
+
+  .surprise-prompt {
+    font-family: "Courier New", monospace;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.75;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .surprise-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .surprise-copy-btn {
+    background: var(--accent);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #000;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .surprise-copy-btn:hover { opacity: 0.88; }
+  .surprise-copy-btn.copied { background: var(--success); }
+
+  .surprise-roll-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .surprise-roll-btn:hover { border-color: var(--accent); color: var(--accent); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <span class="nav-brand" onclick="showPage('home', null)">MA&amp;A · AI Prompts</span>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showPage('home', this)">Home</button>
+      <button class="nav-tab" onclick="showPage('library', this)">Library</button>
+      <button class="nav-tab" onclick="showPage('personaliser', this)">Personaliser</button>
+      <button class="nav-tab" onclick="showPage('feedback', this)">Feedback</button>
+    </div>
+  </div>
+  <div class="nav-right">
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark">☀</button>
+  </div>
+</nav>
+
+<!-- Home -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-tag"><span class="hero-dot"></span>From the MA&amp;A Team</div>
+    <h1 class="hero-title">Prompts our team<br><span>actually uses.</span></h1>
+    <p class="hero-sub">Copy, paste, and go. A practical library of AI prompts built by MA&amp;A.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="showPage('library', document.querySelectorAll('.nav-tab')[1])">Browse prompts →</button>
+      <button class="btn-secondary" onclick="showPage('personaliser', document.querySelectorAll('.nav-tab')[2])">Personalise for me</button>
+      <button class="btn-surprise" onclick="surpriseMe()">🎲 Surprise me</button>
+    </div>
+  </div>
+  <div class="wrapper">
+    <div class="explore-label">Explore by category</div>
+    <div class="home-grid" id="home-grid"></div>
+    <footer>From the MA&amp;A Team — Sage</footer>
+  </div>
+</div>
+
+<!-- Library -->
+<div class="page" id="page-library">
+  <div class="wrapper">
+    <header>
+      <div class="header-tag">From the MA&amp;A Team</div>
+      <h1>Copy.<br><span>Paste.</span> Go.</h1>
+      <p class="subtitle">Prompts tried, tested and shared by the MA&amp;A team. Find what you need, copy it, and make it yours.</p>
+    </header>
+    <div class="search-row">
+      <div class="search-bar">
+        <span class="search-icon">⌕</span>
+        <input type="text" id="search" placeholder="Search prompts..." oninput="filterCards()" autocomplete="off">
+      </div>
+      <button class="btn-surprise" onclick="surpriseMe()">🎲 Surprise me</button>
+    </div>
+    <div id="library"></div>
+    <div class="no-results" id="no-results">No prompts match your search.</div>
+    <footer>From the MA&amp;A Team — Sage</footer>
+  </div>
+</div>
+
+<!-- Personaliser -->
+<div class="page" id="page-personaliser">
+  <div class="wrapper">
+    <header>
+      <div class="header-tag">From the MA&amp;A Team</div>
+      <h1>Make it<br><span>yours.</span></h1>
+      <p class="subtitle">Pick a prompt, fill in the blanks, and copy your personalised version ready to paste.</p>
+    </header>
+    <div class="personaliser-layout">
+      <div class="prompt-selector" id="prompt-selector"></div>
+      <div class="personaliser-panel">
+        <div class="panel-card">
+          <div class="panel-label">Fill in the blanks</div>
+          <div id="vars-container"><div class="empty-hint">← Pick a prompt to get started</div></div>
+        </div>
+        <div class="panel-card">
+          <div class="panel-label">Live preview</div>
+          <div class="preview-text" id="preview-text"><span style="color:var(--text-dim)">Your prompt will appear here as you type.</span></div>
+        </div>
+        <button class="copy-final-btn" id="copy-final-btn" onclick="copyFinal()">Copy prompt</button>
+      </div>
+    </div>
+    <footer>From the MA&amp;A Team — Sage</footer>
+  </div>
+</div>
+
+<!-- Feedback -->
+<div class="page" id="page-feedback">
+  <div class="wrapper">
+    <header>
+      <div class="header-tag">From the MA&amp;A Team</div>
+      <h1>Help make<br>this <span>better.</span></h1>
+      <p class="subtitle">What's working? What's missing? Your feedback shapes the next version.</p>
+    </header>
+    <div class="feedback-wrap">
+      <div id="feedback-form">
+        <div class="feedback-field">
+          <div class="feedback-label">Which prompts have you found most useful?</div>
+          <textarea class="feedback-textarea" id="fb-useful" rows="3" placeholder="e.g. the So what? one, the meeting prep..."></textarea>
+        </div>
+        <div class="feedback-field">
+          <div class="feedback-label">What's missing or not working for you?</div>
+          <textarea class="feedback-textarea" id="fb-missing" rows="3" placeholder="Anything that doesn't fit your workflow..."></textarea>
+        </div>
+        <div class="feedback-field">
+          <div class="feedback-label">Got a prompt to add? Share it.</div>
+          <textarea class="feedback-textarea" id="fb-prompt" rows="3" placeholder="Share a prompt that works well for you — we'll test it and add the best ones..."></textarea>
+        </div>
+        <div class="feedback-field">
+          <div class="feedback-label">Your name <span style="font-weight:400; color:var(--text-dim)">(optional)</span></div>
+          <input class="feedback-input" id="fb-name" type="text" placeholder="Leave blank to stay anonymous">
+        </div>
+        <div class="feedback-actions">
+          <button class="feedback-submit" onclick="submitFeedback()">Submit feedback</button>
+          <span class="feedback-direct">or reach out directly:</span>
+          <a href="mailto:victor.egunlae@sage.com" class="feedback-email-link">Email →</a>
+        </div>
+      </div>
+      <div id="feedback-success" style="display:none;">
+        <div class="success-state">
+          <div class="success-icon">🙌</div>
+          <div class="success-title">Thank you</div>
+          <div class="success-sub">That genuinely helps. If you want to follow up directly, drop a line at<br><a href="mailto:victor.egunlae@sage.com" style="color:var(--accent); text-decoration:none; font-weight:600;">victor.egunlae@sage.com</a></div>
+          <button class="reset-btn" onclick="resetFeedback()">Leave another response</button>
+        </div>
+      </div>
+    </div>
+    <footer>From the MA&amp;A Team — Sage</footer>
+  </div>
+</div>
+
+<!-- Surprise Me Modal -->
+<div class="surprise-overlay" id="surprise-overlay" onclick="handleOverlayClick(event)">
+  <div class="surprise-card" id="surprise-card">
+    <div class="surprise-header">
+      <div class="surprise-title" id="surprise-title"></div>
+      <button class="surprise-close" onclick="closeSurprise()" title="Close">✕</button>
+    </div>
+    <div class="surprise-meta">
+      <div class="surprise-category" id="surprise-category"></div>
+      <div class="surprise-tool" id="surprise-tool"></div>
+      <div class="surprise-goodfor" id="surprise-goodfor"></div>
+    </div>
+    <div class="surprise-divider"></div>
+    <div class="surprise-prompt" id="surprise-prompt"></div>
+    <div class="surprise-actions">
+      <button class="surprise-copy-btn" id="surprise-copy-btn" onclick="copySurprisePrompt()">Copy prompt</button>
+      <button class="surprise-roll-btn" onclick="personaliseThis()">Personalise this</button>
+      <button class="surprise-roll-btn" onclick="rollAgain()">🎲 Roll again</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const data = [
+  {
+    category: "Getting Started",
+    desc: "New to AI? Begin here.",
+    prompts: [
+      { title: "What can you do?", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "What can you do? Give me practical examples relevant to someone working in []." },
+      { title: "Smallest step today", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "What's the smallest thing I can do today to get started with [topic] using AI?" },
+      { title: "Break down a task into steps", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "How can I break this down into smaller steps? [paste your task here]" },
+      { title: "Help me prioritise tasks", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I have a list of tasks. Help me prioritise them by effort vs impact. [paste your list]" },
+    ]
+  },
+  {
+    category: "Data & Analysis",
+    desc: "Turn numbers into narratives.",
+    prompts: [
+      { title: "Analyse data and surface key insights", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I'm analysing this dataset for [context or goal]. Identify 3–5 key insights I should present. Focus on meaningful trends, patterns, or anomalies. For each insight, explain what's happening, why it matters, and what action it suggests. Present the insights in a clear, clean table. Then suggest a few follow-up questions or areas to explore next. [upload data]" },
+      { title: "Spot the story in data", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Here's some [campaign or report] data. What's the main story I should be telling from this? [paste data or description]" },
+      { title: "Get to the \"so what\"", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Here are my results: [paste results]. Help me get to the \"so what\" — what does this mean and what should we do next?" },
+      { title: "Build hypotheses from data", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I'm seeing [observation] in my data. Help me build 3 hypotheses for why this might be happening." },
+      { title: "Sense check analysis", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Here's my analysis and conclusion: [paste]. Can you sense check my logic and flag anything I might have missed?" },
+      { title: "Analyse churn drivers", tool: "Copilot", source: "Team submission", prompt: "You are a data analyst. Analyse the following customer data and identify the top drivers of churn. Focus on patterns related to complexity score, engagement metrics, and support interactions. Provide a summary of findings and recommend actions to reduce churn. [paste data]" },
+      { title: "Analyse A/B test results", tool: "Claude", source: "Team submission", prompt: "Analyse the results of an A/B test in Power BI using DAX. The test compares two versions of [describe test]. Calculate statistical significance, identify the winning variant, and summarise the key takeaways. [paste data or DAX code]" },
+      { title: "Build a data dashboard", tool: "ChatGPT", source: "Team submission", prompt: "Help me design a Power BI dashboard for [business area or team]. Suggest key metrics to include, how to structure the layout, and which visualisations would work best for the audience. The goal is to make it easy to spot trends and take action." },
+      { title: "Compare organic vs brand search", tool: "Claude", source: "Team submission", prompt: "Analyse the following search data and compare organic vs brand search performance. Identify trends, highlight areas of concern, and suggest actions to improve organic visibility. [paste data]" },
+      { title: "Reconcile email performance data", tool: "Snowflake Cortex", source: "Team submission", prompt: "I have email performance data from two sources that don't match. Help me identify discrepancies between [source A] and [source B]. Highlight rows where metrics differ significantly and suggest reasons for the gaps. [paste data]" },
+      { title: "Analyse email fatigue", tool: "Snowflake Cortex", source: "Team submission", prompt: "Using the following email engagement data, identify signs of audience fatigue. Look for declining open rates, increasing unsubscribes, and drop-off patterns over time. Recommend actions to re-engage the audience. [paste data]" },
+    ]
+  },
+  {
+    category: "Writing & Comms",
+    desc: "Clearer, faster communication.",
+    prompts: [
+      { title: "Improve written content", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Here's a draft I've written. Improve the clarity and cut anything unnecessary while keeping the meaning. [paste draft]" },
+      { title: "Summarise for leadership", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Summarise the following for a senior leadership audience. Start with a single sentence that clearly states the key insight or takeaway (\"the so what\"). Then provide 2–3 short bullet points covering the key impacts or recommended actions. Use clear, direct language and avoid unnecessary detail. [paste content]" },
+      { title: "Write a team update", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Write a short team update about [topic]. Use 3–5 bullet points, clear and direct language, and focus on key updates and actions." },
+      { title: "Translate into plain English", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Rewrite this in plain English for a non-technical stakeholder. [paste text]" },
+      { title: "Generate content angles", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "I'm creating content about [topic] for [audience]. Give me 5 different angles or hooks." },
+      { title: "Improve marketing copy", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Rewrite this copy to be more compelling and specific. Remove generic phrases. [paste copy]" },
+      { title: "Generate subject line options", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Write 5 subject line variants for a campaign about [topic]. Audience: [audience]. Goal: [goal]." },
+      { title: "Tailor message to audience", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "How would you position [message] for [specific audience]? What language would resonate?" },
+      { title: "Review and improve content", tool: "Copilot", source: "Team submission", prompt: "Review and improve the following written content. Make it clearer, more concise, and more engaging while keeping the original meaning. Highlight any changes you make and explain why. [paste content]" },
+      { title: "Generate internal social posts", tool: "Copilot", source: "Team submission", prompt: "Write 3 Viva Engage posts about [topic] for an internal audience. Keep each post under 150 words. The tone should be [professional/conversational/inspiring]. Include a call to action in each post." },
+      { title: "Rewrite email from notes", tool: "Copilot", source: "Team submission", prompt: "I have rough notes from a meeting or conversation. Turn them into a clear, professional email. Keep it concise, lead with the key message, and include a clear next step. [paste notes]" },
+    ]
+  },
+  {
+    category: "Strategy & Planning",
+    desc: "Think bigger, plan smarter.",
+    prompts: [
+      { title: "Challenge ideas with devil's advocate", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Team submission", prompt: "Play devil's advocate on the following idea or plan. Identify the biggest risks, weaknesses, and assumptions. Be specific and constructive — the goal is to stress-test the thinking, not just criticise. [describe idea or paste plan]" },
+      { title: "Research customer journey stages", tool: "ChatGPT", source: "Team submission", prompt: "Research and summarise the typical journey a [type of customer] goes through when [describe decision or process]. Identify the key stages, what they're thinking and feeling at each stage, and what information or support they need. Format this as a clear journey map." },
+    ]
+  },
+  {
+    category: "Learning & Exploration",
+    desc: "Go deeper on anything.",
+    prompts: [
+      { title: "Learn a topic quickly", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Give me a clear, structured overview of [topic]. Include key concepts, a simple example, and when it's used in practice. Keep it concise." },
+      { title: "Compare two concepts", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "What's the difference between [concept A] and [concept B]? Use a real-world example." },
+      { title: "Quiz me on a topic", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Quiz me on [topic] with 5 questions, starting easy and getting harder. After each answer, tell me if I'm right and explain why." },
+      { title: "Recommend next learning step", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I've just learned about [topic]. What should I explore next to go deeper?" },
+      { title: "Explain using a simple diagram", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Explain how [concept] works using a simple text-based (ASCII) diagram and include a short explanation alongside it. Make it easy to follow and clearly show the structure or flow." },
+      { title: "Learn a topic quickly (80/20)", tool: "ChatGPT", source: "Team submission", prompt: "I want to learn about [topic]. Use the 80/20 rule to focus on the 20% of concepts that will give me 80% of the understanding. Give me a structured overview with the most important ideas first, practical examples, and what to focus on to get up to speed quickly." },
+      { title: "Break down complex ideas", tool: "Claude", source: "Team submission", prompt: "Take the following complex concept and break it down so that someone new to the topic can understand it. Use simple language, avoid jargon, and include a real-world analogy to make it stick. [paste concept or topic]" },
+    ]
+  },
+  {
+    category: "Go Deeper",
+    desc: "Push beyond the surface.",
+    prompts: [
+      { title: "Break down a topic from first principles", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Break [topic] down using first principles thinking. Start by identifying the common assumptions people make about this topic. Then strip those assumptions away and focus only on what is fundamentally true. Rebuild the concept step by step from these core truths. Show what changes when you remove inherited thinking." },
+      { title: "Explain a topic simply (no jargon)", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Now explain [topic] as if I'm new to it. Use no jargon, no assumed knowledge, and include two different examples to make it clear. If anything is still unclear, simplify it further until it's genuinely easy to understand." },
+    ]
+  },
+  {
+    category: "Coding",
+    desc: "Write, fix and improve code.",
+    prompts: [
+      { title: "Fix a DAX formula", tool: "Claude", source: "Team submission", prompt: "I have a DAX formula that isn't working as expected. Review the code, identify the issue, and provide a corrected version with an explanation of what was wrong and why the fix works. [paste DAX code]" },
+      { title: "Generate UI code", tool: "Copilot", source: "Team submission", prompt: "Generate an Adaptive Card JSON for [describe the card's purpose and content]. It should include [list key elements e.g. title, body text, action buttons]. Make it clean and functional for use in [Teams / Outlook / Power Automate]." },
+      { title: "Fix bugs step by step", tool: "Claude", source: "Team submission", prompt: "I have a bug in my code that I can't resolve. Walk me through debugging it step by step. Ask me clarifying questions if needed, suggest what to check first, and help me identify the root cause before suggesting a fix. [paste code and describe the issue]" },
+      { title: "Improve application code", tool: "Claude", source: "Team submission", prompt: "Review the following code and suggest improvements. Focus on readability, performance, and best practices. Explain each change you recommend and why it makes the code better. [paste code]" },
+      { title: "Check SQL query", tool: "Snowflake Cortex", source: "Team submission", prompt: "Review the following SQL query and check it for errors, inefficiencies, or logic issues. Suggest improvements and explain your reasoning. If the query can be simplified or optimised, show me how. [paste SQL]" },
+      { title: "Aggregate data using code", tool: "Claude", source: "Team submission", prompt: "Write a script to aggregate data from [describe data source or structure]. The goal is to [describe output e.g. summarise by region, calculate totals by month]. Use [R / Python / SQL] and include comments explaining each step. [paste data sample if available]" },
+      { title: "Aggregate CSV data", tool: "Claude", source: "Team submission", prompt: "I have a CSV file with the following structure: [describe columns and data]. Write an R script to load the file, aggregate the data by [field], and output a summary table showing [desired metrics]. Include error handling and comments." },
+      { title: "Convert date format", tool: "Copilot", source: "Team submission", prompt: "I have a column in Excel with dates in [current format e.g. DD/MM/YYYY]. Write a formula to convert them to [target format e.g. YYYY-MM-DD]. Explain how the formula works and how to apply it to the full column." },
+      { title: "Improve data model", tool: "Claude", source: "Team submission", prompt: "Review the following data model or notebook and suggest improvements. Focus on structure, clarity, and performance. Highlight any issues with the current approach and recommend a better way to organise or write the code. [paste code or describe model]" },
+      { title: "Build a Workfront calculated field", tool: "Copilot", source: "Team submission", prompt: "Help me build a calculated field in Workfront for [describe the purpose]. The field should [describe logic or output]. Walk me through the formula syntax and how to set it up correctly in Workfront." },
+    ]
+  },
+  {
+    category: "Tools & Workflows",
+    desc: "Get more from your tools.",
+    prompts: [
+      { title: "Automate QA tasks", tool: "Copilot", source: "Team submission", prompt: "Help me automate the following quality assurance task in [tool or system]: [describe task]. Suggest a workflow or process that reduces manual effort, catches errors early, and can be repeated consistently. Include any formulas, scripts, or steps needed." },
+      { title: "Apply brand styling to app", tool: "Claude", source: "Team submission", prompt: "I have a Streamlit app and want to apply our brand colours and styling. Our primary colour is [hex code], secondary is [hex code], and font is [font name]. Update the app's CSS and layout to match these brand guidelines while keeping the functionality intact. [paste current code]" },
+    ]
+  },
+  {
+    category: "Design & Imagery",
+    desc: "Create and adapt visuals.",
+    prompts: [
+      { title: "Localise image for market", tool: "Adobe", source: "Team submission", prompt: "I need to localise the following image for the [market/region] market. Adapt any text, imagery, or cultural references to be appropriate and relevant for that audience. Highlight what changes you would make and why. [describe or attach image]" },
+      { title: "Localise video for market", tool: "Adobe", source: "Team submission", prompt: "I need to localise this video for the [market/region] market. Suggest changes to voiceover, on-screen text, visuals, and cultural references to make it suitable for the local audience. Provide a list of recommended adaptations. [describe video content]" },
+    ]
+  },
+];
+
+function toggleTheme() {
+  document.body.classList.toggle('light');
+  const btn = document.querySelector('.theme-toggle');
+  btn.textContent = document.body.classList.contains('light') ? '☾' : '☀';
+}
+
+function showPage(id, tab) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (tab) tab.classList.add('active');
+  else document.querySelectorAll('.nav-tab')[0].classList.add('active');
+  window.scrollTo({ top: 0 });
+}
+
+function buildHome() {
+  const grid = document.getElementById('home-grid');
+  data.forEach((section, i) => {
+    const card = document.createElement('div');
+    card.className = 'home-card';
+    card.style.animationDelay = `${i * 0.06}s`;
+    card.innerHTML = `
+      <div class="home-card-header">
+        <div class="home-card-title">${section.category}</div>
+        <div class="home-card-count">${section.prompts.length} prompt${section.prompts.length !== 1 ? 's' : ''}</div>
+      </div>
+      <div class="home-card-desc">${section.desc}</div>`;
+    card.onclick = () => {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById('page-library').classList.add('active');
+      document.querySelectorAll('.nav-tab')[1].classList.add('active');
+      window.scrollTo({ top: 0 });
+      setTimeout(() => {
+        const target = document.getElementById('section-' + i);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 80);
+    };
+    grid.appendChild(card);
+  });
+}
+
+function renderLibrary(filter = '') {
+  const container = document.getElementById('library');
+  const noResults = document.getElementById('no-results');
+  container.innerHTML = '';
+  let total = 0;
+
+  data.forEach((section, si) => {
+    const filtered = filter
+      ? section.prompts.filter(p =>
+          p.title.toLowerCase().includes(filter) ||
+          p.prompt.toLowerCase().includes(filter) ||
+          section.category.toLowerCase().includes(filter) ||
+          (p.tool && p.tool.toLowerCase().includes(filter)))
+      : section.prompts;
+
+    if (!filtered.length) return;
+    total += filtered.length;
+
+    const cat = document.createElement('div');
+    cat.className = 'category';
+    cat.id = 'section-' + si;
+    cat.style.animationDelay = `${si * 0.04}s`;
+    cat.innerHTML = `
+      <div class="category-header">
+        <span class="category-label">${section.category}</span>
+        <div class="category-line"></div>
+        <span class="category-count">${filtered.length}</span>
+      </div>
+      <div class="cards-grid" id="grid-${si}"></div>`;
+    container.appendChild(cat);
+
+    const grid = cat.querySelector(`#grid-${si}`);
+    filtered.forEach(p => {
+      const sourceClass = p.source === 'Team submission' ? 'source-team' : 'source-starter';
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="card-body">
+          <div class="card-title">${p.title}<span class="source-badge ${sourceClass}">${p.source}</span></div>
+          <div class="card-meta">${p.tool ? p.tool.split(', ').join(' · ') : ''}</div>
+          <div class="card-prompt">${p.prompt}</div>
+        </div>
+        <button class="copy-btn" onclick="copyPrompt(this, \`${p.prompt.replace(/`/g,'\\`')}\`)">Copy</button>`;
+      grid.appendChild(card);
+    });
+  });
+
+  noResults.style.display = total === 0 ? 'block' : 'none';
+}
+
+function filterCards() {
+  renderLibrary(document.getElementById('search').value.toLowerCase().trim());
+}
+
+function copyPrompt(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+let activePrompt = null;
+let varValues = {};
+
+function extractVars(prompt) {
+  const matches = [...prompt.matchAll(/\[([^\]]*)\]/g)];
+  const seen = new Set();
+  return matches.filter(m => {
+    if (seen.has(m[1])) return false;
+    seen.add(m[1]);
+    return true;
+  }).map(m => m[1]);
+}
+
+function buildSelector() {
+  const container = document.getElementById('prompt-selector');
+  data.forEach(section => {
+    const label = document.createElement('div');
+    label.className = 'selector-group-label';
+    label.textContent = section.category;
+    container.appendChild(label);
+    section.prompts.forEach(p => {
+      const item = document.createElement('div');
+      item.className = 'selector-item';
+      item.textContent = p.title;
+      item.onclick = () => selectPrompt(p, item);
+      container.appendChild(item);
+    });
+  });
+}
+
+function selectPrompt(p, el) {
+  document.querySelectorAll('.selector-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  activePrompt = p;
+  varValues = {};
+  renderVars(p);
+  updatePreview();
+}
+
+function renderVars(p) {
+  const container = document.getElementById('vars-container');
+  const vars = extractVars(p.prompt);
+  if (!vars.length) {
+    container.innerHTML = `<div class="empty-hint">No blanks to fill — copy this one straight from the Library.</div>`;
+    updatePreview();
+    return;
+  }
+  container.innerHTML = '';
+  vars.forEach(v => {
+    varValues[v] = '';
+    const row = document.createElement('div');
+    row.className = 'var-row';
+    const safeKey = v.replace(/'/g,"\\'");
+    row.innerHTML = `
+      <div class="var-label">Fill in: <span>[${v || 'your text'}]</span></div>
+      <input class="var-input" type="text" placeholder="${v || 'type here'}..." oninput="varValues['${safeKey}'] = this.value; updatePreview()">`;
+    container.appendChild(row);
+  });
+}
+
+function updatePreview() {
+  const preview = document.getElementById('preview-text');
+  if (!activePrompt) return;
+  const html = activePrompt.prompt.replace(/\[([^\]]*)\]/g, (match, key) => {
+    const val = varValues[key];
+    if (val && val.trim()) return `<span class="filled">${escHtml(val.trim())}</span>`;
+    return `<span class="unfilled">[${escHtml(key || 'your text')}]</span>`;
+  });
+  preview.innerHTML = html;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function copyFinal() {
+  if (!activePrompt) return;
+  const text = activePrompt.prompt.replace(/\[([^\]]*)\]/g, (match, key) => {
+    const val = varValues[key];
+    return (val && val.trim()) ? val.trim() : match;
+  });
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-final-btn');
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy prompt'; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+function submitFeedback() {
+  const useful = document.getElementById('fb-useful').value.trim();
+  const missing = document.getElementById('fb-missing').value.trim();
+  const prompt = document.getElementById('fb-prompt').value.trim();
+  const name = document.getElementById('fb-name').value.trim();
+  if (!useful && !missing && !prompt) return;
+  const subject = encodeURIComponent('MA&A Prompt Library — Feedback');
+  const body = encodeURIComponent(
+    `From: ${name || 'Anonymous'}\n\n` +
+    `Most useful prompts:\n${useful || '—'}\n\n` +
+    `What's missing / not working:\n${missing || '—'}\n\n` +
+    `Prompt suggestion:\n${prompt || '—'}`
+  );
+  window.location.href = `mailto:victor.egunlae@sage.com?subject=${subject}&body=${body}`;
+  setTimeout(() => {
+    document.getElementById('feedback-form').style.display = 'none';
+    document.getElementById('feedback-success').style.display = 'block';
+  }, 500);
+}
+
+function resetFeedback() {
+  document.getElementById('fb-useful').value = '';
+  document.getElementById('fb-missing').value = '';
+  document.getElementById('fb-prompt').value = '';
+  document.getElementById('fb-name').value = '';
+  document.getElementById('feedback-form').style.display = 'block';
+  document.getElementById('feedback-success').style.display = 'none';
+}
+
+const goodForMap = {
+  "Getting Started":        "Getting a feel for what AI can do",
+  "Data & Analysis":        "Making sense of data and numbers",
+  "Writing & Comms":        "Faster, clearer communication",
+  "Strategy & Planning":    "Big-picture thinking and planning",
+  "Learning & Exploration": "Going deeper on any topic",
+  "Go Deeper":              "First-principles and advanced thinking",
+  "Coding":                 "Writing, fixing, or reviewing code",
+  "Tools & Workflows":      "Getting more from your tools",
+  "Design & Imagery":       "Creating and adapting visual content",
+};
+
+let lastSurpriseIndex = -1;
+let currentSurprisePrompt = null;
+
+function getAllPrompts() {
+  const all = [];
+  data.forEach(section => {
+    section.prompts.forEach(p => all.push({ ...p, category: section.category }));
+  });
+  return all;
+}
+
+function surpriseMe() {
+  const all = getAllPrompts();
+  let idx;
+  do { idx = Math.floor(Math.random() * all.length); }
+  while (idx === lastSurpriseIndex && all.length > 1);
+  lastSurpriseIndex = idx;
+  renderSurpriseCard(all[idx]);
+  document.getElementById('surprise-overlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function rollAgain() {
+  const all = getAllPrompts();
+  let idx;
+  do { idx = Math.floor(Math.random() * all.length); }
+  while (idx === lastSurpriseIndex && all.length > 1);
+  lastSurpriseIndex = idx;
+  const card = document.getElementById('surprise-card');
+  card.style.animation = 'none';
+  card.offsetHeight;
+  card.style.animation = 'fadeUp 0.22s ease both';
+  renderSurpriseCard(all[idx]);
+  const btn = document.getElementById('surprise-copy-btn');
+  btn.textContent = 'Copy prompt';
+  btn.classList.remove('copied');
+}
+
+function renderSurpriseCard(p) {
+  currentSurprisePrompt = p;
+  document.getElementById('surprise-title').textContent = p.title;
+  document.getElementById('surprise-category').textContent = p.category;
+  document.getElementById('surprise-tool').textContent = p.tool ? 'Works with: ' + p.tool : '';
+  document.getElementById('surprise-goodfor').textContent = 'Good for: ' + (goodForMap[p.category] || p.category);
+  document.getElementById('surprise-prompt').textContent = p.prompt;
+}
+
+function personaliseThis() {
+  if (!currentSurprisePrompt) return;
+  closeSurprise();
+  showPage('personaliser', document.querySelectorAll('.nav-tab')[2]);
+  const items = document.querySelectorAll('.selector-item');
+  for (const item of items) {
+    if (item.textContent.trim() === currentSurprisePrompt.title) {
+      item.click();
+      item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      break;
+    }
+  }
+}
+
+function closeSurprise() {
+  document.getElementById('surprise-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('surprise-overlay')) closeSurprise();
+}
+
+function copySurprisePrompt() {
+  const text = document.getElementById('surprise-prompt').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('surprise-copy-btn');
+    btn.textContent = '✓ Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy prompt'; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeSurprise();
+});
+
+buildHome();
+renderLibrary();
+buildSelector();
+</script>
+</body>
+</html>
