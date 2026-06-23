@@ -198,22 +198,66 @@
   .nav-tab.active { color: var(--accent); background: var(--accent-dim); border-color: var(--accent-border); }
 
   .theme-toggle {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    border: 1px solid var(--accent-border);
-    background: var(--accent-dim);
-    color: var(--accent);
+    min-width: 132px;
+    height: 38px;
+    padding: 0 10px 0 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03)),
+      var(--surface);
+    color: var(--text);
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    font-size: 15px;
-    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 12px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    transition: transform 0.2s, border-color 0.2s, background 0.2s, box-shadow 0.2s;
     flex-shrink: 0;
   }
 
-  .theme-toggle:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+  .theme-toggle:hover {
+    transform: translateY(-1px);
+    border-color: var(--accent-border);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.07);
+  }
+
+  .theme-toggle:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .theme-toggle-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .theme-toggle-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-dim);
+    color: var(--accent);
+    border: 1px solid var(--accent-border);
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  body.light .theme-toggle {
+    border-color: rgba(17,17,17,0.08);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.96), rgba(245,245,245,0.92)),
+      var(--surface);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+  }
 
   /* ── Pages ── */
   .page { display: none; }
@@ -234,7 +278,7 @@
   }
 
   .header-tag {
-    font-family: "Courier New", monospace;
+    font-family: "Segoe UI", system-ui, sans-serif;
     font-size: 11px;
     letter-spacing: 0.15em;
     color: var(--accent);
@@ -335,7 +379,7 @@
   }
 
   .home-card-count {
-    font-family: "Courier New", monospace;
+    font-family: "Segoe UI", system-ui, sans-serif;
     font-size: 10px;
     color: var(--text-dim);
     letter-spacing: 0.08em;
@@ -388,7 +432,7 @@
   }
 
   .category-label {
-    font-family: "Courier New", monospace;
+    font-family: "Segoe UI", system-ui, sans-serif;
     font-size: 10px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -399,7 +443,7 @@
   .category-line { flex: 1; height: 1px; background: rgba(0,214,57,0.3); }
 
   .category-count {
-    font-family: "Courier New", monospace;
+    font-family: "Segoe UI", system-ui, sans-serif;
     font-size: 10px;
     color: var(--text-dim);
     white-space: nowrap;
@@ -407,6 +451,12 @@
 
   /* ── Prompt cards ── */
   .cards-grid { display: grid; gap: 10px; }
+
+  #library.view-grid .cards-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  #library.view-list .cards-grid { grid-template-columns: 1fr; }
 
   .card {
     background: var(--surface);
@@ -417,6 +467,8 @@
     align-items: flex-start;
     gap: 16px;
     transition: border-color 0.2s, background 0.2s, transform 0.18s, box-shadow 0.2s;
+    height: 220px;
+    overflow: hidden;
   }
 
   .card:hover {
@@ -426,7 +478,7 @@
     box-shadow: 0 6px 20px rgba(0,214,57,0.07);
   }
 
-  .card-body { flex: 1; min-width: 0; }
+  .card-body { flex: 1; min-width: 0; overflow: hidden; }
 
   .card-title {
     font-size: 14px;
@@ -438,7 +490,7 @@
   }
 
   .card-meta {
-    font-family: "Courier New", monospace;
+    font-family: "Segoe UI", system-ui, sans-serif;
     font-size: 10px;
     color: var(--text-dim);
     margin-bottom: 8px;
@@ -447,10 +499,49 @@
   }
 
   .card-prompt {
-    font-family: "Courier New", monospace;
+    font-family: "Segoe UI", system-ui, sans-serif;
     font-size: 12.5px;
     color: var(--text-muted);
     line-height: 1.85;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+    overflow: hidden;
+  }
+
+  .view-toggle {
+    display: flex;
+    flex-shrink: 0;
+    padding: 3px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  .view-toggle-btn {
+    background: transparent;
+    border: 0;
+    border-radius: 5px;
+    padding: 7px 11px;
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-dim);
+    cursor: pointer;
+  }
+
+  .view-toggle-btn:hover { color: var(--accent); }
+  .view-toggle-btn.active { background: var(--accent-dim); color: var(--accent); }
+
+  @media (max-width: 640px) {
+    .search-row { flex-wrap: wrap; }
+    .search-row .search-bar { flex-basis: 100%; }
+    #library.view-grid .cards-grid { grid-template-columns: 1fr; }
+  }
+
+  .prompt-var-bracketed {
+    color: var(--accent);
+    font-weight: 700;
   }
 
   /* ── Copy button ── */
@@ -460,7 +551,7 @@
     border: 1px solid var(--border);
     border-radius: 7px;
     padding: 7px 14px;
-    font-family: "Courier New", monospace;
+    font-family: "Segoe UI", system-ui, sans-serif;
     font-size: 11px;
     color: var(--text-muted);
     cursor: pointer;
@@ -476,7 +567,7 @@
   /* ── Source badges ── */
   .source-badge {
     display: inline-block;
-    font-family: "Courier New", monospace;
+    font-family: "Segoe UI", system-ui, sans-serif;
     font-size: 9px;
     letter-spacing: 0.07em;
     text-transform: uppercase;
@@ -723,7 +814,7 @@
     margin-top: 64px;
     border-top: 1px solid var(--border);
     color: var(--text-dim);
-    font-family: "Courier New", monospace;
+    font-family: "Segoe UI", system-ui, sans-serif;
     font-size: 11px;
     letter-spacing: 0.05em;
   }
@@ -1027,7 +1118,10 @@
     </div>
   </div>
   <div class="nav-right">
-    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark">☀</button>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark" aria-label="Toggle light and dark theme">
+      <span class="theme-toggle-label">Dark mode</span>
+      <span class="theme-toggle-icon" aria-hidden="true">&#9728;</span>
+    </button>
   </div>
 </nav>
 
@@ -1062,6 +1156,10 @@
       <div class="search-bar">
         <span class="search-icon">⌕</span>
         <input type="text" id="search" placeholder="Search prompts..." oninput="filterCards()" autocomplete="off">
+      </div>
+      <div class="view-toggle" role="group" aria-label="Library view">
+        <button class="view-toggle-btn active" id="grid-view-btn" type="button" aria-pressed="true" onclick="setLibraryView('grid')">Grid</button>
+        <button class="view-toggle-btn" id="list-view-btn" type="button" aria-pressed="false" onclick="setLibraryView('list')">List</button>
       </div>
       <button class="btn-surprise" onclick="surpriseMe()">🎲 Surprise me</button>
     </div>
@@ -1276,7 +1374,11 @@ const data = [
 function toggleTheme() {
   document.body.classList.toggle('light');
   const btn = document.querySelector('.theme-toggle');
-  btn.textContent = document.body.classList.contains('light') ? '☾' : '☀';
+  const label = btn.querySelector('.theme-toggle-label');
+  const icon = btn.querySelector('.theme-toggle-icon');
+  const isLight = document.body.classList.contains('light');
+  label.textContent = isLight ? 'Light mode' : 'Dark mode';
+  icon.innerHTML = isLight ? '&#9790;' : '&#9728;';
 }
 
 function showPage(id, tab) {
@@ -1355,7 +1457,7 @@ function renderLibrary(filter = '') {
         <div class="card-body">
           <div class="card-title">${p.title}<span class="source-badge ${sourceClass}">${p.source}</span></div>
           <div class="card-meta">${p.tool ? p.tool.split(', ').join(' · ') : ''}</div>
-          <div class="card-prompt">${p.prompt}</div>
+          <div class="card-prompt">${formatBracketVars(p.prompt)}</div>
         </div>
         <button class="copy-btn" onclick="copyPrompt(this, \`${p.prompt.replace(/`/g,'\\`')}\`)">Copy</button>`;
       grid.appendChild(card);
@@ -1367,6 +1469,36 @@ function renderLibrary(filter = '') {
 
 function filterCards() {
   renderLibrary(document.getElementById('search').value.toLowerCase().trim());
+}
+
+function setLibraryView(view, save = true) {
+  const selectedView = view === 'list' ? 'list' : 'grid';
+  const library = document.getElementById('library');
+  library.classList.remove('view-grid', 'view-list');
+  library.classList.add('view-' + selectedView);
+
+  ['grid', 'list'].forEach(option => {
+    const button = document.getElementById(option + '-view-btn');
+    const active = option === selectedView;
+    button.classList.toggle('active', active);
+    button.setAttribute('aria-pressed', String(active));
+  });
+
+  if (save) {
+    try { localStorage.setItem('libraryView', selectedView); } catch (e) {}
+  }
+}
+
+function restoreLibraryView() {
+  let savedView = null;
+  try { savedView = localStorage.getItem('libraryView'); } catch (e) {}
+  setLibraryView(savedView === 'list' ? 'list' : 'grid', false);
+}
+
+function formatBracketVars(prompt) {
+  return escHtml(prompt).replace(/\[([^\]]*)\]/g, match => {
+    return `<span class="prompt-var-bracketed">${match}</span>`;
+  });
 }
 
 function copyPrompt(btn, text) {
@@ -1630,6 +1762,7 @@ document.addEventListener('keydown', e => {
 buildHome();
 renderLibrary();
 buildSelector();
+restoreLibraryView();
 </script>
 </body>
 </html>
