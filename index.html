@@ -625,12 +625,12 @@
   .prompt-selector::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
   .selector-group-label {
-    font-family: "Courier New", monospace;
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
     font-size: 9px;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--text-dim);
-    padding: 12px 16px 6px;
+    padding: 16px 16px 8px;
     border-top: 1px solid var(--border);
     background: var(--bg);
   }
@@ -656,7 +656,7 @@
   .panel-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
 
   .panel-label {
-    font-family: "Courier New", monospace;
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
     font-size: 10px;
     letter-spacing: 0.15em;
     text-transform: uppercase;
@@ -664,18 +664,30 @@
     margin-bottom: 14px;
   }
 
+  .current-prompt-label {
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin: -4px 0 12px;
+  }
+
+  .current-prompt-label span {
+    color: var(--text);
+    font-weight: 600;
+  }
+
   .var-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
   .var-row:last-child { margin-bottom: 0; }
 
-  .var-label { font-family: "Courier New", monospace; font-size: 11px; color: var(--text-muted); }
+  .var-label { font-family: "Sage UI", "Segoe UI", system-ui, sans-serif; font-size: 11px; color: var(--text-muted); }
   .var-label span { color: var(--accent); font-weight: 600; }
 
   .var-input {
     background: var(--surface2);
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 9px 12px;
-    font-family: "Courier New", monospace;
+    padding: 11px 14px;
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
     font-size: 12px;
     color: var(--text);
     outline: none;
@@ -687,17 +699,17 @@
   .var-input::placeholder { color: var(--text-dim); }
 
   .preview-text {
-    font-family: "Courier New", monospace;
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
     font-size: 12.5px;
     line-height: 1.75;
-    color: var(--text-muted);
+    color: var(--text);
     white-space: pre-wrap;
     word-break: break-word;
     min-height: 60px;
   }
 
   .preview-text .filled { color: var(--accent); font-weight: 600; }
-  .preview-text .unfilled { color: var(--text-dim); text-decoration: underline; text-decoration-style: dashed; }
+  .preview-text .unfilled { color: var(--accent); font-weight: 600; }
 
   .copy-final-btn {
     width: 100%;
@@ -718,7 +730,7 @@
 
   .empty-hint {
     color: var(--text-dim);
-    font-family: "Courier New", monospace;
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
     font-size: 12px;
     padding: 6px 0;
     line-height: 1.6;
@@ -1182,10 +1194,11 @@
       <div class="personaliser-panel">
         <div class="panel-card">
           <div class="panel-label">Fill in the blanks</div>
-          <div id="vars-container"><div class="empty-hint">← Pick a prompt to get started</div></div>
+          <div id="vars-container"><div class="empty-hint">Select a prompt from the left to start personalising it.</div></div>
         </div>
         <div class="panel-card">
           <div class="panel-label">Live preview</div>
+          <div class="current-prompt-label">Currently editing: <span id="current-prompt-title">None selected</span></div>
           <div class="preview-text" id="preview-text"><span style="color:var(--text-dim)">Your prompt will appear here as you type.</span></div>
         </div>
         <button class="copy-final-btn" id="copy-final-btn" onclick="copyFinal()">Copy prompt</button>
@@ -1544,6 +1557,7 @@ function selectPrompt(p, el) {
   el.classList.add('active');
   activePrompt = p;
   varValues = {};
+  document.getElementById('current-prompt-title').textContent = p.title;
   renderVars(p);
   updatePreview();
 }
@@ -1564,7 +1578,7 @@ function renderVars(p) {
     const safeKey = v.replace(/'/g,"\\'");
     row.innerHTML = `
       <div class="var-label">Fill in: <span>[${v || 'your text'}]</span></div>
-      <input class="var-input" type="text" placeholder="${v || 'type here'}..." oninput="varValues['${safeKey}'] = this.value; updatePreview()">`;
+      <input class="var-input" type="text" placeholder="Type here..." oninput="varValues['${safeKey}'] = this.value; updatePreview()">`;
     container.appendChild(row);
   });
 }
