@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MA&A AI Prompt Library</title>
+
+<style>
+  /* ── Sage webfonts ── */
+  @font-face { font-family:"Sage Headline"; src:url("fonts/Sage_Headline-Black.woff2") format("woff2"), url("fonts/Sage_Headline-Black.woff") format("woff"); font-weight:900; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage UI"; src:url("fonts/Sage_UI-Regular.woff2") format("woff2"), url("fonts/Sage_UI-Regular.woff") format("woff"); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage UI"; src:url("fonts/Sage_UI-Medium.woff2") format("woff2"), url("fonts/Sage_UI-Medium.woff") format("woff"); font-weight:500; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage UI"; src:url("fonts/Sage_UI-Bold.woff2") format("woff2"), url("fonts/Sage_UI-Bold.woff") format("woff"); font-weight:700; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage Text"; src:url("fonts/Sage_Text-Light.woff2") format("woff2"); font-weight:300; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage Text"; src:url("fonts/Sage_Text-Regular.woff2") format("woff2"), url("fonts/Sage_Text-Regular.woff") format("woff"); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage Text"; src:url("fonts/Sage_Text-Regular_Italic.woff2") format("woff2"); font-weight:400; font-style:italic; font-display:swap; }
+  @font-face { font-family:"Sage Text"; src:url("fonts/Sage_Text-Medium.woff2") format("woff2"), url("fonts/Sage_Text-Medium.woff") format("woff"); font-weight:500; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage Text"; src:url("fonts/Sage_Text-Bold.woff2") format("woff2"), url("fonts/Sage_Text-Bold.woff") format("woff"); font-weight:700; font-style:normal; font-display:swap; }
+
+  :root {
+    --sage-headline: "Sage Headline", "Segoe UI", system-ui, sans-serif;
+    --sage-ui: "Sage UI", "Segoe UI", system-ui, sans-serif;
+    --sage-text: "Sage Text", "Segoe UI", system-ui, sans-serif;
+    --bg: #000000;
+    --surface: #141414;
+    --surface2: #1C1C1C;
+    --border: #2A2A2A;
+    --accent: #00D639;
+    --accent-dim: rgba(0,214,57,0.10);
+    --accent-border: rgba(0,214,57,0.25);
+    --text: #ffffff;
+    --text-muted: #C8C8C8;
+    --text-dim: #8A8A8A;
+    --success: #00D639;
+  }
+
+  body.light {
+    --bg: #f5f5f5;
+    --surface: #ffffff;
+    --surface2: #eeeeee;
+    --border: #dddddd;
+    --accent: #00D639;
+    --accent-dim: rgba(0,214,57,0.10);
+    --accent-border: rgba(0,214,57,0.3);
+    --text: #000000;
+    --text-muted: #555555;
+    --text-dim: #aaaaaa;
+    --success: #00a82b;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Segoe UI", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    height: 52px;
+    transition: background 0.3s, border-color 0.3s;
+  }
+
+  body.light nav { background: rgba(245,245,245,0.95); }
+
+  .nav-left { display: flex; align-items: center; gap: 16px; }
+
+  .nav-brand {
+    font-family: var(--sage-ui);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .nav-right { display: flex; align-items: center; gap: 8px; }
+  .nav-tabs { display: flex; gap: 4px; }
+
+  .nav-tab {
+    font-family: var(--sage-ui);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    padding: 14px 16px 13px;
+    border-radius: 0;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    color: var(--text-dim);
+    background: none;
+    transition: color 0.2s, border-color 0.2s;
+    text-transform: none;
+  }
+
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+  .theme-toggle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--accent-border);
+    background: var(--accent-dim);
+    color: var(--accent);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .theme-toggle:hover { background: var(--accent); color: #000; }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .wrapper {
+    max-width: var(--lib-max-width, 1200px);
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  header {
+    padding: 48px 0 36px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 44px;
+  }
+
+  .header-tag {
+    font-family: "Courier New", monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .header-tag::before {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  h1 {
+    font-size: clamp(28px, 4.5vw, 48px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .subtitle {
+    color: var(--text-muted);
+    font-size: 15px;
+    max-width: 520px;
+    line-height: 1.6;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .home-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  @media (max-width: 520px) { .home-grid { grid-template-columns: 1fr; } }
+
+  .home-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    animation: fadeUp 0.4s ease both;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .home-card:hover {
+    border-color: rgba(0,214,57,0.4);
+    background: var(--surface2);
+    transform: translateY(-2px);
+  }
+
+  .home-card-title { font-size: 17px; font-weight: 800; letter-spacing: -0.02em; color: var(--text); }
+  .home-card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; flex: 1; }
+  .home-card-count { font-family: "Courier New", monospace; font-size: 10px; color: var(--text-dim); letter-spacing: 0.08em; margin-top: 4px; }
+
+  .search-bar { margin-bottom: 40px; position: relative; }
+
+  .search-bar input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px 14px 46px;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .search-bar input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+  .search-bar input::placeholder { color: var(--text-dim); }
+
+  .search-icon {
+    position: absolute;
+    left: 16px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dim);
+    font-size: 16px;
+    pointer-events: none;
+  }
+
+  .category { margin-bottom: 44px; animation: fadeUp 0.4s ease both; }
+
+  .category-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+
+  .category-label {
+    font-family: "Courier New", monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .category-line { flex: 1; height: 1px; background: rgba(0,214,57,0.35); }
+
+  .category-count { font-family: "Courier New", monospace; font-size: 10px; color: var(--text-dim); }
+
+  .cards-grid { display: grid; gap: 10px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  }
+
+  .card:hover {
+    border-color: rgba(0,214,57,0.3);
+    background: var(--surface2);
+    transform: translateY(-1px);
+  }
+
+  .card-body { flex: 1; min-width: 0; }
+
+  .card-title { font-size: 14px; font-weight: 700; margin-bottom: 5px; letter-spacing: -0.01em; color: var(--text); }
+
+  .card-meta {
+    font-family: "Courier New", monospace;
+    font-size: 10px;
+    color: #9A9A9A;
+    margin-bottom: 6px;
+    letter-spacing: 0.05em;
+  }
+
+  .card-prompt {
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .copy-btn {
+    flex-shrink: 0;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 7px 14px;
+    font-family: "Courier New", monospace;
+    font-size: 11px;
+    color: #C8C8C8;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    align-self: flex-start;
+    margin-top: 2px;
+  }
+
+  .copy-btn:hover { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+  .copy-btn.copied { background: rgba(0,214,57,0.1); border-color: var(--success); color: var(--success); }
+
+  .no-results { text-align: center; padding: 60px 20px; color: var(--text-dim); font-size: 14px; display: none; }
+
+  .source-badge {
+    display: inline-block;
+    font-family: "Courier New", monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .source-team { background: rgba(0,214,57,0.1); color: var(--accent); border: 1px solid rgba(0,214,57,0.2); }
+  .source-starter { background: rgba(255,255,255,0.08); color: #BDBDBD; border: 1px solid rgba(255,255,255,0.14); }
+
+  .personaliser-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+  @media (max-width: 640px) { .personaliser-layout { grid-template-columns: 1fr; } }
+
+  .prompt-selector {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    max-height: 580px;
+    overflow-y: auto;
+  }
+
+  .prompt-selector::-webkit-scrollbar { width: 4px; }
+  .prompt-selector::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .selector-group-label {
+    font-family: "Courier New", monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 12px 16px 6px;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+  }
+
+  .selector-group-label:first-child { border-top: none; }
+
+  .selector-item {
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    border-left: 3px solid transparent;
+  }
+
+  .selector-item:hover { background: var(--surface2); color: var(--text); }
+  .selector-item.active { background: var(--accent-dim); color: var(--accent); border-left-color: var(--accent); }
+
+  .personaliser-panel { position: sticky; top: 72px; display: flex; flex-direction: column; gap: 16px; }
+
+  .panel-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
+
+  .panel-label { font-family: "Courier New", monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+
+  .var-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+  .var-row:last-child { margin-bottom: 0; }
+  .var-label { font-family: "Courier New", monospace; font-size: 11px; color: var(--text-muted); }
+  .var-label span { color: var(--accent); font-weight: 500; }
+
+  .var-input {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-family: "Courier New", monospace;
+    font-size: 12px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+  }
+
+  .var-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+  .var-input::placeholder { color: var(--text-dim); }
+
+  .preview-text {
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text-muted);
+    white-space: pre-wrap;
+    word-break: break-word;
+    min-height: 60px;
+  }
+
+  .preview-text .filled { color: var(--accent); font-weight: 500; }
+  .preview-text .unfilled { color: var(--text-dim); text-decoration: underline; text-decoration-style: dashed; }
+
+  .copy-final-btn {
+    width: 100%;
+    background: var(--accent);
+    border: none;
+    border-radius: 9px;
+    padding: 13px;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #000;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .copy-final-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+  .copy-final-btn.copied { background: #00a82b; }
+
+  .empty-hint { color: var(--text-dim); font-family: "Courier New", monospace; font-size: 12px; padding: 8px 0; }
+
+  .feedback-wrap { max-width: 560px; margin: 0 auto; }
+  .feedback-field { margin-bottom: 16px; }
+  .feedback-label { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 7px; }
+
+  .feedback-input, .feedback-textarea {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 13px;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    resize: vertical;
+    line-height: 1.6;
+  }
+
+  .feedback-input:focus, .feedback-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+  .feedback-input::placeholder, .feedback-textarea::placeholder { color: var(--text-dim); font-family: "Segoe UI", system-ui, sans-serif; }
+
+  .feedback-submit {
+    background: var(--accent);
+    border: none;
+    border-radius: 9px;
+    padding: 12px 28px;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #000;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .feedback-submit:hover { opacity: 0.85; transform: translateY(-1px); }
+
+  .feedback-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+  .feedback-email-link { font-family: "Courier New", monospace; font-size: 12px; color: var(--accent); font-weight: 600; text-decoration: none; }
+  .feedback-email-link:hover { text-decoration: underline; }
+  .feedback-direct { font-family: "Courier New", monospace; font-size: 11px; color: var(--text-dim); }
+
+  .success-state { text-align: center; padding: 48px 20px; }
+  .success-icon { font-size: 44px; margin-bottom: 14px; }
+  .success-title { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; color: var(--text); }
+  .success-sub { font-size: 13px; color: var(--text-muted); line-height: 1.7; margin-bottom: 24px; }
+
+  .reset-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 20px;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .reset-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  footer {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: "Courier New", monospace;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+  }
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 24px 56px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 52px;
+  }
+
+  .hero-tag {
+    font-family: "Courier New", monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .hero-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; animation: pulse 2s ease-in-out infinite; }
+
+  .hero-title { font-size: clamp(36px, 6vw, 62px); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 18px; }
+  .hero-title span { color: var(--accent); }
+  .hero-sub { font-size: 15px; color: var(--text-muted); max-width: 400px; line-height: 1.8; margin-bottom: 32px; }
+  .hero-btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 28px;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 22px;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  .explore-label { font-family: "Courier New", monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 20px; }
+
+  .btn-surprise {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent-border);
+    border-radius: 8px;
+    padding: 12px 22px;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-surprise:hover { background: var(--accent); color: #000; transform: translateY(-1px); }
+
+  .surprise-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(8px);
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    animation: fadeOverlayIn 0.25s ease;
+  }
+  .surprise-overlay.open { display: flex; }
+
+  @keyframes fadeOverlayIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes cardPop {
+    from { opacity: 0; transform: scale(0.92) translateY(16px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .surprise-card {
+    background: var(--surface);
+    border: 1px solid var(--accent-border);
+    border-radius: 18px;
+    padding: 32px;
+    max-width: 520px;
+    width: 100%;
+    position: relative;
+    animation: cardPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+
+  .surprise-close {
+    position: absolute;
+    top: 14px; right: 16px;
+    background: none; border: none;
+    color: var(--text-dim);
+    font-size: 22px;
+    cursor: pointer;
+    transition: color 0.2s;
+    line-height: 1;
+  }
+  .surprise-close:hover { color: var(--text); }
+
+  .surprise-cat {
+    font-family: "Courier New", monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .surprise-title {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+
+  .surprise-meta {
+    font-family: "Courier New", monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    margin-bottom: 16px;
+  }
+
+  .surprise-prompt {
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.75;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 20px;
+    max-height: 240px;
+    overflow-y: auto;
+  }
+
+  .surprise-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  /* ===================================================================
+     LIBRARY PAGE REDESIGN  (scoped to #page-library only)
+     =================================================================== */
+  #page-library {
+    --l-text: #ffffff;
+    --l-muted: #c0c0c0;
+    --l-dim: #777777;
+    --l-surface: #000000;
+    --l-surface-2: #0a0a0a;
+    --l-border: rgba(255,255,255,0.12);
+    --l-border-strong: rgba(255,255,255,0.22);
+    --l-green: var(--accent);
+  }
+  body.light #page-library {
+    --l-text: #15191b;
+    --l-muted: #444;
+    --l-dim: #98a09a;
+    --l-surface: #ffffff;
+    --l-surface-2: #f5f5f5;
+    --l-border: rgba(0,0,0,0.10);
+    --l-border-strong: rgba(0,0,0,0.18);
+  }
+
+  #page-library header { border-bottom-color: var(--l-border); }
+  #page-library h1 { font-family: var(--sage-headline); font-weight: 900; letter-spacing: -0.03em; }
+  #page-library h1 span { color: var(--l-green); }
+  #page-library .subtitle { font-family: var(--sage-text); color: var(--l-muted); font-size: 16px; line-height: 1.6; }
+  #page-library .header-tag { font-family: var(--sage-ui); color: var(--l-muted); letter-spacing: 0.14em; }
+  #page-library .header-tag::before { background: var(--l-green); }
+
+  /* Category filter pills */
+  .lib-filter { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; justify-content: center; }
+  .fpill {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: var(--sage-ui); font-size: 13px; font-weight: 500;
+    padding: 8px 14px 8px 12px; border-radius: 999px;
+    background: var(--l-surface); color: var(--l-muted);
+    border: 1px solid var(--l-border); cursor: pointer;
+    transition: color .18s, background .18s, border-color .18s; white-space: nowrap;
+  }
+  .fpill svg { width: 15px; height: 15px; opacity: .85; }
+  .fpill:hover { color: var(--l-text); border-color: var(--l-border-strong); background: var(--l-surface-2); }
+  .fpill.active { background: var(--l-green); color: #052e12; border-color: var(--l-green); font-weight: 600; }
+  body.light .fpill.active { color: #03340f; }
+  .fpill.active svg { opacity: 1; }
+
+  /* Controls row */
+  .lib-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 36px; justify-content: center; }
+
+  .lib-surprise {
+    font-family: var(--sage-ui); font-size: 13px; font-weight: 600;
+    padding: 10px 20px; border-radius: 10px; cursor: pointer;
+    background: transparent; color: var(--accent);
+    border: 1px solid var(--accent-border);
+    transition: background .18s, color .18s, transform .15s;
+    white-space: nowrap;
+  }
+  .lib-surprise:hover { background: var(--accent); color: #000; transform: translateY(-1px); }
+  .lib-controls .search-bar { flex: 1; min-width: 220px; margin-bottom: 0; }
+  #page-library .search-bar input { font-family: var(--sage-ui); background: var(--l-surface); border-color: var(--l-border); color: var(--l-text); border-radius: 10px; }
+  #page-library .search-bar input:focus { border-color: var(--l-green); box-shadow: 0 0 0 3px var(--accent-dim); }
+  #page-library .search-bar input::placeholder { color: var(--l-dim); }
+  #page-library .search-icon { color: var(--l-dim); }
+  .seg { display: inline-flex; padding: 3px; gap: 2px; background: var(--l-surface); border: 1px solid var(--l-border); border-radius: 9px; }
+  .seg button { font-family: var(--sage-ui); font-size: 12px; font-weight: 500; padding: 7px 13px; border-radius: 6px; border: 0; background: transparent; color: var(--l-dim); cursor: pointer; transition: color .15s, background .15s; }
+  .seg button:hover { color: var(--l-text); }
+  .seg button.active { background: var(--l-surface-2); color: var(--l-text); box-shadow: inset 0 0 0 1px var(--l-border-strong); }
+
+  /* Section headers */
+  .lib-section { margin-bottom: 42px; }
+  .lib-section-head { display: flex; align-items: center; gap: 11px; margin-bottom: 14px; }
+  .lib-section-name { display: inline-flex; align-items: center; gap: 9px; font-family: var(--sage-ui); font-weight: 700; font-size: 15px; color: var(--l-text); letter-spacing: -0.01em; }
+  .lib-section-name svg { width: 17px; height: 17px; color: var(--l-green); flex-shrink: 0; }
+  .lib-section-count { font-family: var(--sage-ui); font-size: 11px; color: var(--l-dim); background: var(--l-surface); border: 1px solid var(--l-border); border-radius: 999px; padding: 2px 9px; }
+
+  /* Card grid */
+  .lib-grid { display: grid; gap: var(--lib-card-gap, 12px); }
+  #library.view-grid .lib-grid { grid-template-columns: repeat(var(--lib-grid-cols, 3), minmax(0, 1fr)); align-items: start; }
+  #library.view-list .lib-grid { grid-template-columns: 1fr; }
+  @media (max-width: 960px) { #library.view-grid .lib-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 600px) { #library.view-grid .lib-grid { grid-template-columns: 1fr; } }
+
+  .lib-card {
+    background: var(--l-surface); border: 1px solid var(--l-border-strong); border-radius: var(--lib-card-radius, 22px);
+    padding: var(--lib-card-padding, 22px 24px); display: flex; flex-direction: column; gap: 14px;
+    transition: border-color .18s, background .18s, transform .18s, box-shadow .18s;
+  }
+  #library.view-grid .lib-card { min-height: 200px; }
+  .lib-card:hover { border-color: rgba(255,255,255,0.35); transform: translateY(-2px); box-shadow: 0 12px 36px rgba(0,0,0,.35); }
+  body.light .lib-card:hover { border-color: rgba(0,0,0,0.25); box-shadow: 0 10px 28px rgba(0,0,0,.07); }
+  .lib-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+  .lib-card-title { font-family: var(--sage-ui); font-weight: 700; font-size: var(--lib-title-size, 16px); line-height: 1.35; letter-spacing: -0.01em; color: var(--l-text); }
+  .lib-card-btns { display: flex; gap: 8px; margin-top: auto; }
+  .lib-btn-personalise {
+    font-family: var(--sage-ui); font-size: 12px; font-weight: 700;
+    padding: 9px 18px; border-radius: 10px; cursor: pointer;
+    background: var(--accent); color: #000; border: none;
+    transition: opacity .15s, transform .15s;
+  }
+  .lib-btn-personalise:hover { opacity: .85; transform: translateY(-1px); }
+  .lib-copy {
+    font-family: var(--sage-ui); font-size: 12px; font-weight: 600;
+    padding: 9px 18px; border-radius: 10px; cursor: pointer;
+    background: transparent; color: var(--l-muted);
+    border: 1px solid var(--l-border-strong);
+    transition: color .15s, background .15s, border-color .15s;
+  }
+  .lib-copy:hover { border-color: var(--l-text); color: var(--l-text); }
+  .lib-copy.copied { border-color: var(--l-green); color: var(--l-green); background: var(--accent-dim); }
+  .lib-card-source { font-family: var(--sage-ui); font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 6px; padding: 3px 9px; }
+  .src-team { color: var(--l-green); background: var(--accent-dim); border: 1px solid var(--accent-border); }
+  .src-starter { color: var(--l-dim); background: transparent; border: 1px solid var(--l-border-strong); }
+  .lib-card-tool { font-family: var(--sage-ui); font-size: 11px; font-weight: 500; color: var(--l-dim); letter-spacing: 0.02em; margin-top: -4px; }
+  .lib-card-prompt { font-family: var(--sage-text); font-size: var(--lib-prompt-size, 14px); line-height: 1.7; color: var(--l-text); white-space: pre-wrap; word-break: break-word; margin: 0; }
+  .lib-var { color: var(--l-green); font-family: var(--sage-ui); font-weight: 600; font-size: 13px; }
+
+  /* Minimal meta variant — hides source tags */
+  #library.meta-minimal .lib-card-source { display: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <span class="nav-brand" onclick="showPage('home', null)">MA&amp;A · AI Prompts</span>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showPage('home', this)">Home</button>
+      <button class="nav-tab" onclick="showPage('library', this)">Library</button>
+      <button class="nav-tab" onclick="showPage('personaliser', this)">Personaliser</button>
+      <button class="nav-tab" onclick="showPage('feedback', this)">Feedback</button>
+    </div>
+  </div>
+  <div class="nav-right">
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark">☀</button>
+  </div>
+</nav>
+
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-tag"><span class="hero-dot"></span>From the MA&amp;A Team</div>
+    <h1 class="hero-title">Prompts our team<br><span>actually uses.</span></h1>
+    <p class="hero-sub">Copy, paste, and go. A practical library of AI prompts built by MA&amp;A.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="showPage('library', document.querySelectorAll('.nav-tab')[1])">Browse prompts →</button>
+      <button class="btn-secondary" onclick="showPage('personaliser', document.querySelectorAll('.nav-tab')[2])">Personalise for me</button>
+      <button class="btn-surprise" onclick="surpriseMe()">Surprise me ✦</button>
+    </div>
+
+    <!-- Surprise modal -->
+    <div class="surprise-overlay" id="surprise-overlay" onclick="closeSurprise(event)" style="margin: 0px">
+      <div class="surprise-card" id="surprise-card">
+        <button class="surprise-close" onclick="closeSurprise(event, true)">&times;</button>
+        <div class="surprise-cat" id="surprise-cat" style="font-family: &quot;Segoe UI&quot;; font-weight: 800; font-size: 6px"></div>
+        <div class="surprise-title" id="surprise-title"></div>
+        <div class="surprise-meta" id="surprise-meta" style="font-family: &quot;Segoe UI&quot;; letter-spacing: 0.5px"></div>
+        <div class="surprise-prompt" id="surprise-prompt" style="font-family: &quot;Segoe UI&quot;"></div>
+        <div class="surprise-actions">
+          <button class="btn-primary" id="surprise-copy" onclick="copySurprisePrompt()">Copy prompt</button>
+          <button class="btn-surprise" onclick="surpriseMe()" style="margin:0;">Another one ✦</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="wrapper">
+    <div class="explore-label">Explore by category</div>
+    <div class="home-grid" id="home-grid"></div>
+    <footer style="margin-top:60px;">From the MA&amp;A Team — Sage</footer>
+  </div>
+</div>
+
+<div class="page" id="page-library">
+  <div class="wrapper">
+    <header style="font-family: &quot;Sage UI&quot;">
+      <div class="header-tag" style="font-size: 10px">From the MA&amp;A Team</div>
+      <h1>Copy.<br><span>Paste.</span> Go.</h1>
+      <p class="subtitle">Prompts tried, tested and shared by the MA&amp;A team. Find what you need, copy it, and make it yours.</p>
+    </header>
+    <div style="display:flex; justify-content:center; margin-bottom:18px;">
+      <div class="seg" id="meta-seg">
+        <button data-m="chips" class="active" onclick="setMetaStyle('chips')">Chips</button>
+        <button data-m="minimal" onclick="setMetaStyle('minimal')">Minimal</button>
+      </div>
+    </div>
+    <div class="lib-filter" id="lib-filter" style="font-family: &quot;Segoe UI&quot;"></div>
+    <div class="lib-controls">
+      <div class="search-bar">
+        <span class="search-icon">⌕</span>
+        <input type="text" id="search" placeholder="Search prompts..." oninput="filterCards()" autocomplete="off">
+      </div>
+      <div class="seg" id="view-seg" style="font-weight: 600; font-size: 13px; width: 111px">
+        <button data-v="list" class="active" onclick="setLibraryView('list')">List</button>
+        <button data-v="grid" onclick="setLibraryView('grid')">Grid</button>
+      </div>
+      <button class="lib-surprise" onclick="surpriseMe()">Surprise me</button>
+    </div>
+    <div id="library" class="view-list meta-chips"></div>
+    <div class="no-results" id="no-results">No prompts match your search.</div>
+    <footer style="font-family: &quot;Sage UI&quot;; color: rgb(138, 131, 131); font-size: 13px">From the MA&amp;A Team - Sage</footer>
+  </div>
+</div>
+
+<div class="page" id="page-personaliser">
+  <div class="wrapper">
+    <header>
+      <div class="header-tag">From the MA&amp;A Team</div>
+      <h1>Make it<br><span>yours.</span></h1>
+      <p class="subtitle">Pick a prompt, fill in the blanks, and copy your personalised version ready to paste.</p>
+    </header>
+    <div class="personaliser-layout">
+      <div class="prompt-selector" id="prompt-selector"></div>
+      <div class="personaliser-panel">
+        <div class="panel-card">
+          <div class="panel-label">Fill in the blanks</div>
+          <div id="vars-container"><div class="empty-hint">← Pick a prompt to get started</div></div>
+        </div>
+        <div class="panel-card">
+          <div class="panel-label">Live preview</div>
+          <div class="preview-text" id="preview-text"><span style="color:var(--text-dim)">Your prompt will appear here as you type.</span></div>
+        </div>
+        <button class="copy-final-btn" id="copy-final-btn" onclick="copyFinal()">Copy prompt</button>
+      </div>
+    </div>
+    <footer style="margin-top:60px;">From the MA&amp;A Team — Sage</footer>
+  </div>
+</div>
+
+<div class="page" id="page-feedback">
+  <div class="wrapper">
+    <header>
+      <div class="header-tag">From the MA&amp;A Team</div>
+      <h1>Help make<br>this <span>better.</span></h1>
+      <p class="subtitle">What's working? What's missing? Your feedback shapes the next version.</p>
+    </header>
+    <div class="feedback-wrap">
+      <div id="feedback-form">
+        <div class="feedback-field">
+          <div class="feedback-label">Which prompts have you found most useful?</div>
+          <textarea class="feedback-textarea" id="fb-useful" rows="3" placeholder="e.g. the So what? one, the meeting prep..."></textarea>
+        </div>
+        <div class="feedback-field">
+          <div class="feedback-label">What's missing or not working for you?</div>
+          <textarea class="feedback-textarea" id="fb-missing" rows="3" placeholder="Anything that doesn't fit your workflow..."></textarea>
+        </div>
+        <div class="feedback-field">
+          <div class="feedback-label">Got a prompt to add? Share it.</div>
+          <textarea class="feedback-textarea" id="fb-prompt" rows="3" placeholder="Share a prompt that works well for you — we'll test it and add the best ones..."></textarea>
+        </div>
+        <div class="feedback-field">
+          <div class="feedback-label">Your name <span style="font-weight:400; color:var(--text-dim)">(optional)</span></div>
+          <input class="feedback-input" id="fb-name" type="text" placeholder="Leave blank to stay anonymous">
+        </div>
+        <div class="feedback-actions">
+          <button class="feedback-submit" onclick="submitFeedback()">Submit feedback</button>
+          <span class="feedback-direct">or reach out directly:</span>
+          <a href="/cdn-cgi/l/email-protection#f1879892859e83df9496849f9d9094b182909694df929e9c" class="feedback-email-link">Email →</a>
+        </div>
+      </div>
+      <div id="feedback-success" style="display:none;">
+        <div class="success-state">
+          <div class="success-icon">🙌</div>
+          <div class="success-title">Thank you</div>
+          <div class="success-sub">That genuinely helps. If you want to follow up directly, drop a line at<br><a href="/cdn-cgi/l/email-protection#394f505a4d564b175c5e4c5755585c794a585e5c175a5654" style="color:var(--accent); text-decoration:none; font-weight:600;"><span class="__cf_email__" data-cfemail="0b7d62687f6479256e6c7e65676a6e4b786a6c6e25686466">[email&#160;protected]</span></a></div>
+          <button class="reset-btn" onclick="resetFeedback()">Leave another response</button>
+        </div>
+      </div>
+    </div>
+    <footer style="margin-top:60px;">From the MA&amp;A Team — Sage</footer>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const data = [
+  {
+    category: "Getting Started",
+    desc: "New to AI? Begin here.",
+    prompts: [
+      { title: "What can you do?", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "What can you do? Give me practical examples relevant to someone working in []." },
+      { title: "Smallest step today", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "What's the smallest thing I can do today to get started with [topic] using AI?" },
+      { title: "Break down a task into steps", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "How can I break this down into smaller steps? [paste your task here]" },
+      { title: "Help me prioritise tasks", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I have a list of tasks. Help me prioritise them by effort vs impact. [paste your list]" },
+    ]
+  },
+  {
+    category: "Data & Analysis",
+    desc: "Turn numbers into narratives.",
+    prompts: [
+      { title: "Analyse data and surface key insights", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I'm analysing this dataset for [context or goal]. Identify 3–5 key insights I should present. Focus on meaningful trends, patterns, or anomalies. For each insight, explain what's happening, why it matters, and what action it suggests. Present the insights in a clear, clean table. Then suggest a few follow-up questions or areas to explore next. [upload data]" },
+      { title: "Spot the story in data", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Here's some [campaign or report] data. What's the main story I should be telling from this? [paste data or description]" },
+      { title: "Get to the \"so what\"", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Here are my results: [paste results]. Help me get to the \"so what\" — what does this mean and what should we do next?" },
+      { title: "Build hypotheses from data", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I'm seeing [observation] in my data. Help me build 3 hypotheses for why this might be happening." },
+      { title: "Sense check analysis", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Here's my analysis and conclusion: [paste]. Can you sense check my logic and flag anything I might have missed?" },
+      { title: "Analyse churn drivers", tool: "Copilot", source: "Team submission", prompt: "You are a data analyst. Analyse the following customer data and identify the top drivers of churn. Focus on patterns related to complexity score, engagement metrics, and support interactions. Provide a summary of findings and recommend actions to reduce churn. [paste data]" },
+      { title: "Analyse A/B test results", tool: "Claude", source: "Team submission", prompt: "Analyse the results of an A/B test in Power BI using DAX. The test compares two versions of [describe test]. Calculate statistical significance, identify the winning variant, and summarise the key takeaways. [paste data or DAX code]" },
+      { title: "Build a data dashboard", tool: "ChatGPT", source: "Team submission", prompt: "Help me design a Power BI dashboard for [business area or team]. Suggest key metrics to include, how to structure the layout, and which visualisations would work best for the audience. The goal is to make it easy to spot trends and take action." },
+      { title: "Compare organic vs brand search", tool: "Claude", source: "Team submission", prompt: "Analyse the following search data and compare organic vs brand search performance. Identify trends, highlight areas of concern, and suggest actions to improve organic visibility. [paste data]" },
+      { title: "Reconcile email performance data", tool: "Snowflake Cortex", source: "Team submission", prompt: "I have email performance data from two sources that don't match. Help me identify discrepancies between [source A] and [source B]. Highlight rows where metrics differ significantly and suggest reasons for the gaps. [paste data]" },
+      { title: "Analyse email fatigue", tool: "Snowflake Cortex", source: "Team submission", prompt: "Using the following email engagement data, identify signs of audience fatigue. Look for declining open rates, increasing unsubscribes, and drop-off patterns over time. Recommend actions to re-engage the audience. [paste data]" },
+    ]
+  },
+  {
+    category: "Writing & Comms",
+    desc: "Clearer, faster communication.",
+    prompts: [
+      { title: "Improve written content", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Here's a draft I've written. Improve the clarity and cut anything unnecessary while keeping the meaning. [paste draft]" },
+      { title: "Summarise for leadership (lead with insight)", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Summarise the following for a senior leadership audience. Start with a single sentence that clearly states the key insight or takeaway (\"the so what\"). Then provide 2–3 short bullet points covering the key impacts or recommended actions. Use clear, direct language and avoid unnecessary detail. [paste content]" },
+      { title: "Write a team update", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Write a short team update about [topic]. Use 3–5 bullet points, clear and direct language, and focus on key updates and actions." },
+      { title: "Translate into plain English", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Rewrite this in plain English for a non-technical stakeholder. [paste text]" },
+      { title: "Generate content angles", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "I'm creating content about [topic] for [audience]. Give me 5 different angles or hooks." },
+      { title: "Improve marketing copy", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Rewrite this copy to be more compelling and specific. Remove generic phrases. [paste copy]" },
+      { title: "Generate subject line options", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Write 5 subject line variants for a campaign about [topic]. Audience: [audience]. Goal: [goal]." },
+      { title: "Tailor message to audience", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "How would you position [message] for [specific audience]? What language would resonate?" },
+      { title: "Improve written content", tool: "Copilot", source: "Team submission", prompt: "Review and improve the following written content. Make it clearer, more concise, and more engaging while keeping the original meaning. Highlight any changes you make and explain why. [paste content]" },
+      { title: "Generate internal social posts", tool: "Copilot", source: "Team submission", prompt: "Write 3 Viva Engage posts about [topic] for an internal audience. Keep each post under 150 words. The tone should be [professional/conversational/inspiring]. Include a call to action in each post." },
+      { title: "Rewrite email from notes", tool: "Copilot", source: "Team submission", prompt: "I have rough notes from a meeting or conversation. Turn them into a clear, professional email. Keep it concise, lead with the key message, and include a clear next step. [paste notes]" },
+    ]
+  },
+  {
+    category: "Strategy & Planning",
+    desc: "Think bigger, plan smarter.",
+    prompts: [
+      { title: "Challenge ideas with devil's advocate", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Team submission", prompt: "Play devil's advocate on the following idea or plan. Identify the biggest risks, weaknesses, and assumptions. Be specific and constructive — the goal is to stress-test the thinking, not just criticise. [describe idea or paste plan]" },
+      { title: "Research customer journey stages", tool: "ChatGPT", source: "Team submission", prompt: "Research and summarise the typical journey a [type of customer] goes through when [describe decision or process]. Identify the key stages, what they're thinking and feeling at each stage, and what information or support they need. Format this as a clear journey map." },
+    ]
+  },
+  {
+    category: "Learning & Exploration",
+    desc: "Go deeper on anything.",
+    prompts: [
+      { title: "Learn a topic quickly", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Give me a clear, structured overview of [topic]. Include key concepts, a simple example, and when it's used in practice. Keep it concise." },
+      { title: "Compare two concepts", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "What's the difference between [concept A] and [concept B]? Use a real-world example." },
+      { title: "Quiz me on a topic", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Quiz me on [topic] with 5 questions, starting easy and getting harder. After each answer, tell me if I'm right and explain why." },
+      { title: "Recommend next learning step", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I've just learned about [topic]. What should I explore next to go deeper?" },
+      { title: "Explain using a simple diagram", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Explain how [concept] works using a simple text-based (ASCII) diagram and include a short explanation alongside it. Make it easy to follow and clearly show the structure or flow." },
+      { title: "Learn a topic quickly (80/20)", tool: "ChatGPT", source: "Team submission", prompt: "I want to learn about [topic]. Use the 80/20 rule to focus on the 20% of concepts that will give me 80% of the understanding. Give me a structured overview with the most important ideas first, practical examples, and what to focus on to get up to speed quickly." },
+      { title: "Break down complex ideas", tool: "Claude", source: "Team submission", prompt: "Take the following complex concept and break it down so that someone new to the topic can understand it. Use simple language, avoid jargon, and include a real-world analogy to make it stick. [paste concept or topic]" },
+    ]
+  },
+  {
+    category: "Go Deeper",
+    desc: "Push beyond the surface.",
+    prompts: [
+      { title: "Break down a topic from first principles", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Break [topic] down using first principles thinking. Start by identifying the common assumptions people make about this topic. Then strip those assumptions away and focus only on what is fundamentally true. Rebuild the concept step by step from these core truths. Show what changes when you remove inherited thinking." },
+      { title: "Explain [topic] simply (no jargon)", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Now explain [topic] as if I'm new to it. Use no jargon, no assumed knowledge, and include two different examples to make it clear. If anything is still unclear, simplify it further until it's genuinely easy to understand." },
+    ]
+  },
+  {
+    category: "Coding",
+    desc: "Write, fix and improve code.",
+    prompts: [
+      { title: "Fix data problems with code", tool: "Claude", source: "Team submission", prompt: "I have a DAX formula that isn't working as expected. Review the code, identify the issue, and provide a corrected version with an explanation of what was wrong and why the fix works. [paste DAX code]" },
+      { title: "Generate UI code", tool: "Copilot", source: "Team submission", prompt: "Generate an Adaptive Card JSON for [describe the card's purpose and content]. It should include [list key elements e.g. title, body text, action buttons]. Make it clean and functional for use in [Teams / Outlook / Power Automate]." },
+      { title: "Fix bugs step by step", tool: "Claude", source: "Team submission", prompt: "I have a bug in my code that I can't resolve. Walk me through debugging it step by step. Ask me clarifying questions if needed, suggest what to check first, and help me identify the root cause before suggesting a fix. [paste code and describe the issue]" },
+      { title: "Improve application code", tool: "Claude", source: "Team submission", prompt: "Review the following code and suggest improvements. Focus on readability, performance, and best practices. Explain each change you recommend and why it makes the code better. [paste code]" },
+      { title: "Check SQL query", tool: "Snowflake Cortex", source: "Team submission", prompt: "Review the following SQL query and check it for errors, inefficiencies, or logic issues. Suggest improvements and explain your reasoning. If the query can be simplified or optimised, show me how. [paste SQL]" },
+      { title: "Aggregate data using code", tool: "Claude", source: "Team submission", prompt: "Write a script to aggregate data from [describe data source or structure]. The goal is to [describe output e.g. summarise by region, calculate totals by month]. Use [R / Python / SQL] and include comments explaining each step. [paste data sample if available]" },
+      { title: "Aggregate CSV data", tool: "Claude", source: "Team submission", prompt: "I have a CSV file with the following structure: [describe columns and data]. Write an R script to load the file, aggregate the data by [field], and output a summary table showing [desired metrics]. Include error handling and comments." },
+      { title: "Convert date format", tool: "Copilot", source: "Team submission", prompt: "I have a column in Excel with dates in [current format e.g. DD/MM/YYYY]. Write a formula to convert them to [target format e.g. YYYY-MM-DD]. Explain how the formula works and how to apply it to the full column." },
+      { title: "Improve data model", tool: "Claude", source: "Team submission", prompt: "Review the following data model or notebook and suggest improvements. Focus on structure, clarity, and performance. Highlight any issues with the current approach and recommend a better way to organise or write the code. [paste code or describe model]" },
+      { title: "Build workflow field", tool: "Copilot", source: "Team submission", prompt: "Help me build a calculated field in Workfront for [describe the purpose]. The field should [describe logic or output]. Walk me through the formula syntax and how to set it up correctly in Workfront." },
+    ]
+  },
+  {
+    category: "Tools & Workflows",
+    desc: "Get more from your tools.",
+    prompts: [
+      { title: "Automate QA tasks", tool: "Copilot", source: "Team submission", prompt: "Help me automate the following quality assurance task in [tool or system]: [describe task]. Suggest a workflow or process that reduces manual effort, catches errors early, and can be repeated consistently. Include any formulas, scripts, or steps needed." },
+      { title: "Apply brand styling to app", tool: "Claude", source: "Team submission", prompt: "I have a Streamlit app and want to apply our brand colours and styling. Our primary colour is [hex code], secondary is [hex code], and font is [font name]. Update the app's CSS and layout to match these brand guidelines while keeping the functionality intact. [paste current code]" },
+    ]
+  },
+  {
+    category: "Design & Imagery",
+    desc: "Create and adapt visuals.",
+    prompts: [
+      { title: "Localise image for market", tool: "Adobe", source: "Team submission", prompt: "I need to localise the following image for the [market/region] market. Adapt any text, imagery, or cultural references to be appropriate and relevant for that audience. Highlight what changes you would make and why. [describe or attach image]" },
+      { title: "Localise video for market", tool: "Adobe", source: "Team submission", prompt: "I need to localise this video for the [market/region] market. Suggest changes to voiceover, on-screen text, visuals, and cultural references to make it suitable for the local audience. Provide a list of recommended adaptations. [describe video content]" },
+    ]
+  },
+];
+
+function toggleTheme() {
+  document.body.classList.toggle('light');
+  const btn = document.querySelector('.theme-toggle');
+  btn.textContent = document.body.classList.contains('light') ? '☾' : '☀';
+}
+
+function showPage(id, tab) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (tab) tab.classList.add('active');
+  else document.querySelectorAll('.nav-tab')[0].classList.add('active');
+}
+
+function buildHome() {
+  const grid = document.getElementById('home-grid');
+  data.forEach((section, i) => {
+    const card = document.createElement('div');
+    card.className = 'home-card';
+    card.style.animationDelay = `${i * 0.07}s`;
+    card.innerHTML = `
+      <div class="home-card-title">${section.category}</div>
+      <div class="home-card-desc">${section.desc}</div>
+      <div class="home-card-count">${section.prompts.length} prompts</div>`;
+    card.onclick = () => {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById('page-library').classList.add('active');
+      document.querySelectorAll('.nav-tab')[1].classList.add('active');
+      setTimeout(() => {
+        const target = document.getElementById('section-' + i);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 80);
+    };
+    grid.appendChild(card);
+  });
+}
+
+let activeCategory = -1;
+const FLAT = [];
+data.forEach(s => s.prompts.forEach(p => FLAT.push(p)));
+
+function iconFor(name) {
+  const I = {
+    'All': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/></svg>',
+    'Getting Started': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2.2 4.8-4.8 2.2 2.2-4.8z"/></svg>',
+    'Data & Analysis': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V11"/><path d="M9 20V5"/><path d="M14 20v-6"/><path d="M19 20V8"/></svg>',
+    'Writing & Comms': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5z"/></svg>',
+    'Strategy & Planning': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="0.7"/></svg>',
+    'Learning & Exploration': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 18h5"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1.1 2.2h5a3.3 3.3 0 0 1 1.1-2.2A6 6 0 0 0 12 3z"/></svg>',
+    'Go Deeper': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg>',
+    'Coding': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 6l6 6-6 6"/><path d="M8 18l-6-6 6-6"/></svg>',
+    'Tools & Workflows': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a3.8 3.8 0 0 0-5 5L4 17l3 3 5.5-5.5a3.8 3.8 0 0 0 5-5l-2.6 2.6-2.5-.4-.4-2.5z"/></svg>',
+    'Design & Imagery': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.2"/><circle cx="8.5" cy="10" r="1.6"/><path d="M21 16l-4.5-4.5L6 21"/></svg>'
+  };
+  return I[name] || I['All'];
+}
+
+function buildFilter() {
+  const el = document.getElementById('lib-filter');
+  let html = `<button class="fpill active" data-cat="-1" onclick="setCategory(-1, this)">${iconFor('All')}<span>All</span></button>`;
+  data.forEach((s, i) => {
+    html += `<button class="fpill" data-cat="${i}" onclick="setCategory(${i}, this)">${iconFor(s.category)}<span>${s.category}</span></button>`;
+  });
+  el.innerHTML = html;
+}
+
+function setCategory(i, btn) {
+  activeCategory = i;
+  document.querySelectorAll('.fpill').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderLibrary(document.getElementById('search').value.toLowerCase().trim());
+}
+
+function setLibraryView(v) {
+  const lib = document.getElementById('library');
+  lib.classList.toggle('view-grid', v === 'grid');
+  lib.classList.toggle('view-list', v !== 'grid');
+  document.querySelectorAll('#view-seg button').forEach(b => b.classList.toggle('active', b.dataset.v === v));
+}
+
+function setMetaStyle(m) {
+  const lib = document.getElementById('library');
+  lib.classList.toggle('meta-minimal', m === 'minimal');
+  lib.classList.toggle('meta-chips', m !== 'minimal');
+  document.querySelectorAll('#meta-seg button').forEach(b => b.classList.toggle('active', b.dataset.m === m));
+}
+
+function highlightVars(s) {
+  return escHtml(s).replace(/\[([^\]]*)\]/g, (m, k) => `<span class="lib-var">[${k}]</span>`);
+}
+
+function copyPromptByIndex(btn, idx) {
+  navigator.clipboard.writeText(FLAT[idx].prompt).then(() => {
+    btn.textContent = '✓ Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1700);
+  });
+}
+
+function renderLibrary(filter = '') {
+  const container = document.getElementById('library');
+  const noResults = document.getElementById('no-results');
+  container.innerHTML = '';
+  let total = 0;
+
+  data.forEach((section, si) => {
+    if (activeCategory !== -1 && si !== activeCategory) return;
+    const filtered = filter
+      ? section.prompts.filter(p =>
+          p.title.toLowerCase().includes(filter) ||
+          p.prompt.toLowerCase().includes(filter) ||
+          section.category.toLowerCase().includes(filter) ||
+          (p.tool && p.tool.toLowerCase().includes(filter)))
+      : section.prompts;
+
+    if (!filtered.length) return;
+    total += filtered.length;
+
+    const sec = document.createElement('div');
+    sec.className = 'lib-section';
+    sec.id = 'section-' + si;
+    sec.style.animationDelay = `${si * 0.04}s`;
+    sec.innerHTML = `
+      <div class="lib-section-head">
+        <span class="lib-section-name">${iconFor(section.category)}${section.category}</span>
+        <span class="lib-section-count">${filtered.length}</span>
+      </div>
+      <div class="lib-grid" id="grid-${si}"></div>`;
+    container.appendChild(sec);
+
+    const grid = sec.querySelector(`#grid-${si}`);
+    filtered.forEach(p => {
+      const idx = FLAT.indexOf(p);
+      const card = document.createElement('article');
+      card.className = 'lib-card';
+      const isTeam = p.source === 'Team submission';
+      const srcTag = `<span class="lib-card-source ${isTeam ? 'src-team' : 'src-starter'}">${isTeam ? 'Team' : 'Starter'}</span>`;
+      card.innerHTML = `
+        <div class="lib-card-top">
+          <h3 class="lib-card-title">${escHtml(p.title)} ${srcTag}</h3>
+        </div>
+        ${p.tool ? `<div class="lib-card-tool">${escHtml(p.tool)}</div>` : ''}
+        <p class="lib-card-prompt">${highlightVars(p.prompt)}</p>
+        <div class="lib-card-btns">
+          <button class="lib-btn-personalise" onclick="personalisePrompt(${idx})">Personalise</button>
+          <button class="lib-copy" onclick="copyPromptByIndex(this, ${idx})">Copy</button>
+        </div>`;
+      grid.appendChild(card);
+    });
+  });
+
+  noResults.style.display = total === 0 ? 'block' : 'none';
+}
+
+function personalisePrompt(idx) {
+  const p = FLAT[idx];
+  // Find the prompt in the selector and activate it
+  showPage('personaliser', document.querySelectorAll('.nav-tab')[2]);
+  // Find matching selector item
+  setTimeout(() => {
+    const items = document.querySelectorAll('.selector-item');
+    for (const item of items) {
+      if (item.textContent.trim() === p.title) {
+        item.click();
+        break;
+      }
+    }
+  }, 100);
+}
+
+function filterCards() {
+  renderLibrary(document.getElementById('search').value.toLowerCase().trim());
+}
+
+function copyPrompt(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+let activePrompt = null;
+let varValues = {};
+
+function extractVars(prompt) {
+  const matches = [...prompt.matchAll(/\[([^\]]*)\]/g)];
+  const seen = new Set();
+  return matches.filter(m => { if (seen.has(m[1])) return false; seen.add(m[1]); return true; }).map(m => m[1]);
+}
+
+function buildSelector() {
+  const container = document.getElementById('prompt-selector');
+  data.forEach(section => {
+    const label = document.createElement('div');
+    label.className = 'selector-group-label';
+    label.textContent = section.category;
+    container.appendChild(label);
+    section.prompts.forEach(p => {
+      const item = document.createElement('div');
+      item.className = 'selector-item';
+      item.textContent = p.title;
+      item.onclick = () => selectPrompt(p, item);
+      container.appendChild(item);
+    });
+  });
+}
+
+function selectPrompt(p, el) {
+  document.querySelectorAll('.selector-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  activePrompt = p;
+  varValues = {};
+  renderVars(p);
+  updatePreview();
+}
+
+function renderVars(p) {
+  const container = document.getElementById('vars-container');
+  const vars = extractVars(p.prompt);
+  if (!vars.length) {
+    container.innerHTML = `<div class="empty-hint">No blanks to fill — copy this one straight from the Library.</div>`;
+    updatePreview(); return;
+  }
+  container.innerHTML = '';
+  vars.forEach(v => {
+    varValues[v] = '';
+    const row = document.createElement('div');
+    row.className = 'var-row';
+    const safeKey = v.replace(/'/g,"\\'");
+    row.innerHTML = `
+      <div class="var-label">Fill in: <span>[${v || 'your text'}]</span></div>
+      <input class="var-input" type="text" placeholder="${v || 'type here'}..." oninput="varValues['${safeKey}'] = this.value; updatePreview()">`;
+    container.appendChild(row);
+  });
+}
+
+function updatePreview() {
+  const preview = document.getElementById('preview-text');
+  if (!activePrompt) return;
+  const html = activePrompt.prompt.replace(/\[([^\]]*)\]/g, (match, key) => {
+    const val = varValues[key];
+    if (val && val.trim()) return `<span class="filled">${escHtml(val.trim())}</span>`;
+    return `<span class="unfilled">[${escHtml(key || 'your text')}]</span>`;
+  });
+  preview.innerHTML = html;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function copyFinal() {
+  if (!activePrompt) return;
+  const text = activePrompt.prompt.replace(/\[([^\]]*)\]/g, (match, key) => {
+    const val = varValues[key]; return (val && val.trim()) ? val.trim() : match;
+  });
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-final-btn');
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy prompt'; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+function submitFeedback() {
+  const useful = document.getElementById('fb-useful').value.trim();
+  const missing = document.getElementById('fb-missing').value.trim();
+  const prompt = document.getElementById('fb-prompt').value.trim();
+  const name = document.getElementById('fb-name').value.trim();
+  if (!useful && !missing && !prompt) return;
+  const subject = encodeURIComponent('MA&A Prompt Library — Feedback');
+  const body = encodeURIComponent(
+    `From: ${name || 'Anonymous'}\n\n` +
+    `Most useful prompts:\n${useful || '—'}\n\n` +
+    `What's missing / not working:\n${missing || '—'}\n\n` +
+    `Prompt suggestion:\n${prompt || '—'}`
+  );
+  window.location.href = `mailto:victor.egunlae@sage.com?subject=${subject}&body=${body}`;
+  setTimeout(() => {
+    document.getElementById('feedback-form').style.display = 'none';
+    document.getElementById('feedback-success').style.display = 'block';
+  }, 500);
+}
+
+function resetFeedback() {
+  document.getElementById('fb-useful').value = '';
+  document.getElementById('fb-missing').value = '';
+  document.getElementById('fb-prompt').value = '';
+  document.getElementById('fb-name').value = '';
+  document.getElementById('feedback-form').style.display = 'block';
+  document.getElementById('feedback-success').style.display = 'none';
+}
+
+// ── Surprise Me ──
+let currentSurprisePrompt = null;
+
+function surpriseMe() {
+  const allPrompts = [];
+  data.forEach(section => {
+    section.prompts.forEach(p => {
+      allPrompts.push({ ...p, category: section.category });
+    });
+  });
+  const pick = allPrompts[Math.floor(Math.random() * allPrompts.length)];
+  currentSurprisePrompt = pick;
+
+  document.getElementById('surprise-cat').textContent = pick.category;
+  document.getElementById('surprise-title').textContent = pick.title;
+  document.getElementById('surprise-meta').textContent = pick.tool || '';
+  document.getElementById('surprise-prompt').textContent = pick.prompt;
+
+  const copyBtn = document.getElementById('surprise-copy');
+  copyBtn.textContent = 'Copy prompt';
+  copyBtn.classList.remove('copied');
+
+  const overlay = document.getElementById('surprise-overlay');
+  overlay.classList.add('open');
+
+  // Re-trigger card animation
+  const card = document.getElementById('surprise-card');
+  card.style.animation = 'none';
+  card.offsetHeight; // force reflow
+  card.style.animation = '';
+}
+
+function closeSurprise(e, force) {
+  if (force || e.target === document.getElementById('surprise-overlay')) {
+    document.getElementById('surprise-overlay').classList.remove('open');
+  }
+}
+
+function copySurprisePrompt() {
+  if (!currentSurprisePrompt) return;
+  navigator.clipboard.writeText(currentSurprisePrompt.prompt).then(() => {
+    const btn = document.getElementById('surprise-copy');
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy prompt'; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+// Close on Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.getElementById('surprise-overlay').classList.remove('open');
+  }
+});
+
+buildHome();
+buildFilter();
+renderLibrary();
+buildSelector();
+setLibraryView('list');
+setMetaStyle('chips');
+</script>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "gridCols": 3,
+  "cardGap": 12,
+  "cardRadius": 22,
+  "cardPadding": 22,
+  "maxWidth": 1200,
+  "promptSize": 15,
+  "titleSize": 18
+}/*EDITMODE-END*/;
+
+function TweaksApp() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  React.useEffect(() => {
+    const root = document.documentElement;
+    root.style.setProperty('--lib-grid-cols', t.gridCols);
+    root.style.setProperty('--lib-card-gap', t.cardGap + 'px');
+    root.style.setProperty('--lib-card-radius', t.cardRadius + 'px');
+    root.style.setProperty('--lib-card-padding', t.cardPadding + 'px');
+    root.style.setProperty('--lib-max-width', t.maxWidth + 'px');
+    root.style.setProperty('--lib-prompt-size', t.promptSize + 'px');
+    root.style.setProperty('--lib-title-size', t.titleSize + 'px');
+  }, [t]);
+
+  return (
+    <TweaksPanel>
+      <TweakSection label="Grid Layout" />
+      <TweakSlider label="Columns" value={t.gridCols} min={1} max={4} step={1}
+                   onChange={(v) => setTweak('gridCols', v)} />
+      <TweakSlider label="Card gap" value={t.cardGap} min={4} max={28} step={2} unit="px"
+                   onChange={(v) => setTweak('cardGap', v)} />
+      <TweakSlider label="Max width" value={t.maxWidth} min={800} max={1600} step={50} unit="px"
+                   onChange={(v) => setTweak('maxWidth', v)} />
+      <TweakSection label="Cards" />
+      <TweakSlider label="Border radius" value={t.cardRadius} min={0} max={32} step={2} unit="px"
+                   onChange={(v) => setTweak('cardRadius', v)} />
+      <TweakSlider label="Card padding" value={t.cardPadding} min={12} max={32} step={2} unit="px"
+                   onChange={(v) => setTweak('cardPadding', v)} />
+      <TweakSection label="Typography" />
+      <TweakSlider label="Title size" value={t.titleSize} min={13} max={22} step={1} unit="px"
+                   onChange={(v) => setTweak('titleSize', v)} />
+      <TweakSlider label="Prompt size" value={t.promptSize} min={11} max={18} step={1} unit="px"
+                   onChange={(v) => setTweak('promptSize', v)} />
+    </TweaksPanel>
+  );
+}
+
+const tweaksRoot = document.createElement('div');
+tweaksRoot.id = 'tweaks-root';
+document.body.appendChild(tweaksRoot);
+ReactDOM.createRoot(tweaksRoot).render(<TweaksApp />);
+</script>
+</body>
+</html>
+
+<style id="__om-edit-overrides">
+#prompt-selector >div:nth-child(1) { font-family: "Segoe UI" !important }
+#section-1 .lib-section-name { height: 27px !important }
+#section-1 .lib-section-name { height: 17px !important }
+#section-1 .lib-section-name { align-items: flex-start !important }
+#section-1 .lib-section-name { align-items: flex-end !important }
+#section-1 .lib-section-name { align-items: flex-start !important }
+#section-1 .lib-section-name { align-items: center !important }
+#grid-1 >article:nth-child(1) >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) { font-family: "Segoe UI" !important }
+#grid-1 >article:nth-child(1) >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) { font-family: "Sage UI" !important }
+</style>

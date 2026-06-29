@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Loading Screen</title>
+    <style>
+        :root {
+            --bg-color: #1c1c1e;
+            --card-bg: #2c2c2e;
+            --text-main: #ffffff;
+            --text-sub: #a1a1a6;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .loading-wrapper {
+            width: 800px;
+            max-width: 90%;
+        }
+
+        .header-area {
+            margin-bottom: 40px;
+        }
+
+        .loader-title {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            margin: 0 0 4px 0;
+        }
+
+        .loader-subtitle {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* Split Layout Container */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            perspective: 1000px;
+        }
+
+        /* Left Side: Card Stack Mechanics */
+        .stack-container {
+            position: relative;
+            height: 280px;
+        }
+
+        .stack-card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), 
+                        opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), 
+                        z-index 0.6s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* Dynamic classes injected by JS to handle stack depth styling */
+        .stack-card.pos-0 {
+            transform: translateY(0px) scale(1);
+            z-index: 3;
+            opacity: 1;
+        }
+
+        .stack-card.pos-1 {
+            transform: translateY(12px) scale(0.95);
+            z-index: 2;
+            opacity: 0.6;
+        }
+
+        .stack-card.pos-2 {
+            transform: translateY(24px) scale(0.90);
+            z-index: 1;
+            opacity: 0.3;
+        }
+
+        /* Animation when a card leaves the front position */
+        .stack-card.exit {
+            transform: translateY(-40px) scale(0.95);
+            opacity: 0;
+            z-index: 0;
+        }
+
+        /* Colored Dot Indicator inside the left cards */
+        .dot-matrix {
+            display: flex;
+            gap: 8px;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        .dot:nth-child(1) { background: #ea4335; }
+        .dot:nth-child(2) { background: #fbbc05; }
+        .dot:nth-child(3) { background: #34a853; }
+        .dot:nth-child(4) { background: #4285f4; }
+
+
+        /* Right Side: Showcase Panel */
+        .display-panel {
+            height: 280px;
+            border-radius: 16px;
+            padding: 32px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #2c3e50, #000000);
+            transition: background 0.8s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* Glassmorphic card overlay for content readability */
+        .display-content {
+            z-index: 2;
+            transition: opacity 0.3s ease, transform 0.4s ease;
+        }
+
+        .display-content.fade-out {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .display-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+        }
+
+        .display-desc {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+<div class="loading-wrapper">
+    <div class="header-area">
+        <p class="loader-title">Loading your app</p>
+        <p class="loader-subtitle">Enjoy these tips while you wait</p>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="stack-container" id="cardStack">
+            <div class="stack-card pos-0"><div class="dot-matrix"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+            <div class="stack-card pos-1"><div class="dot-matrix"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+            <div class="stack-card pos-2"><div class="dot-matrix"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+        </div>
+
+        <div class="display-panel" id="displayPanel">
+            <div class="display-content" id="displayContent">
+                <div class="icon-box" id="infoIcon">🎵</div>
+                <h3 class="display-title" id="infoTitle">Generate music</h3>
+                <p class="display-desc" id="infoDesc">Add AI music generation to your app. Let users create custom soundtracks, jingles, or background music from text prompts.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Dataset mimicking the content cycling in your video
+    const tipsData = [
+        {
+            title: "Generate music",
+            desc: "Add AI music generation to your app. Let users create custom soundtracks, jingles, or background music from text prompts.",
+            icon: "🎵",
+            gradient: "linear-gradient(135deg, #e65c00, #F9D423, #20bc7a)"
+        },
+        {
+            title: "Create & edit images",
+            desc: "Create and edit images from text prompts, optimized for speed and high-volume use cases.",
+            icon: "🪄",
+            gradient: "linear-gradient(135deg, #616161, #9bc5c3, #246a4a)"
+        },
+        {
+            title: "Analyze video content",
+            desc: "Help users find key moments in long videos. Add a feature to analyze video content to instantly generate summaries.",
+            icon: "⚡",
+            gradient: "linear-gradient(135deg, #ec008c, #fc6767, #2a9d8f)"
+        },
+        {
+            title: "Use Google Maps data",
+            desc: "Connect your app to real-time Google Maps data. Build an agent that can pull information about places, routes, or directions.",
+            icon: "📍",
+            gradient: "linear-gradient(135deg, #11998e, #38ef7d, #0f4c81)"
+        }
+    ];
+
+    let currentIndex = 0;
+    const cards = Array.from(document.querySelectorAll('.stack-card'));
+    const displayPanel = document.getElementById('displayPanel');
+    const displayContent = document.getElementById('displayContent');
+    
+    const infoIcon = document.getElementById('infoIcon');
+    const infoTitle = document.getElementById('infoTitle');
+    const infoDesc = document.getElementById('infoDesc');
+
+    // Setup initial panel background
+    displayPanel.style.background = tipsData[0].gradient;
+
+    function cycleTips() {
+        // 1. Target the current front card to begin its exit animation
+        const frontCard = cards.find(c => c.classList.contains('pos-0'));
+        frontCard.classList.remove('pos-0');
+        frontCard.classList.add('exit');
+
+        // 2. Shift remaining cards up the layout stack
+        cards.forEach(card => {
+            if (card.classList.contains('pos-1')) {
+                card.classList.replace('pos-1', 'pos-0');
+            } else if (card.classList.contains('pos-2')) {
+                card.classList.replace('pos-2', 'pos-1');
+            }
+        });
+
+        // 3. Take the card that exited, put it at the bottom layer, and reset position
+        setTimeout(() => {
+            frontCard.classList.remove('exit');
+            frontCard.classList.add('pos-2');
+        }, 600); // Matches the CSS transition duration
+
+        // 4. Update the content data index
+        currentIndex = (currentIndex + 1) % tipsData.length;
+        const currentData = tipsData[currentIndex];
+
+        // 5. Smoothly swap out the text panel data using a fast cross-fade
+        displayContent.classList.add('fade-out');
+        
+        setTimeout(() => {
+            displayPanel.style.background = currentData.gradient;
+            infoIcon.textContent = currentData.icon;
+            infoTitle.textContent = currentData.title;
+            infoDesc.textContent = currentData.desc;
+            displayContent.classList.remove('fade-out');
+        }, 300);
+    }
+
+    // Cycle items automatically every 3.5 seconds
+    setInterval(cycleTips, 3500);
+</script>
+</body>
+</html>

@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MA&A AI Prompt Library - Home</title>
+
+<style>
+  @font-face { font-family:"Sage Headline"; src:url("fonts/Sage_Headline-Black.woff2") format("woff2"), url("fonts/Sage_Headline-Black.woff") format("woff"); font-weight:900; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage UI"; src:url("fonts/Sage_UI-Regular.woff2") format("woff2"), url("fonts/Sage_UI-Regular.woff") format("woff"); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage UI"; src:url("fonts/Sage_UI-Medium.woff2") format("woff2"), url("fonts/Sage_UI-Medium.woff") format("woff"); font-weight:500; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage UI"; src:url("fonts/Sage_UI-Bold.woff2") format("woff2"), url("fonts/Sage_UI-Bold.woff") format("woff"); font-weight:700; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage Text"; src:url("fonts/Sage_Text-Regular.woff2") format("woff2"), url("fonts/Sage_Text-Regular.woff") format("woff"); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage Text"; src:url("fonts/Sage_Text-Bold.woff2") format("woff2"), url("fonts/Sage_Text-Bold.woff") format("woff"); font-weight:700; font-style:normal; font-display:swap; }
+
+  :root {
+    --sage-headline: "Sage Headline", "Segoe UI", system-ui, sans-serif;
+    --sage-ui: "Sage UI", "Segoe UI", system-ui, sans-serif;
+    --sage-text: "Sage Text", "Segoe UI", system-ui, sans-serif;
+    --bg: #000000;
+    --surface: #141414;
+    --surface2: #1C1C1C;
+    --border: #2A2A2A;
+    --soft-line: rgba(255,255,255,0.22);
+    --accent: #00D639;
+    --accent-dim: rgba(0,214,57,0.10);
+    --accent-border: rgba(0,214,57,0.25);
+    --text: #ffffff;
+    --text-muted: #C8C8C8;
+    --text-dim: #8A8A8A;
+    --radius-xl: 28px;
+    --radius-md: 16px;
+  }
+
+  body.light {
+    --bg: #f5f5f5;
+    --surface: #ffffff;
+    --surface2: #eeeeee;
+    --border: #dddddd;
+    --soft-line: rgba(0,0,0,0.18);
+    --accent: #00D639;
+    --accent-dim: rgba(0,214,57,0.10);
+    --accent-border: rgba(0,214,57,0.30);
+    --text: #000000;
+    --text-muted: #555555;
+    --text-dim: #777777;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sage-ui);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(180deg, #000 0%, #040404 100%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  body.light::before { background: linear-gradient(180deg, #f5f5f5 0%, #ffffff 100%); }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    height: 52px;
+    transition: background 0.3s, border-color 0.3s;
+  }
+
+  body.light nav { background: rgba(245,245,245,0.95); }
+
+  .nav-left { display: flex; align-items: center; gap: 16px; }
+
+  .nav-brand {
+    font-family: var(--sage-ui);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .nav-tabs { display: flex; gap: 4px; }
+
+  .nav-tab {
+    font-family: var(--sage-ui);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    padding: 14px 16px 13px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    color: var(--text-dim);
+    background: none;
+    transition: color 0.2s, border-color 0.2s;
+    text-decoration: none;
+  }
+
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+  .theme-toggle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--accent-border);
+    background: var(--accent-dim);
+    color: var(--accent);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .theme-toggle:hover { background: var(--accent); color: #000; }
+
+  .page-shell {
+    width: min(100%, 1360px);
+    margin: 0 auto;
+  }
+
+  .hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: calc(100svh - 52px);
+    padding: clamp(56px, 8vh, 96px) 24px clamp(72px, 10vh, 120px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-tag {
+    font-family: var(--sage-ui);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .hero-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  .hero-title {
+    font-family: var(--sage-headline);
+    font-size: clamp(54px, 6.4vw, 92px);
+    font-weight: 900;
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+    margin-bottom: 26px;
+    max-width: 900px;
+  }
+
+  .headline-line { display: inline-block; }
+
+  .headline-nowrap { white-space: nowrap; }
+
+  .rotator,
+  .rotator-period {
+    display: inline-block;
+    color: var(--accent);
+  }
+
+  .rotator.flip {
+    animation: snap 0.45s ease;
+  }
+
+  @keyframes snap {
+    0% { opacity: 0; transform: translateY(18px) rotateX(55deg); filter: blur(8px); }
+    100% { opacity: 1; transform: translateY(0) rotateX(0); filter: blur(0); }
+  }
+
+  .hero-sub {
+    font-family: var(--sage-text);
+    font-size: clamp(17px, 1.6vw, 22px);
+    color: var(--text-muted);
+    max-width: 620px;
+    line-height: 1.55;
+    margin-bottom: 36px;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero-btns .button,
+  .hero-btns button {
+    min-height: 52px;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  button,
+  .button {
+    appearance: none;
+    border: 1px solid var(--soft-line);
+    padding: 13px 20px;
+    border-radius: 999px;
+    font-family: var(--sage-ui);
+    font-size: 15px;
+    font-weight: 750;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease;
+  }
+
+  button:hover,
+  .button:hover { transform: translateY(-2px); }
+
+  .hero-action {
+    min-width: 176px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.045));
+    color: var(--text);
+    border-color: rgba(255,255,255,0.18);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+
+  .hero-action:hover {
+    border-color: rgba(255,255,255,0.34);
+    background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.055));
+  }
+
+  body.light .hero-action {
+    background: #ffffff;
+    border-color: rgba(0,0,0,0.14);
+    color: #000;
+  }
+
+  .hero-action-muted {
+    min-width: 190px;
+    background: rgba(255,255,255,0.025);
+    color: rgba(255,255,255,0.72);
+    border-color: rgba(255,255,255,0.14);
+  }
+
+  .hero-action-muted:hover {
+    color: var(--text);
+    border-color: rgba(255,255,255,0.28);
+    background: rgba(255,255,255,0.05);
+  }
+
+  body.light .hero-action-muted {
+    background: rgba(0,0,0,0.02);
+    color: rgba(0,0,0,0.68);
+    border-color: rgba(0,0,0,0.12);
+  }
+
+  body.light .hero-action-muted:hover { color: #000; border-color: rgba(0,0,0,0.28); }
+
+  .surprise-trace {
+    min-width: 154px;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: rgba(8,10,12,0.78);
+    color: var(--text);
+    border-color: rgba(255,255,255,0.12);
+  }
+
+  .surprise-trace::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: conic-gradient(from var(--trace-angle), transparent 0deg, transparent 245deg, rgba(0,214,57,0.10) 285deg, var(--accent) 320deg, rgba(0,214,57,0.10) 352deg, transparent 360deg);
+    z-index: -2;
+    opacity: 0;
+    animation: none;
+    transition: opacity 0.35s ease;
+  }
+
+  .surprise-trace.is-tracing::before {
+    opacity: 1;
+    animation: traceRound 4.6s linear infinite;
+  }
+
+  .surprise-trace::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    background: rgba(8,10,12,0.96);
+    z-index: -1;
+  }
+
+  body.light .surprise-trace { color: #000; background: #fff; }
+  body.light .surprise-trace::after { background: #fff; }
+
+
+  /* Landing page Surprise me button intro */
+  .landing-surprise-button {
+    overflow: hidden;
+  }
+
+  .landing-surprise-label {
+    position: relative;
+    z-index: 2;
+  }
+
+  .landing-surprise-shimmer {
+    position: absolute;
+    inset: -45%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-95%);
+    background: linear-gradient(
+      110deg,
+      transparent 35%,
+      rgba(255,255,255,0.55) 48%,
+      transparent 60%
+    );
+  }
+
+  .landing-surprise-button.shimmer-once .landing-surprise-shimmer {
+    animation: landingSurpriseShimmer 1100ms ease-in-out both;
+  }
+
+  @keyframes landingSurpriseShimmer {
+    0% { opacity: 0; transform: translateX(-95%); }
+    15% { opacity: 1; }
+    85% { opacity: 0.8; }
+    100% { opacity: 0; transform: translateX(95%); }
+  }
+
+  @property --trace-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  @keyframes traceRound { to { --trace-angle: 360deg; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .surprise-trace::before,
+    .surprise-trace.is-tracing::before,
+    .landing-surprise-button.shimmer-once .landing-surprise-shimmer {
+      animation: none;
+      opacity: 0;
+    }
+    .scroll-cue { animation: none; opacity: 1; }
+    html { scroll-behavior: auto; }
+  }
+
+
+
+  .scroll-cue {
+    position: absolute;
+    left: 50%;
+    bottom: 28px;
+    transform: translateX(-50%);
+    font-family: var(--sage-ui);
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.48);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: cueFadeIn 0.6s ease forwards;
+    animation-delay: 1.4s;
+    transition: color 0.2s ease;
+  }
+
+  .scroll-cue:hover {
+    color: var(--accent);
+  }
+
+  body.light .scroll-cue {
+    color: rgba(0,0,0,0.48);
+  }
+
+  body.light .scroll-cue:hover {
+    color: #00a82b;
+  }
+
+  @keyframes cueFadeIn {
+    to { opacity: 1; }
+  }
+
+  .wrapper {
+    width: min(100% - 48px, 1328px);
+    margin: 0 auto;
+    padding: 0 0 80px;
+  }
+
+  .how-it-works {
+    margin: 50px auto 0;
+    border: 1px solid var(--soft-line);
+    border-radius: var(--radius-xl);
+    background: rgba(255,255,255,0.045);
+    padding: clamp(22px, 2.6vw, 28px);
+  }
+
+  .how-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 22px;
+  }
+
+  .how-header h2 {
+    font-family: var(--sage-headline);
+    font-size: clamp(34px, 3.4vw, 48px);
+    line-height: 1;
+    letter-spacing: -0.06em;
+    margin: 0;
+  }
+
+  .how-header p {
+    font-family: var(--sage-text);
+    color: var(--text-muted);
+    font-size: 17px;
+    line-height: 1.55;
+    margin: 0;
+    max-width: 640px;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .step {
+    border: 1px solid var(--soft-line);
+    background: rgba(0,0,0,0.32);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    min-height: 178px;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  }
+
+  .step:hover {
+    border-color: rgba(0,214,57,0.38);
+    background: rgba(255,255,255,0.055);
+    transform: translateY(-2px);
+  }
+
+  body.light .step { background: rgba(255,255,255,0.55); }
+
+  .step-number {
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background: var(--accent);
+    color: #031107;
+    font-family: var(--sage-ui);
+    font-weight: 850;
+    margin-bottom: 18px;
+  }
+
+  .step strong {
+    display: block;
+    font-family: var(--sage-headline);
+    font-size: 23px;
+    line-height: 1.05;
+    letter-spacing: -0.055em;
+    margin-bottom: 12px;
+  }
+
+  .step span {
+    display: block;
+    font-family: var(--sage-text);
+    color: var(--text-muted);
+    line-height: 1.5;
+    font-size: 15px;
+  }
+
+  footer {
+    text-align: center;
+    padding-top: 40px;
+    color: var(--text-dim);
+    font-family: var(--sage-ui);
+    font-size: 12px;
+  }
+
+  @media (max-width: 820px) {
+    nav { padding: 0 14px; }
+    .nav-tabs { display: none; }
+    .hero { padding: 74px 20px 70px; }
+    .hero-title { font-size: clamp(48px, 13vw, 70px); }
+    .hero-btns { display: grid; grid-template-columns: 1fr; width: min(100%, 420px); }
+    .hero-btns .button,
+    .hero-btns button { width: 100%; }
+    .scroll-cue { bottom: 22px; font-size: 12px; }
+    .wrapper { width: min(100% - 22px, 1328px); padding-bottom: 48px; }
+    .how-header { align-items: flex-start; flex-direction: column; }
+    .steps { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+
+<body>
+  <nav>
+    <div class="nav-left">
+      <a class="nav-brand" href="#home">MA&amp;A · AI Prompts</a>
+      <div class="nav-tabs" aria-label="Main navigation">
+        <a class="nav-tab active" href="#home">Home</a>
+        <a class="nav-tab" href="#library">Library</a>
+        <a class="nav-tab" href="#personaliser">Personaliser</a>
+        <a class="nav-tab" href="#feedback">Feedback</a>
+      </div>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark">☀</button>
+  </nav>
+
+  <main class="page-shell" id="home">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-tag"><span class="hero-dot"></span>From the MA&amp;A Team</div>
+      <h1 class="hero-title" id="hero-title"><span class="headline-line">Prompts our teams</span><br><span class="headline-line headline-nowrap">have <span class="rotator" id="rotator">tried</span><span class="rotator-period">.</span></span></h1>
+      <p class="hero-sub">Copy, paste, and go. A practical library of 50+ AI prompts built by MA&amp;A.</p>
+      <div class="hero-btns">
+        <a class="button hero-action" href="#library">Browse prompts →</a>
+        <a class="button hero-action-muted" href="#personaliser">Personalise for me</a>
+        <button class="surprise-trace landing-surprise-button" id="surpriseBtn" onclick="surpriseMe()">
+          <span class="landing-surprise-shimmer" aria-hidden="true"></span>
+          <span class="landing-surprise-label">Surprise me ✦</span>
+        </button>
+      </div>
+      <a class="scroll-cue" href="#how-it-works">See how it works ↓</a>
+    </section>
+
+    <div class="wrapper">
+      <section class="how-it-works" id="how-it-works" aria-labelledby="how-title">
+        <div class="how-header">
+          <h2 id="how-title">How it works</h2>
+        </div>
+        <div class="steps">
+          <article class="step">
+            <div class="step-number">1</div>
+            <strong>Explore</strong>
+            <span>Browse the library, find a prompt or just get inspired.</span>
+          </article>
+          <article class="step">
+            <div class="step-number">2</div>
+            <strong>Personalise</strong>
+            <span>Add your own details and make it yours.</span>
+          </article>
+          <article class="step">
+            <div class="step-number">3</div>
+            <strong>Copy and go</strong>
+            <span>Paste into Copilot, Claude, ChatGPT or wherever you're working.</span>
+          </article>
+        </div>
+      </section>
+
+      <footer>From the MA&amp;A Team - Sage</footer>
+    </div>
+  </main>
+
+  <script>
+    const words = ['tried', 'tested', 'refined', 'used'];
+    let wordIndex = 0;
+
+    function animateWords() {
+      const rotator = document.getElementById('rotator');
+      if (!rotator) return;
+
+      wordIndex = (wordIndex + 1) % words.length;
+      rotator.classList.remove('flip');
+      void rotator.offsetWidth;
+      rotator.textContent = words[wordIndex];
+      rotator.classList.add('flip');
+
+      const delay = words[wordIndex] === 'used' ? 2600 : 900;
+      window.setTimeout(animateWords, delay);
+    }
+
+    window.setTimeout(animateWords, 900);
+
+    function toggleTheme() {
+      document.body.classList.toggle('light');
+      const toggle = document.querySelector('.theme-toggle');
+      toggle.textContent = document.body.classList.contains('light') ? '☾' : '☀';
+    }
+
+    function startLandingSurpriseButton() {
+      const button = document.getElementById('surpriseBtn');
+      if (!button) return;
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) return;
+
+      window.setTimeout(() => {
+        button.classList.add('shimmer-once');
+      }, 1600);
+
+      window.setTimeout(() => {
+        button.classList.remove('shimmer-once');
+        button.classList.add('is-tracing');
+      }, 2850);
+    }
+
+    function surpriseMe() {
+      const button = document.getElementById('surpriseBtn');
+      const label = button?.querySelector('.landing-surprise-label');
+      if (!button || !label) return;
+      const original = 'Surprise me ✦';
+      label.textContent = 'Rolling...';
+      window.setTimeout(() => {
+        label.textContent = original;
+      }, 650);
+    }
+
+    window.addEventListener('DOMContentLoaded', startLandingSurpriseButton);
+  </script>
+</body>
+</html>

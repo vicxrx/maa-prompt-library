@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Prompt Card Font + Variable Options</title>
+<style>
+  :root {
+    --bg:#050505;
+    --card:#181818;
+    --border:#303030;
+    --text:#ffffff;
+    --muted:#d7d7d7;
+    --dim:#8f8f8f;
+    --green:#00D639;
+    --green-soft:rgba(0,214,57,.13);
+    --green-border:rgba(0,214,57,.38);
+  }
+  * { box-sizing:border-box; }
+  body {
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Segoe UI", system-ui, sans-serif;
+    padding:28px;
+  }
+  h1 { margin:0 0 8px; font-size:32px; letter-spacing:-.03em; }
+  .sub { margin:0 0 22px; color:var(--muted); max-width:820px; }
+
+  .controls {
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:22px;
+  }
+  .toggle {
+    border:1px solid var(--border);
+    background:#161616;
+    color:var(--muted);
+    border-radius:999px;
+    padding:9px 14px;
+    cursor:pointer;
+    font-weight:800;
+  }
+  .toggle.active {
+    background:var(--green);
+    color:#000;
+    border-color:var(--green);
+  }
+
+  .font-pane { display:none; }
+  .font-pane.active { display:block; }
+
+  .seg-ui { font-family:"Segoe UI", system-ui, sans-serif; }
+  .helvetica { font-family:"Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+  .grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:18px;
+    max-width:1200px;
+  }
+
+  .option-card, .real-card {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:22px;
+  }
+
+  .label {
+    font-size:12px;
+    color:var(--green);
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    font-weight:800;
+    margin-bottom:14px;
+  }
+  .title {
+    font-size:22px;
+    font-weight:800;
+    margin-bottom:14px;
+    letter-spacing:-.02em;
+  }
+  .prompt {
+    font-size:16px;
+    line-height:1.55;
+    color:var(--text);
+  }
+  .note {
+    margin-top:16px;
+    color:var(--dim);
+    font-size:13px;
+    line-height:1.45;
+  }
+
+  .token-pill {
+    color:var(--green);
+    background:var(--green-soft);
+    border:1px solid var(--green-border);
+    border-radius:999px;
+    padding:1px 7px 2px;
+    font-weight:800;
+    white-space:nowrap;
+  }
+  .token-highlight {
+    color:var(--green);
+    background:linear-gradient(to top, rgba(0,214,57,.28) 0 48%, transparent 48% 100%);
+    font-weight:800;
+    padding:0 2px;
+  }
+  .token-bracket {
+    color:var(--green);
+    background:var(--green-soft);
+    border:1px solid var(--green-border);
+    border-radius:6px;
+    padding:1px 5px 2px;
+    font-weight:800;
+  }
+  .token-bold {
+    color:var(--green);
+    font-weight:900;
+  }
+  .token-highlight-underline {
+    color:var(--green);
+    font-weight:900;
+    background:linear-gradient(to top, rgba(0,214,57,.30) 0 45%, transparent 45% 100%);
+    text-decoration: underline;
+    text-decoration-color: var(--green);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+    padding:0 2px;
+  }
+
+  .real-section {
+    margin-top:28px;
+    border-top:1px solid var(--border);
+    padding-top:24px;
+  }
+  .real-title {
+    color:var(--green);
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    font-size:12px;
+    font-weight:900;
+    margin-bottom:16px;
+  }
+  .real-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:16px;
+    max-width:1200px;
+  }
+  .real-card {
+    min-height:210px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .real-card h3 {
+    margin:0;
+    font-size:18px;
+    line-height:1.2;
+    letter-spacing:-.02em;
+  }
+  .meta {
+    color:#7d8aa7;
+    font-size:12px;
+  }
+  .real-prompt {
+    color:#e7e7e7;
+    font-size:15px;
+    line-height:1.5;
+    flex:1;
+  }
+  .real-footer {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-top:12px;
+  }
+  .tag {
+    color:var(--green);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    font-weight:900;
+  }
+  .btn {
+    background:rgba(0,214,57,.16);
+    border:1px solid rgba(0,214,57,.42);
+    color:var(--green);
+    border-radius:9px;
+    padding:8px 16px;
+    font-weight:800;
+  }
+</style>
+</head>
+<body>
+  <h1>Prompt card font + variable options</h1>
+  <p class="sub">Click between Segoe UI and Helvetica Neue/Helvetica. The bottom section shows cards closer to your actual current card style, but using the selected font.</p>
+
+  <div class="controls">
+    <button class="toggle active" onclick="setFont('seg', this)">Segoe UI</button>
+    <button class="toggle" onclick="setFont('helv', this)">Helvetica Neue / Helvetica</button>
+  </div>
+
+  <div id="seg" class="font-pane active seg-ui">
+    <div class="grid">
+      <div class="option-card">
+        <div class="label">Option 1</div>
+        <div class="title">Soft Green Pill</div>
+        <p class="prompt">Turn these notes into clear actions for <span class="token-pill">team</span>. Group by owner, deadline, dependency, and decision needed.</p>
+        <p class="note">Clean and obvious. Best if you want placeholders to feel like editable tokens.</p>
+      </div>
+      <div class="option-card">
+        <div class="label">Option 2</div>
+        <div class="title">Marker Highlight</div>
+        <p class="prompt">Turn these notes into clear actions for <span class="token-highlight">team</span>. Group by owner, deadline, dependency, and decision needed.</p>
+        <p class="note">Less UI-like. Feels more like a highlighted word in text.</p>
+      </div>
+      <div class="option-card">
+        <div class="label">Option 3</div>
+        <div class="title">Bracket Token</div>
+        <p class="prompt">Turn these notes into clear actions for <span class="token-bracket">[team]</span>. Group by owner, deadline, dependency, and decision needed.</p>
+        <p class="note">Keeps the brackets visible, so users understand the original prompt structure.</p>
+      </div>
+      <div class="option-card">
+        <div class="label">Option 4</div>
+        <div class="title">Bold Green Word</div>
+        <p class="prompt">Turn these notes into clear actions for <span class="token-bold">team</span>. Group by owner, deadline, dependency, and decision needed.</p>
+        <p class="note">Simple and clean, but less obvious.</p>
+      </div>
+      <div class="option-card">
+        <div class="label">Option 5</div>
+        <div class="title">Highlight + Underline</div>
+        <p class="prompt">Turn these notes into clear actions for <span class="token-highlight-underline">team</span>. Group by owner, deadline, dependency, and decision needed.</p>
+        <p class="note">Most visible without becoming a pill.</p>
+      </div>
+    </div>
+    <div class="real-section">
+      <div class="real-title">Closer to your current cards</div>
+      <div class="real-grid">
+        <div class="real-card"><h3>Meeting actions</h3><div class="meta">ChatGPT · Copilot · Claude</div><div class="real-prompt">Turn these notes into clear actions for <span class="token-pill">team</span>. Group by owner, deadline, dependency, and decision needed.</div><div class="real-footer"><span class="tag">Productivity</span><button class="btn">Copy</button></div></div>
+        <div class="real-card"><h3>Campaign review</h3><div class="meta">ChatGPT · Claude</div><div class="real-prompt">Analyse the performance of <span class="token-pill">campaign</span> and explain what worked, what did not, and what to test next.</div><div class="real-footer"><span class="tag">Marketing</span><button class="btn">Copy</button></div></div>
+        <div class="real-card"><h3>Stakeholder summary</h3><div class="meta">ChatGPT · Copilot</div><div class="real-prompt">Create a clear summary of <span class="token-pill">topic</span> for a busy senior stakeholder.</div><div class="real-footer"><span class="tag">Communication</span><button class="btn">Copy</button></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="helv" class="font-pane helvetica">
+    <div class="grid">
+      <div class="option-card">
+        <div class="label">Option 1</div>
+        <div class="title">Soft Green Pill</div>
+        <p class="prompt">Turn these notes into clear actions for <span class="token-pill">team</span>. Group by owner, deadline, dependency, and decision needed.</p>
+        <p class="note">Clean and obvious. Best if you want placeholders to feel like editable tokens.</p>
+      </div>
+      <div class="option-card">
+        <div class="label">Option 2</div>
+        <div class="title">Marker Highlight</div>
+        <p class="prompt">Turn these notes into clear actions for <span class="token-highlight">team</span>. Group by owner, deadline, dependency, and decision needed.</p>
+        <p class="note">Less UI-like. Feels more like a highlighted word in text.</p>
+      </div>
+      <div class="option-card">
+        <div class="label">Option 3</div>
+        <div class="title">Bracket Token</div>
+        <p class="prompt">Turn these notes into clear actions for <span class="token-bracket">[team]</span>. Group by owner, deadline, dependency, and decision needed.</p>
+        <p class="note">Keeps the brackets visible, so users understand the original prompt structure.</p>
+      </div>
+      <div class="option-card">
+        <div class="label">Option 4</div>
+        <div class="title">Bold Green Word</div>
+        <p class="prompt">Turn these notes into clear actions for <span class="token-bold">team</span>. Group by owner, deadline, dependency, and decision needed.</p>
+        <p class="note">Simple and clean, but less obvious.</p>
+      </div>
+      <div class="option-card">
+        <div class="label">Option 5</div>
+        <div class="title">Highlight + Underline</div>
+        <p class="prompt">Turn these notes into clear actions for <span class="token-highlight-underline">team</span>. Group by owner, deadline, dependency, and decision needed.</p>
+        <p class="note">Most visible without becoming a pill.</p>
+      </div>
+    </div>
+    <div class="real-section">
+      <div class="real-title">Closer to your current cards</div>
+      <div class="real-grid">
+        <div class="real-card"><h3>Meeting actions</h3><div class="meta">ChatGPT · Copilot · Claude</div><div class="real-prompt">Turn these notes into clear actions for <span class="token-pill">team</span>. Group by owner, deadline, dependency, and decision needed.</div><div class="real-footer"><span class="tag">Productivity</span><button class="btn">Copy</button></div></div>
+        <div class="real-card"><h3>Campaign review</h3><div class="meta">ChatGPT · Claude</div><div class="real-prompt">Analyse the performance of <span class="token-pill">campaign</span> and explain what worked, what did not, and what to test next.</div><div class="real-footer"><span class="tag">Marketing</span><button class="btn">Copy</button></div></div>
+        <div class="real-card"><h3>Stakeholder summary</h3><div class="meta">ChatGPT · Copilot</div><div class="real-prompt">Create a clear summary of <span class="token-pill">topic</span> for a busy senior stakeholder.</div><div class="real-footer"><span class="tag">Communication</span><button class="btn">Copy</button></div></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+function setFont(id, btn) {
+  document.querySelectorAll('.font-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.toggle').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

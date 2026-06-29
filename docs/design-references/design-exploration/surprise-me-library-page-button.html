@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Surprise Me Button Animation</title>
+
+<style>
+  @font-face { font-family:"Sage Headline"; src:url("fonts/Sage_Headline-Black.woff2") format("woff2"), url("fonts/Sage_Headline-Black.woff") format("woff"); font-weight:900; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage UI"; src:url("fonts/Sage_UI-Regular.woff2") format("woff2"), url("fonts/Sage_UI-Regular.woff") format("woff"); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage UI"; src:url("fonts/Sage_UI-Medium.woff2") format("woff2"), url("fonts/Sage_UI-Medium.woff") format("woff"); font-weight:500; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage UI"; src:url("fonts/Sage_UI-Bold.woff2") format("woff2"), url("fonts/Sage_UI-Bold.woff") format("woff"); font-weight:700; font-style:normal; font-display:swap; }
+
+  :root {
+    --sage-ui: "Sage UI", "Segoe UI", system-ui, sans-serif;
+    --bg: #000000;
+    --border: #2A2A2A;
+    --soft-line: rgba(255,255,255,0.22);
+    --accent: #00D639;
+    --text: #ffffff;
+    --button-bg: rgba(8,10,12,0.78);
+    --button-bg-hover: rgba(255,255,255,0.055);
+    --button-inner: rgba(8,10,12,0.96);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    min-height: 100vh;
+    overflow: hidden;
+    font-family: var(--sage-ui);
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(180deg, #000 0%, #040404 100%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  main {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+  }
+
+  button {
+    appearance: none;
+    border: 1px solid var(--soft-line);
+    padding: 13px 20px;
+    border-radius: 999px;
+    font-family: var(--sage-ui);
+    font-size: 15px;
+    font-weight: 750;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease;
+  }
+
+  button:hover {
+    transform: translateY(-2px);
+  }
+
+  .surprise-button {
+    min-width: 154px;
+    min-height: 52px;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: var(--button-bg);
+    color: var(--text);
+    border-color: rgba(255,255,255,0.12);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+    white-space: nowrap;
+  }
+
+  .surprise-button:hover {
+    border-color: rgba(255,255,255,0.28);
+    background: var(--button-bg-hover);
+  }
+
+  .surprise-button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+  }
+
+  .surprise-label {
+    position: relative;
+    z-index: 2;
+  }
+
+  .surprise-shimmer {
+    position: absolute;
+    inset: -45%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-95%);
+    background: linear-gradient(
+      110deg,
+      transparent 35%,
+      rgba(255,255,255,0.55) 48%,
+      transparent 60%
+    );
+  }
+
+  .is-shimmering .surprise-shimmer {
+    animation: shimmerSweep 1100ms ease-in-out both;
+  }
+
+  .is-bouncing {
+    animation: gentleBounce 900ms ease-in-out both;
+  }
+
+  .is-pulsing {
+    animation: softPulse 950ms ease-in-out both;
+  }
+
+  .is-wiggling {
+    animation: tinyWiggle 900ms ease-in-out both;
+    transform-origin: 50% 80%;
+  }
+
+  @keyframes shimmerSweep {
+    0% { opacity: 0; transform: translateX(-95%); }
+    15% { opacity: 1; }
+    85% { opacity: 0.8; }
+    100% { opacity: 0; transform: translateX(95%); }
+  }
+
+  @keyframes gentleBounce {
+    0%, 100% { transform: translateY(0); }
+    35% { transform: translateY(-7px); }
+    62% { transform: translateY(0); }
+    82% { transform: translateY(-3px); }
+  }
+
+  @keyframes softPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.045); }
+  }
+
+  @keyframes tinyWiggle {
+    0%, 100% { transform: rotate(0deg); }
+    28% { transform: rotate(-2.5deg); }
+    54% { transform: rotate(2.5deg); }
+    78% { transform: rotate(-1deg); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    button,
+    .is-shimmering .surprise-shimmer,
+    .is-bouncing,
+    .is-pulsing,
+    .is-wiggling {
+      animation: none;
+      transition: none;
+    }
+  }
+</style>
+</head>
+
+<body>
+  <main>
+    <button class="surprise-button" id="surpriseBtn" type="button" aria-label="Surprise me">
+      <span class="surprise-shimmer" aria-hidden="true"></span>
+      <span class="surprise-label">Surprise me ✦</span>
+    </button>
+  </main>
+
+  <script>
+    const button = document.getElementById('surpriseBtn');
+    const label = button.querySelector('.surprise-label');
+
+    const sequence = [
+      { className: 'is-shimmering', duration: 1200 },
+      { className: 'is-pulsing', duration: 1050 },
+      { className: 'is-bouncing', duration: 1000 },
+      { className: 'is-wiggling', duration: 1000 }
+    ];
+
+    const initialDelay = 5000;
+    const gapBetweenAnimations = 850;
+    const gapBeforeRepeat = 5000;
+    let currentIndex = 0;
+
+    function clearAnimationClasses() {
+      sequence.forEach(item => button.classList.remove(item.className));
+    }
+
+    function runNextAnimation() {
+      const current = sequence[currentIndex];
+
+      clearAnimationClasses();
+      void button.offsetWidth;
+      button.classList.add(current.className);
+
+      window.setTimeout(() => {
+        button.classList.remove(current.className);
+        currentIndex = (currentIndex + 1) % sequence.length;
+        const isNewLoop = currentIndex === 0;
+        window.setTimeout(runNextAnimation, isNewLoop ? gapBeforeRepeat : gapBetweenAnimations);
+      }, current.duration);
+    }
+
+    button.addEventListener('click', () => {
+      const originalText = 'Surprise me ✦';
+      label.textContent = 'Rolling...';
+      window.setTimeout(() => {
+        label.textContent = originalText;
+      }, 650);
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      window.setTimeout(runNextAnimation, initialDelay);
+    });
+  </script>
+</body>
+</html>
