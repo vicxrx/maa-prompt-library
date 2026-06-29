@@ -2675,7 +2675,9 @@
     font-weight: 900;
     line-height: 0.98;
     letter-spacing: -0.055em;
-    margin-bottom: 24px;
+    margin: 0 auto 24px;
+    max-width: 900px;
+    text-align: center;
   }
 
   #page-personaliser .hero-title span { color: var(--accent); }
@@ -3174,7 +3176,7 @@
         </div>
       </section>
 
-      <footer>From the MA&amp;A Team - Sage</footer>
+      <footer data-shared-footer></footer>
     </div>
   </main>
 
@@ -3207,7 +3209,7 @@
         <div class="lib-no-results" id="lib-no-results" hidden>No prompts match your search.</div>
       </div>
 
-      <div class="lib-footer">From the MA&amp;A Team — Sage</div>
+      <div class="lib-footer" data-shared-footer></div>
     </div>
 
     <div class="lib-overlay" id="lib-modal-overlay" hidden>
@@ -3297,7 +3299,7 @@
         </section>
       </section>
 
-      <footer>From the MA&amp;A Team - Sage</footer>
+      <footer data-shared-footer></footer>
     </div>
   </main>
 </div>
@@ -3342,7 +3344,7 @@
         </div>
       </div>
     </div>
-    <footer>From the MA&amp;A Team — Sage</footer>
+    <footer data-shared-footer></footer>
   </div>
 </div>
 
@@ -3981,6 +3983,14 @@ const words = ['tried', 'tested', 'refined', 'used'];
     });
 
     const data = surpriseData;
+    const sharedFooterText = 'From the MA&A Team - Sage';
+
+function renderSharedFooters() {
+  document.querySelectorAll('[data-shared-footer]').forEach((footer) => {
+    footer.textContent = sharedFooterText;
+  });
+}
+
 let activePrompt = null;
 let activePromptKey = null;
 let varValues = {};
@@ -4288,6 +4298,7 @@ function resetFeedback() {
     window.showPromptLibraryPage = showPage;
 
     document.addEventListener('DOMContentLoaded', function () {
+      renderSharedFooters();
       initialisePersonaliser();
 
       document.querySelectorAll('[data-page]').forEach((el) => {
