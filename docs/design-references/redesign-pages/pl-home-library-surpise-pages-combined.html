@@ -1,0 +1,2325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MA&A AI Prompt Library - Home</title>
+
+<style>
+  @font-face { font-family:"Sage Headline"; src:url("fonts/Sage_Headline-Black.woff2") format("woff2"), url("fonts/Sage_Headline-Black.woff") format("woff"); font-weight:900; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage UI"; src:url("fonts/Sage_UI-Regular.woff2") format("woff2"), url("fonts/Sage_UI-Regular.woff") format("woff"); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage UI"; src:url("fonts/Sage_UI-Medium.woff2") format("woff2"), url("fonts/Sage_UI-Medium.woff") format("woff"); font-weight:500; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage UI"; src:url("fonts/Sage_UI-Bold.woff2") format("woff2"), url("fonts/Sage_UI-Bold.woff") format("woff"); font-weight:700; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage Text"; src:url("fonts/Sage_Text-Regular.woff2") format("woff2"), url("fonts/Sage_Text-Regular.woff") format("woff"); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage Text"; src:url("fonts/Sage_Text-Bold.woff2") format("woff2"), url("fonts/Sage_Text-Bold.woff") format("woff"); font-weight:700; font-style:normal; font-display:swap; }
+
+  :root {
+    --sage-headline: "Sage Headline", "Segoe UI", system-ui, sans-serif;
+    --sage-ui: "Sage UI", "Segoe UI", system-ui, sans-serif;
+    --sage-text: "Sage Text", "Segoe UI", system-ui, sans-serif;
+    --bg: #000000;
+    --surface: #141414;
+    --surface2: #1C1C1C;
+    --border: #2A2A2A;
+    --soft-line: rgba(255,255,255,0.22);
+    --accent: #00D639;
+    --accent-dim: rgba(0,214,57,0.10);
+    --accent-border: rgba(0,214,57,0.25);
+    --text: #ffffff;
+    --text-muted: #C8C8C8;
+    --text-dim: #8A8A8A;
+    --radius-xl: 28px;
+    --radius-md: 16px;
+  }
+
+  body.light {
+    --bg: #f5f5f5;
+    --surface: #ffffff;
+    --surface2: #eeeeee;
+    --border: #dddddd;
+    --soft-line: rgba(0,0,0,0.18);
+    --accent: #00D639;
+    --accent-dim: rgba(0,214,57,0.10);
+    --accent-border: rgba(0,214,57,0.30);
+    --text: #000000;
+    --text-muted: #555555;
+    --text-dim: #777777;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sage-ui);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(180deg, #000 0%, #040404 100%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  body.light::before { background: linear-gradient(180deg, #f5f5f5 0%, #ffffff 100%); }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    height: 52px;
+    transition: background 0.3s, border-color 0.3s;
+  }
+
+  body.light nav { background: rgba(245,245,245,0.95); }
+
+  .nav-left { display: flex; align-items: center; gap: 16px; }
+
+  .nav-brand {
+    font-family: var(--sage-ui);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .nav-tabs { display: flex; gap: 4px; }
+
+  .nav-tab {
+    font-family: var(--sage-ui);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    padding: 14px 16px 13px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    color: var(--text-dim);
+    background: none;
+    transition: color 0.2s, border-color 0.2s;
+    text-decoration: none;
+  }
+
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+  .theme-toggle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--accent-border);
+    background: var(--accent-dim);
+    color: var(--accent);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .theme-toggle:hover { background: var(--accent); color: #000; }
+
+  .page-shell {
+    width: min(100%, 1360px);
+    margin: 0 auto;
+  }
+
+  .hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: calc(100svh - 52px);
+    padding: clamp(56px, 8vh, 96px) 24px clamp(72px, 10vh, 120px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-tag {
+    font-family: var(--sage-ui);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .hero-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  .hero-title {
+    font-family: var(--sage-headline);
+    font-size: clamp(54px, 6.4vw, 92px);
+    font-weight: 900;
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+    margin-bottom: 26px;
+    max-width: 900px;
+  }
+
+  .headline-line { display: inline-block; }
+
+  .headline-nowrap { white-space: nowrap; }
+
+  .rotator,
+  .rotator-period {
+    display: inline-block;
+    color: var(--accent);
+  }
+
+  .rotator.flip {
+    animation: snap 0.45s ease;
+  }
+
+  @keyframes snap {
+    0% { opacity: 0; transform: translateY(18px) rotateX(55deg); filter: blur(8px); }
+    100% { opacity: 1; transform: translateY(0) rotateX(0); filter: blur(0); }
+  }
+
+  .hero-sub {
+    font-family: var(--sage-text);
+    font-size: clamp(17px, 1.6vw, 22px);
+    color: var(--text-muted);
+    max-width: 620px;
+    line-height: 1.55;
+    margin-bottom: 36px;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero-btns .button,
+  .hero-btns button {
+    min-height: 52px;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  button,
+  .button {
+    appearance: none;
+    border: 1px solid var(--soft-line);
+    padding: 13px 20px;
+    border-radius: 999px;
+    font-family: var(--sage-ui);
+    font-size: 15px;
+    font-weight: 750;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease;
+  }
+
+  button:hover,
+  .button:hover { transform: translateY(-2px); }
+
+  .hero-action {
+    min-width: 176px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.045));
+    color: var(--text);
+    border-color: rgba(255,255,255,0.18);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+
+  .hero-action:hover {
+    border-color: rgba(255,255,255,0.34);
+    background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.055));
+  }
+
+  body.light .hero-action {
+    background: #ffffff;
+    border-color: rgba(0,0,0,0.14);
+    color: #000;
+  }
+
+  .hero-action-muted {
+    min-width: 190px;
+    background: rgba(255,255,255,0.025);
+    color: rgba(255,255,255,0.72);
+    border-color: rgba(255,255,255,0.14);
+  }
+
+  .hero-action-muted:hover {
+    color: var(--text);
+    border-color: rgba(255,255,255,0.28);
+    background: rgba(255,255,255,0.05);
+  }
+
+  body.light .hero-action-muted {
+    background: rgba(0,0,0,0.02);
+    color: rgba(0,0,0,0.68);
+    border-color: rgba(0,0,0,0.12);
+  }
+
+  body.light .hero-action-muted:hover { color: #000; border-color: rgba(0,0,0,0.28); }
+
+  .surprise-trace {
+    min-width: 154px;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: rgba(8,10,12,0.78);
+    color: var(--text);
+    border-color: rgba(255,255,255,0.12);
+  }
+
+  .surprise-trace::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: conic-gradient(from var(--trace-angle), transparent 0deg, transparent 245deg, rgba(0,214,57,0.10) 285deg, var(--accent) 320deg, rgba(0,214,57,0.10) 352deg, transparent 360deg);
+    z-index: -2;
+    opacity: 0;
+    animation: none;
+    transition: opacity 0.35s ease;
+  }
+
+  .surprise-trace.is-tracing::before {
+    opacity: 1;
+    animation: traceRound 4.6s linear infinite;
+  }
+
+  .surprise-trace::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    background: rgba(8,10,12,0.96);
+    z-index: -1;
+  }
+
+  body.light .surprise-trace { color: #000; background: #fff; }
+  body.light .surprise-trace::after { background: #fff; }
+
+
+  /* Landing page Surprise me button intro */
+  .landing-surprise-button {
+    overflow: hidden;
+  }
+
+  .landing-surprise-label {
+    position: relative;
+    z-index: 2;
+  }
+
+  .landing-surprise-shimmer {
+    position: absolute;
+    inset: -45%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-95%);
+    background: linear-gradient(
+      110deg,
+      transparent 35%,
+      rgba(255,255,255,0.55) 48%,
+      transparent 60%
+    );
+  }
+
+  .landing-surprise-button.shimmer-once .landing-surprise-shimmer {
+    animation: landingSurpriseShimmer 1100ms ease-in-out both;
+  }
+
+  @keyframes landingSurpriseShimmer {
+    0% { opacity: 0; transform: translateX(-95%); }
+    15% { opacity: 1; }
+    85% { opacity: 0.8; }
+    100% { opacity: 0; transform: translateX(95%); }
+  }
+
+  @property --trace-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  @keyframes traceRound { to { --trace-angle: 360deg; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .surprise-trace::before,
+    .surprise-trace.is-tracing::before,
+    .landing-surprise-button.shimmer-once .landing-surprise-shimmer {
+      animation: none;
+      opacity: 0;
+    }
+    .scroll-cue { animation: none; opacity: 1; }
+    html { scroll-behavior: auto; }
+  }
+
+
+
+  .scroll-cue {
+    position: absolute;
+    left: 50%;
+    bottom: 28px;
+    transform: translateX(-50%);
+    font-family: var(--sage-ui);
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.48);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: cueFadeIn 0.6s ease forwards;
+    animation-delay: 1.4s;
+    transition: color 0.2s ease;
+  }
+
+  .scroll-cue:hover {
+    color: var(--accent);
+  }
+
+  body.light .scroll-cue {
+    color: rgba(0,0,0,0.48);
+  }
+
+  body.light .scroll-cue:hover {
+    color: #00a82b;
+  }
+
+  @keyframes cueFadeIn {
+    to { opacity: 1; }
+  }
+
+  .wrapper {
+    width: min(100% - 48px, 1328px);
+    margin: 0 auto;
+    padding: 0 0 80px;
+  }
+
+  .how-it-works {
+    margin: 50px auto 0;
+    border: 1px solid var(--soft-line);
+    border-radius: var(--radius-xl);
+    background: rgba(255,255,255,0.045);
+    padding: clamp(22px, 2.6vw, 28px);
+  }
+
+  .how-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 22px;
+  }
+
+  .how-header h2 {
+    font-family: var(--sage-headline);
+    font-size: clamp(34px, 3.4vw, 48px);
+    line-height: 1;
+    letter-spacing: -0.06em;
+    margin: 0;
+  }
+
+  .how-header p {
+    font-family: var(--sage-text);
+    color: var(--text-muted);
+    font-size: 17px;
+    line-height: 1.55;
+    margin: 0;
+    max-width: 640px;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .step {
+    border: 1px solid var(--soft-line);
+    background: rgba(0,0,0,0.32);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    min-height: 178px;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  }
+
+  .step:hover {
+    border-color: rgba(0,214,57,0.38);
+    background: rgba(255,255,255,0.055);
+    transform: translateY(-2px);
+  }
+
+  body.light .step { background: rgba(255,255,255,0.55); }
+
+  .step-number {
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background: var(--accent);
+    color: #031107;
+    font-family: var(--sage-ui);
+    font-weight: 850;
+    margin-bottom: 18px;
+  }
+
+  .step strong {
+    display: block;
+    font-family: var(--sage-headline);
+    font-size: 23px;
+    line-height: 1.05;
+    letter-spacing: -0.055em;
+    margin-bottom: 12px;
+  }
+
+  .step span {
+    display: block;
+    font-family: var(--sage-text);
+    color: var(--text-muted);
+    line-height: 1.5;
+    font-size: 15px;
+  }
+
+  footer {
+    text-align: center;
+    padding-top: 40px;
+    color: var(--text-dim);
+    font-family: var(--sage-ui);
+    font-size: 12px;
+  }
+
+  @media (max-width: 820px) {
+    nav { padding: 0 14px; }
+    .nav-tabs { display: none; }
+    .hero { padding: 74px 20px 70px; }
+    .hero-title { font-size: clamp(48px, 13vw, 70px); }
+    .hero-btns { display: grid; grid-template-columns: 1fr; width: min(100%, 420px); }
+    .hero-btns .button,
+    .hero-btns button { width: 100%; }
+    .scroll-cue { bottom: 22px; font-size: 12px; }
+    .wrapper { width: min(100% - 22px, 1328px); padding-bottom: 48px; }
+    .how-header { align-items: flex-start; flex-direction: column; }
+    .steps { grid-template-columns: 1fr; }
+  }
+
+
+  /* Combined Home + Library routing */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  #library-view {
+    width: 100%;
+    min-height: calc(100vh - 52px);
+    background: #000;
+  }
+
+
+  /* Shared navbar: homepage design with centre-out proportional underline */
+  .nav-tab {
+    position: relative;
+    border-bottom: none !important;
+  }
+
+  .nav-tab::after {
+    content: "";
+    position: absolute;
+    left: 18%;
+    right: 18%;
+    bottom: 5px;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 999px;
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 220ms ease, opacity 180ms ease;
+    pointer-events: none;
+  }
+
+  .nav-tab:hover::after,
+  .nav-tab.active::after {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  .nav-tab.active {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .nav-tab:not(.active):hover {
+    color: var(--text);
+  }
+
+
+  /* Shared Surprise Me modal */
+  .surprise-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.86);
+    backdrop-filter: blur(22px) saturate(0.55);
+    -webkit-backdrop-filter: blur(22px) saturate(0.55);
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .surprise-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .surprise-card {
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255,255,255,0.085), transparent 64%),
+      linear-gradient(180deg, rgba(255,255,255,0.060), rgba(255,255,255,0.018)),
+      #0B0B0B;
+    border: 1px solid rgba(255,255,255,0.34);
+    border-radius: 16px;
+    padding: 28px;
+    max-width: 740px;
+    width: min(100%, 740px);
+    min-height: 380px;
+    max-height: 84vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), 0 32px 110px rgba(0,0,0,0.72);
+    animation: surpriseFadeUp 0.22s ease both;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .surprise-card::-webkit-scrollbar { width: 4px; }
+  .surprise-card::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .surprise-card.rolling {
+    animation: surpriseShake 0.35s ease infinite;
+  }
+
+  @keyframes surpriseFadeUp {
+    from { opacity: 0; transform: translateY(14px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes surpriseShake {
+    0%, 100% { transform: rotate(0); }
+    25% { transform: rotate(-0.45deg) translateX(-2px); }
+    75% { transform: rotate(0.45deg) translateX(2px); }
+  }
+
+  .surprise-topline {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .surprise-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .surprise-category {
+    font-family: var(--sage-ui);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .surprise-tool {
+    font-family: var(--sage-ui);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.03em;
+  }
+
+  .surprise-goodfor {
+    font-family: var(--sage-text);
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .surprise-close {
+    flex-shrink: 0;
+    background: none;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    width: 34px;
+    height: 34px;
+    color: var(--text-dim);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    line-height: 1;
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  }
+
+  .surprise-close:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-1px);
+  }
+
+  .surprise-title {
+    font-family: var(--sage-headline);
+    font-size: clamp(34px, 5vw, 50px);
+    font-weight: 900;
+    letter-spacing: -0.055em;
+    line-height: 1;
+    color: var(--text);
+  }
+
+  .surprise-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.10);
+  }
+
+  .surprise-prompt {
+    font-family: var(--sage-ui);
+    font-size: 15px;
+    color: rgba(255,255,255,0.84);
+    line-height: 1.62;
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    padding: 20px;
+    min-height: 112px;
+    max-height: 240px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .surprise-prompt .prompt-var-bracketed {
+    color: var(--accent);
+    font-weight: 800;
+  }
+
+  .surprise-source-badge {
+    align-self: flex-start;
+    font-family: var(--sage-ui);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 5px 11px;
+    border-radius: 7px;
+    background: rgba(0,214,57,0.10);
+    color: var(--accent);
+    border: 1px solid rgba(0,214,57,0.24);
+  }
+
+  .surprise-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 0.86fr;
+    gap: 12px;
+    margin-top: auto;
+  }
+
+  .surprise-personalise-btn,
+  .surprise-copy-btn,
+  .surprise-roll-btn {
+    min-height: 48px;
+    border-radius: 999px;
+    padding: 12px 20px;
+    font-family: var(--sage-ui);
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s, transform 0.18s, border-color 0.2s, color 0.2s, background 0.2s;
+  }
+
+  .surprise-personalise-btn {
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.16);
+    color: var(--accent);
+  }
+
+  .surprise-personalise-btn:hover {
+    border-color: rgba(0,214,57,0.45);
+    background: rgba(0,214,57,0.08);
+    transform: translateY(-1px);
+  }
+
+  .surprise-copy-btn {
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    color: #000;
+  }
+
+  .surprise-copy-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .surprise-copy-btn.copied { background: var(--accent); opacity: 1; }
+
+  .surprise-roll-btn {
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.16);
+    color: rgba(255,255,255,0.78);
+  }
+
+  .surprise-roll-btn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+
+  @media (max-width: 640px) {
+    .surprise-overlay { padding: 16px; align-items: flex-end; }
+    .surprise-card { padding: 22px; width: 100%; min-height: 0; max-height: 88vh; }
+    .surprise-title { font-size: clamp(30px, 10vw, 40px); }
+    .surprise-actions { grid-template-columns: 1fr; }
+    .surprise-personalise-btn,
+    .surprise-copy-btn,
+    .surprise-roll-btn { width: 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .surprise-card,
+    .surprise-card.rolling {
+      animation: none;
+    }
+  }
+
+
+  /* Direct Library section — same visual treatment, no iframe */
+  #library-view {
+    width: 100%;
+    min-height: calc(100vh - 52px);
+    background: #000;
+  }
+
+  .library-root {
+    min-height: calc(100vh - 52px);
+    background: #000;
+    color: #fff;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    overflow-x: hidden;
+  }
+
+  .lib-header-wrap,
+  .lib-controls-wrap,
+  .lib-grid-wrap,
+  .lib-footer {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .lib-header-wrap { padding-top: 56px; }
+
+  .lib-header {
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+  }
+
+  .lib-kicker {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .lib-kicker-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00D639;
+    display: inline-block;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .lib-title {
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 52px;
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    margin: 0 0 14px;
+  }
+
+  .lib-title span { color: #00D639; }
+
+  .lib-subtitle {
+    color: rgba(255,255,255,0.78);
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0;
+  }
+
+  .lib-pills {
+    max-width: 950px;
+    margin: 0 auto 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .library-root button,
+  .lib-overlay button {
+    appearance: none;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    cursor: pointer;
+  }
+
+  .lib-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 999px;
+    transition: all 0.18s;
+    white-space: nowrap;
+    border: 1px solid rgba(255,255,255,0.4);
+    background: transparent;
+    color: #fff;
+  }
+
+  .lib-pill:hover { border-color: #fff; transform: none; }
+  .lib-pill svg { width: 15px; height: 15px; opacity: 0.5; }
+  .lib-pill.active { background: #00D639; border-color: #00D639; color: #000; }
+  .lib-pill.active svg { opacity: 1; }
+
+  .lib-search-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .lib-search-box {
+    position: relative;
+    flex: 1;
+  }
+
+  .lib-search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    color: rgba(255,255,255,0.3);
+    pointer-events: none;
+  }
+
+  #lib-search {
+    width: 100%;
+    box-sizing: border-box;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 14px;
+    padding: 14px 18px 14px 46px;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    color: #fff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  #lib-search:focus {
+    border-color: #00D639;
+    box-shadow: 0 0 0 3px rgba(0,214,57,0.1);
+  }
+
+  .lib-surprise-btn {
+    min-width: 154px;
+    min-height: 50px;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 13px 20px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    background: rgba(8,10,12,0.78);
+    color: #fff;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+  }
+
+  .lib-surprise-btn:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255,255,255,0.28);
+    background: rgba(255,255,255,0.055);
+  }
+
+  .lib-surprise-btn:focus-visible { outline: 2px solid #00D639; outline-offset: 4px; }
+  .lib-surprise-label { position: relative; z-index: 2; }
+
+  .lib-surprise-shimmer {
+    position: absolute;
+    inset: -45%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-95%);
+    background: linear-gradient(110deg, transparent 35%, rgba(255,255,255,0.55) 48%, transparent 60%);
+  }
+
+  .lib-surprise-btn.is-shimmering .lib-surprise-shimmer { animation: libShimmerSweep 1100ms ease-in-out both; }
+  .lib-surprise-btn.is-bouncing { animation: libGentleBounce 900ms ease-in-out both; }
+  .lib-surprise-btn.is-pulsing { animation: libSoftPulse 950ms ease-in-out both; }
+  .lib-surprise-btn.is-wiggling { animation: libTinyWiggle 900ms ease-in-out both; transform-origin: 50% 80%; }
+
+  @keyframes libShimmerSweep {
+    0% { opacity:0; transform:translateX(-95%); }
+    15% { opacity:1; }
+    85% { opacity:0.8; }
+    100% { opacity:0; transform:translateX(95%); }
+  }
+
+  @keyframes libGentleBounce {
+    0%,100% { transform:translateY(0); }
+    35% { transform:translateY(-7px); }
+    62% { transform:translateY(0); }
+    82% { transform:translateY(-3px); }
+  }
+
+  @keyframes libSoftPulse {
+    0%,100% { transform:scale(1); }
+    50% { transform:scale(1.045); }
+  }
+
+  @keyframes libTinyWiggle {
+    0%,100% { transform:rotate(0deg); }
+    28% { transform:rotate(-2.5deg); }
+    54% { transform:rotate(2.5deg); }
+    78% { transform:rotate(-1deg); }
+  }
+
+  .lib-grid-wrap { padding-bottom: 80px; }
+
+  .lib-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .lib-card {
+    position: relative;
+    background: #0B0B0B;
+    border: 1px solid rgba(255,255,255,0.46);
+    border-radius: 14px;
+    padding: 20px;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: border-color 0.18s, transform 0.18s, box-shadow 0.18s, background 0.18s;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.045), 0 18px 50px rgba(0,0,0,0.34);
+  }
+
+  .lib-card:hover {
+    border-color: rgba(255,255,255,0.66);
+    transform: translateY(-2px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.09), 0 24px 70px rgba(0,0,0,0.56);
+    background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.085), transparent 64%), linear-gradient(180deg, rgba(255,255,255,0.060), rgba(255,255,255,0.018)), #0D0D0D;
+  }
+
+  .lib-card-category {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.36);
+    margin-bottom: 12px;
+    padding-right: 30px;
+  }
+
+  .lib-card-title {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 10px;
+    color: #fff;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    padding-right: 22px;
+  }
+
+  .lib-card-prompt {
+    font-size: 14px;
+    line-height: 1.45;
+    color: rgba(255,255,255,0.85);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .prompt-var-bracketed,
+  .lib-var { color: #00D639; font-weight: 700; }
+
+  .lib-card-actions {
+    display: grid;
+    grid-template-columns: 1fr 0.82fr;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 18px;
+  }
+
+  .lib-card-btn,
+  .trace-btn {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 0 14px;
+    height: 38px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.045);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #fff;
+    transition: border-color 0.16s, background 0.16s, transform 0.16s, color 0.16s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .trace-btn { color: #00D639; }
+  .lib-card-btn:hover { border-color: rgba(255,255,255,0.26); background: rgba(255,255,255,0.075); transform: translateY(-1px); }
+  .trace-btn:hover { border-color: transparent; background: rgba(255,255,255,0.06); transform: translateY(-1px); }
+
+  .trace-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  .trace-rect {
+    filter: drop-shadow(0 0 7px rgba(0,214,57,0.45));
+    transition: opacity 0.16s;
+    animation: traceBorder 1.45s linear infinite;
+    animation-play-state: paused;
+  }
+
+  .trace-btn:hover .trace-rect,
+  .trace-btn:active .trace-rect {
+    opacity: 1;
+    animation-play-state: running;
+  }
+
+  .trace-btn span { position: relative; z-index: 2; }
+
+  .expand-ico {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 18px;
+    height: 18px;
+    color: #00D639;
+    opacity: 0;
+    transform: scale(0.92) translateY(4px);
+    transition: opacity 0.16s, transform 0.16s;
+    pointer-events: none;
+  }
+
+  .lib-card:hover .expand-ico { opacity: 1; transform: scale(1) translateY(0); }
+
+  .lib-no-results {
+    text-align: center;
+    padding: 64px 20px;
+    color: rgba(255,255,255,0.4);
+    font-size: 15px;
+  }
+
+  .lib-footer {
+    text-align: center;
+    padding-top: 48px;
+    padding-bottom: 48px;
+    margin-top: 48px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.3);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+
+  .lib-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 520;
+    background: rgba(0,0,0,0.86);
+    backdrop-filter: blur(24px) saturate(0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    animation: overlayIn 0.2s ease;
+  }
+
+  .lib-overlay[hidden] { display: none; }
+
+  @keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes modalIn { from { opacity: 0; transform: scale(0.94) translateY(12px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+  @keyframes traceBorder { to { stroke-dashoffset: 0; } }
+
+  .lib-modal {
+    width: min(680px, calc(100% - 48px));
+    max-height: 82vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.018)), #050505;
+    box-shadow: 0 30px 110px rgba(0,0,0,0.72);
+    padding: 28px;
+    animation: modalIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .lib-modal-close-row { display: flex; justify-content: flex-end; margin-bottom: 4px; }
+
+  .lib-modal-close {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    color: rgba(255,255,255,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: border-color 0.2s, color 0.2s;
+    padding: 0;
+  }
+
+  .lib-modal-close:hover { border-color: rgba(255,255,255,0.3); color: #fff; transform: none; }
+  .lib-modal-category { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #00D639; margin-bottom: 8px; }
+  .lib-modal-tool { font-size: 12px; color: rgba(255,255,255,0.35); margin-bottom: 20px; letter-spacing: 0.03em; }
+  .lib-modal-title { font-size: 36px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 24px; }
+
+  .lib-modal-prompt,
+  .lib-live-preview {
+    font-size: 16px;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.85);
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 20px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .lib-modal-source {
+    margin-top: 20px;
+    display: inline-flex;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: rgba(0,214,57,0.1);
+    color: #00D639;
+    border: 1px solid rgba(0,214,57,0.2);
+  }
+
+  .lib-modal-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .lib-modal-personalise,
+  .lib-modal-copy {
+    font-size: 14px;
+    font-weight: 700;
+    padding: 14px 20px;
+    height: auto;
+    border-radius: 999px;
+    transition: all 0.16s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lib-modal-copy {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #fff;
+  }
+
+  .lib-modal-copy:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.07); transform: none; }
+
+  .lib-personaliser {
+    width: min(680px, 100%);
+    max-height: 85vh;
+    overflow-y: auto;
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015)), #0a0a0a;
+    box-shadow: 0 32px 100px rgba(0,0,0,0.7);
+    padding: 32px;
+    animation: modalIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .lib-personaliser-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .lib-personaliser-kicker { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #00D639; }
+  .lib-personaliser-title { font-size: 24px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 24px; }
+  .lib-input-block { margin-bottom: 16px; }
+  .lib-input-block label { display: block; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.5); margin-bottom: 6px; }
+  .lib-input-block label span { color: #00D639; font-weight: 700; }
+
+  .lib-input-block input {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 13px;
+    color: #fff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .lib-input-block input:focus { border-color: #00D639; box-shadow: 0 0 0 3px rgba(0,214,57,0.1); }
+  .lib-live-preview-label { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin: 8px 0 12px; }
+  .lib-live-preview { font-size: 14px; line-height: 1.7; color: rgba(255,255,255,0.65); border-color: rgba(255,255,255,0.08); border-radius: 12px; }
+
+  .lib-copy-final {
+    width: 100%;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    background: #00D639;
+    color: #000;
+    transition: opacity 0.2s, transform 0.15s;
+    margin-top: 20px;
+  }
+
+  .lib-copy-final:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  @media (max-width: 780px) { .lib-grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) {
+    .lib-header-wrap, .lib-controls-wrap, .lib-grid-wrap, .lib-footer { padding-left: 16px; padding-right: 16px; }
+    .lib-search-row { flex-direction: column; }
+    .lib-surprise-btn { width: 100%; }
+    .lib-modal, .lib-personaliser { width: 100%; padding: 22px; }
+    .lib-modal-actions { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 500px) { .lib-grid-3 { grid-template-columns: 1fr; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lib-surprise-btn,
+    .lib-surprise-btn.is-shimmering .lib-surprise-shimmer,
+    .lib-surprise-btn.is-bouncing,
+    .lib-surprise-btn.is-pulsing,
+    .lib-surprise-btn.is-wiggling { animation: none; transition: none; }
+  }
+
+
+  /* Light mode support for direct Library section */
+  body.light #library-view,
+  body.light .library-root {
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  body.light .lib-header { border-bottom-color: rgba(0,0,0,0.08); }
+  body.light .lib-kicker { color: rgba(0,0,0,0.62); }
+  body.light .lib-subtitle { color: rgba(0,0,0,0.68); }
+  body.light .lib-pill {
+    border-color: rgba(0,0,0,0.24);
+    background: transparent;
+    color: #000;
+  }
+  body.light .lib-pill:hover { border-color: rgba(0,0,0,0.52); }
+  body.light .lib-pill.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+  }
+  body.light .lib-search-icon { color: rgba(0,0,0,0.34); }
+  body.light #lib-search {
+    background: rgba(0,0,0,0.025);
+    border-color: rgba(0,0,0,0.22);
+    color: #000;
+  }
+  body.light #lib-search::placeholder { color: rgba(0,0,0,0.42); }
+  body.light .lib-surprise-btn {
+    background: #fff;
+    border-color: rgba(0,0,0,0.14);
+    color: #000;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 10px 28px rgba(0,0,0,0.06);
+  }
+  body.light .lib-surprise-btn:hover {
+    border-color: rgba(0,0,0,0.28);
+    background: rgba(0,0,0,0.025);
+  }
+  body.light .lib-card {
+    background: #fff;
+    border-color: rgba(0,0,0,0.18);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 16px 42px rgba(0,0,0,0.07);
+  }
+  body.light .lib-card:hover {
+    background: radial-gradient(circle at 50% 0%, rgba(0,0,0,0.035), transparent 64%), linear-gradient(180deg, rgba(0,0,0,0.025), rgba(0,0,0,0.006)), #fff;
+    border-color: rgba(0,0,0,0.34);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 22px 60px rgba(0,0,0,0.10);
+  }
+  body.light .lib-card-category { color: rgba(0,0,0,0.45); }
+  body.light .lib-card-title { color: #000; }
+  body.light .lib-card-prompt { color: rgba(0,0,0,0.74); }
+  body.light .lib-card-btn,
+  body.light .trace-btn {
+    background: rgba(0,0,0,0.025);
+    border-color: rgba(0,0,0,0.12);
+    color: #000;
+  }
+  body.light .trace-btn { color: #00a82b; }
+  body.light .lib-card-btn:hover {
+    border-color: rgba(0,0,0,0.24);
+    background: rgba(0,0,0,0.045);
+  }
+  body.light .trace-btn:hover {
+    border-color: transparent;
+    background: rgba(0,214,57,0.075);
+  }
+  body.light .lib-no-results { color: rgba(0,0,0,0.45); }
+  body.light .lib-footer {
+    border-top-color: rgba(0,0,0,0.08);
+    color: rgba(0,0,0,0.38);
+  }
+
+  body.light .lib-modal,
+  body.light .lib-personaliser {
+    background: linear-gradient(180deg, rgba(0,0,0,0.025), rgba(0,0,0,0.006)), #fff;
+    border-color: rgba(0,0,0,0.14);
+    color: #000;
+    box-shadow: 0 30px 90px rgba(0,0,0,0.18);
+  }
+  body.light .lib-modal-close {
+    border-color: rgba(0,0,0,0.14);
+    color: rgba(0,0,0,0.45);
+  }
+  body.light .lib-modal-close:hover {
+    border-color: rgba(0,0,0,0.32);
+    color: #000;
+  }
+  body.light .lib-modal-tool { color: rgba(0,0,0,0.44); }
+  body.light .lib-modal-prompt,
+  body.light .lib-live-preview {
+    background: rgba(0,0,0,0.025);
+    border-color: rgba(0,0,0,0.10);
+    color: rgba(0,0,0,0.76);
+  }
+  body.light .lib-modal-copy {
+    background: rgba(0,0,0,0.025);
+    border-color: rgba(0,0,0,0.12);
+    color: #000;
+  }
+  body.light .lib-modal-copy:hover {
+    border-color: rgba(0,0,0,0.24);
+    background: rgba(0,0,0,0.045);
+  }
+  body.light .lib-input-block label { color: rgba(0,0,0,0.52); }
+  body.light .lib-input-block input {
+    background: rgba(0,0,0,0.025);
+    border-color: rgba(0,0,0,0.12);
+    color: #000;
+  }
+  body.light .lib-live-preview-label { color: rgba(0,0,0,0.36); }
+
+</style>
+</head>
+
+<body>
+  <nav>
+    <div class="nav-left">
+      <a class="nav-brand" href="#home" data-page="home">MA&amp;A · AI Prompts</a>
+      <div class="nav-tabs" aria-label="Main navigation">
+        <a class="nav-tab active" href="#home" data-page="home">Home</a>
+        <a class="nav-tab" href="#library" data-page="library">Library</a>
+        <a class="nav-tab" href="#personaliser" data-noop="true">Personaliser</a>
+        <a class="nav-tab" href="#feedback" data-noop="true">Feedback</a>
+      </div>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark">☀</button>
+  </nav>
+
+  <main class="page-shell view active" id="home-view">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-tag"><span class="hero-dot"></span>From the MA&amp;A Team</div>
+      <h1 class="hero-title" id="hero-title"><span class="headline-line">Prompts our teams</span><br><span class="headline-line headline-nowrap">have <span class="rotator" id="rotator">tried</span><span class="rotator-period">.</span></span></h1>
+      <p class="hero-sub">Copy, paste, and go. A practical library of 50+ AI prompts built by MA&amp;A.</p>
+      <div class="hero-btns">
+        <a class="button hero-action" href="#library" data-page="library">Browse prompts →</a>
+        <a class="button hero-action-muted" href="#personaliser" data-noop="true">Personalise for me</a>
+        <button class="surprise-trace landing-surprise-button" id="surpriseBtn" onclick="surpriseMe()">
+          <span class="landing-surprise-shimmer" aria-hidden="true"></span>
+          <span class="landing-surprise-label">Surprise me ✦</span>
+        </button>
+      </div>
+      <a class="scroll-cue" href="#how-it-works">See how it works ↓</a>
+    </section>
+
+    <div class="wrapper">
+      <section class="how-it-works" id="how-it-works" aria-labelledby="how-title">
+        <div class="how-header">
+          <h2 id="how-title">How it works</h2>
+        </div>
+        <div class="steps">
+          <article class="step">
+            <div class="step-number">1</div>
+            <strong>Explore</strong>
+            <span>Browse the library, find a prompt or just get inspired.</span>
+          </article>
+          <article class="step">
+            <div class="step-number">2</div>
+            <strong>Personalise</strong>
+            <span>Add your own details and make it yours.</span>
+          </article>
+          <article class="step">
+            <div class="step-number">3</div>
+            <strong>Copy and go</strong>
+            <span>Paste into Copilot, Claude, ChatGPT or wherever you're working.</span>
+          </article>
+        </div>
+      </section>
+
+      <footer>From the MA&amp;A Team - Sage</footer>
+    </div>
+  </main>
+
+  <section class="view" id="library-view" aria-label="Prompt library">
+    <div class="library-root">
+      <div class="lib-header-wrap">
+        <div class="lib-header">
+          <div class="lib-kicker"><span class="lib-kicker-dot"></span><span>From the MA&amp;A Team</span></div>
+          <h1 class="lib-title">Copy.<br><span>Paste.</span> Go.</h1>
+          <p class="lib-subtitle">Prompts tried, tested and shared by the MA&amp;A team. Find what you need, copy it, and make it yours.</p>
+        </div>
+      </div>
+
+      <div class="lib-controls-wrap">
+        <div class="lib-pills" id="lib-pills"></div>
+        <div class="lib-search-row">
+          <div class="lib-search-box">
+            <svg class="lib-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7.5"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+            <input id="lib-search" type="text" placeholder="Search prompts..." autocomplete="off">
+          </div>
+          <button id="libSurpriseBtn" class="lib-surprise-btn" onclick="surpriseMe()" type="button" aria-label="Surprise me — library">
+            <span class="lib-surprise-shimmer" aria-hidden="true"></span>
+            <span class="lib-surprise-label">Surprise me ✦</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="lib-grid-wrap">
+        <div class="lib-grid-3" id="lib-grid"></div>
+        <div class="lib-no-results" id="lib-no-results" hidden>No prompts match your search.</div>
+      </div>
+
+      <div class="lib-footer">From the MA&amp;A Team — Sage</div>
+    </div>
+
+    <div class="lib-overlay" id="lib-modal-overlay" hidden>
+      <div class="lib-modal" role="dialog" aria-modal="true" aria-labelledby="lib-modal-title">
+        <div class="lib-modal-close-row">
+          <button class="lib-modal-close" id="lib-modal-close" aria-label="Close">✕</button>
+        </div>
+        <div class="lib-modal-category" id="lib-modal-category"></div>
+        <div class="lib-modal-tool" id="lib-modal-tool"></div>
+        <div class="lib-modal-title" id="lib-modal-title"></div>
+        <div class="lib-modal-prompt" id="lib-modal-prompt"></div>
+        <div class="lib-modal-source" id="lib-modal-source"></div>
+        <div class="lib-modal-actions">
+          <button class="lib-modal-personalise trace-btn" id="lib-modal-personalise">
+            <svg class="trace-svg" viewBox="0 0 260 44" preserveAspectRatio="none"><rect class="trace-rect" x="1.5" y="1.5" width="257" height="41" rx="21" pathLength="1" fill="none" stroke="#00D639" stroke-width="2.2" vector-effect="non-scaling-stroke" opacity="0" stroke-linecap="round" stroke-dasharray="0.22 0.78" stroke-dashoffset="1"></rect></svg>
+            <span>Personalise</span>
+          </button>
+          <button class="lib-modal-copy" id="lib-modal-copy">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="lib-overlay" id="lib-personaliser-overlay" hidden>
+      <div class="lib-personaliser" role="dialog" aria-modal="true" aria-labelledby="lib-personaliser-title">
+        <div class="lib-personaliser-head">
+          <div class="lib-personaliser-kicker">Personalise prompt</div>
+          <button class="lib-modal-close" id="lib-personaliser-close" aria-label="Close">✕</button>
+        </div>
+        <div class="lib-personaliser-title" id="lib-personaliser-title"></div>
+        <div id="lib-variable-inputs"></div>
+        <div class="lib-live-preview-label">Live preview</div>
+        <div class="lib-live-preview" id="lib-live-preview"></div>
+        <button class="lib-copy-final" id="lib-copy-final">Copy prompt</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Shared Surprise Me Modal -->
+  <div class="surprise-overlay" id="surprise-overlay" onclick="handleOverlayClick(event)" aria-hidden="true">
+    <div class="surprise-card" id="surprise-card" role="dialog" aria-modal="true" aria-labelledby="surprise-title">
+      <div class="surprise-topline">
+        <div class="surprise-meta">
+          <div class="surprise-category" id="surprise-category"></div>
+          <div class="surprise-tool" id="surprise-tool"></div>
+          <div class="surprise-goodfor" id="surprise-goodfor"></div>
+        </div>
+        <button class="surprise-close" onclick="closeSurprise()" title="Close" aria-label="Close surprise prompt">✕</button>
+      </div>
+      <div class="surprise-title" id="surprise-title"></div>
+      <div class="surprise-divider"></div>
+      <div class="surprise-prompt" id="surprise-prompt"></div>
+      <div class="surprise-source-badge" id="surprise-source"></div>
+      <div class="surprise-actions">
+        <button class="surprise-personalise-btn" id="surprise-personalise-btn" onclick="personaliseSurprisePrompt()">Personalise</button>
+        <button class="surprise-copy-btn" id="surprise-copy-btn" onclick="copySurprisePrompt()">Copy</button>
+        <button class="surprise-roll-btn" id="surprise-roll-btn" onclick="rollAgain()">🎲 Roll again</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const words = ['tried', 'tested', 'refined', 'used'];
+    let wordIndex = 0;
+
+    function animateWords() {
+      const rotator = document.getElementById('rotator');
+      if (!rotator) return;
+
+      wordIndex = (wordIndex + 1) % words.length;
+      rotator.classList.remove('flip');
+      void rotator.offsetWidth;
+      rotator.textContent = words[wordIndex];
+      rotator.classList.add('flip');
+
+      const delay = words[wordIndex] === 'used' ? 2600 : 900;
+      window.setTimeout(animateWords, delay);
+    }
+
+    window.setTimeout(animateWords, 900);
+
+    function toggleTheme() {
+      document.body.classList.toggle('light');
+      const toggle = document.querySelector('.theme-toggle');
+      toggle.textContent = document.body.classList.contains('light') ? '☾' : '☀';
+    }
+
+    function startLandingSurpriseButton() {
+      const button = document.getElementById('surpriseBtn');
+      if (!button) return;
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) return;
+
+      window.setTimeout(() => {
+        button.classList.add('shimmer-once');
+      }, 1600);
+
+      window.setTimeout(() => {
+        button.classList.remove('shimmer-once');
+        button.classList.add('is-tracing');
+      }, 2850);
+    }
+
+    const surpriseData = [
+      {
+        category: "Getting Started",
+        desc: "New to AI? Begin here.",
+        prompts: [
+          { title: "What can you do?", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "What can you do? Give me practical examples relevant to someone working in []." },
+          { title: "Smallest step today", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "What's the smallest thing I can do today to get started with [topic] using AI?" },
+          { title: "Break down a task into steps", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "How can I break this down into smaller steps? [paste your task here]" },
+          { title: "Help me prioritise tasks", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I have a list of tasks. Help me prioritise them by effort vs impact. [paste your list]" },
+        ]
+      },
+      {
+        category: "Data & Analysis",
+        desc: "Turn numbers into narratives.",
+        prompts: [
+          { title: "Analyse data and surface key insights", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I'm analysing this dataset for [context or goal]. Identify 3–5 key insights I should present. Focus on meaningful trends, patterns, or anomalies. For each insight, explain what's happening, why it matters, and what action it suggests. Present the insights in a clear, clean table. Then suggest a few follow-up questions or areas to explore next. [upload data]" },
+          { title: "Spot the story in data", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Here's some [campaign or report] data. What's the main story I should be telling from this? [paste data or description]" },
+          { title: "Get to the \"so what\"", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Here are my results: [paste results]. Help me get to the \"so what\" — what does this mean and what should we do next?" },
+          { title: "Build hypotheses from data", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I'm seeing [observation] in my data. Help me build 3 hypotheses for why this might be happening." },
+          { title: "Sense check analysis", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Here's my analysis and conclusion: [paste]. Can you sense check my logic and flag anything I might have missed?" },
+          { title: "Analyse churn drivers", tool: "Copilot", source: "Team submission", prompt: "You are a data analyst. Analyse the following customer data and identify the top drivers of churn. Focus on patterns related to complexity score, engagement metrics, and support interactions. Provide a summary of findings and recommend actions to reduce churn. [paste data]" },
+          { title: "Analyse A/B test results", tool: "Claude", source: "Team submission", prompt: "Analyse the results of an A/B test in Power BI using DAX. The test compares two versions of [describe test]. Calculate statistical significance, identify the winning variant, and summarise the key takeaways. [paste data or DAX code]" },
+          { title: "Build a data dashboard", tool: "ChatGPT", source: "Team submission", prompt: "Help me design a Power BI dashboard for [business area or team]. Suggest key metrics to include, how to structure the layout, and which visualisations would work best for the audience. The goal is to make it easy to spot trends and take action." },
+          { title: "Compare organic vs brand search", tool: "Claude", source: "Team submission", prompt: "Analyse the following search data and compare organic vs brand search performance. Identify trends, highlight areas of concern, and suggest actions to improve organic visibility. [paste data]" },
+          { title: "Reconcile email performance data", tool: "Snowflake Cortex", source: "Team submission", prompt: "I have email performance data from two sources that don't match. Help me identify discrepancies between [source A] and [source B]. Highlight rows where metrics differ significantly and suggest reasons for the gaps. [paste data]" },
+          { title: "Analyse email fatigue", tool: "Snowflake Cortex", source: "Team submission", prompt: "Using the following email engagement data, identify signs of audience fatigue. Look for declining open rates, increasing unsubscribes, and drop-off patterns over time. Recommend actions to re-engage the audience. [paste data]" },
+        ]
+      },
+      {
+        category: "Writing & Comms",
+        desc: "Clearer, faster communication.",
+        prompts: [
+          { title: "Improve written content", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Here's a draft I've written. Improve the clarity and cut anything unnecessary while keeping the meaning. [paste draft]" },
+          { title: "Summarise for leadership", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Summarise the following for a senior leadership audience. Start with a single sentence that clearly states the key insight or takeaway (\"the so what\"). Then provide 2–3 short bullet points covering the key impacts or recommended actions. Use clear, direct language and avoid unnecessary detail. [paste content]" },
+          { title: "Write a team update", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Write a short team update about [topic]. Use 3–5 bullet points, clear and direct language, and focus on key updates and actions." },
+          { title: "Translate into plain English", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Rewrite this in plain English for a non-technical stakeholder. [paste text]" },
+          { title: "Generate content angles", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "I'm creating content about [topic] for [audience]. Give me 5 different angles or hooks." },
+          { title: "Improve marketing copy", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Rewrite this copy to be more compelling and specific. Remove generic phrases. [paste copy]" },
+          { title: "Generate subject line options", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Write 5 subject line variants for a campaign about [topic]. Audience: [audience]. Goal: [goal]." },
+          { title: "Tailor message to audience", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "How would you position [message] for [specific audience]? What language would resonate?" },
+          { title: "Review and improve content", tool: "Copilot", source: "Team submission", prompt: "Review and improve the following written content. Make it clearer, more concise, and more engaging while keeping the original meaning. Highlight any changes you make and explain why. [paste content]" },
+          { title: "Generate internal social posts", tool: "Copilot", source: "Team submission", prompt: "Write 3 Viva Engage posts about [topic] for an internal audience. Keep each post under 150 words. The tone should be [professional/conversational/inspiring]. Include a call to action in each post." },
+          { title: "Rewrite email from notes", tool: "Copilot", source: "Team submission", prompt: "I have rough notes from a meeting or conversation. Turn them into a clear, professional email. Keep it concise, lead with the key message, and include a clear next step. [paste notes]" },
+        ]
+      },
+      {
+        category: "Strategy & Planning",
+        desc: "Think bigger, plan smarter.",
+        prompts: [
+          { title: "Challenge ideas with devil's advocate", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Team submission", prompt: "Play devil's advocate on the following idea or plan. Identify the biggest risks, weaknesses, and assumptions. Be specific and constructive — the goal is to stress-test the thinking, not just criticise. [describe idea or paste plan]" },
+          { title: "Research customer journey stages", tool: "ChatGPT", source: "Team submission", prompt: "Research and summarise the typical journey a [type of customer] goes through when [describe decision or process]. Identify the key stages, what they're thinking and feeling at each stage, and what information or support they need. Format this as a clear journey map." },
+        ]
+      },
+      {
+        category: "Learning & Exploration",
+        desc: "Go deeper on anything.",
+        prompts: [
+          { title: "Learn a topic quickly", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Give me a clear, structured overview of [topic]. Include key concepts, a simple example, and when it's used in practice. Keep it concise." },
+          { title: "Compare two concepts", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "What's the difference between [concept A] and [concept B]? Use a real-world example." },
+          { title: "Quiz me on a topic", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Quiz me on [topic] with 5 questions, starting easy and getting harder. After each answer, tell me if I'm right and explain why." },
+          { title: "Recommend next learning step", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I've just learned about [topic]. What should I explore next to go deeper?" },
+          { title: "Explain using a simple diagram", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Explain how [concept] works using a simple text-based (ASCII) diagram and include a short explanation alongside it. Make it easy to follow and clearly show the structure or flow." },
+          { title: "Learn a topic quickly (80/20)", tool: "ChatGPT", source: "Team submission", prompt: "I want to learn about [topic]. Use the 80/20 rule to focus on the 20% of concepts that will give me 80% of the understanding. Give me a structured overview with the most important ideas first, practical examples, and what to focus on to get up to speed quickly." },
+          { title: "Break down complex ideas", tool: "Claude", source: "Team submission", prompt: "Take the following complex concept and break it down so that someone new to the topic can understand it. Use simple language, avoid jargon, and include a real-world analogy to make it stick. [paste concept or topic]" },
+        ]
+      },
+      {
+        category: "Go Deeper",
+        desc: "Push beyond the surface.",
+        prompts: [
+          { title: "Break down a topic from first principles", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Break [topic] down using first principles thinking. Start by identifying the common assumptions people make about this topic. Then strip those assumptions away and focus only on what is fundamentally true. Rebuild the concept step by step from these core truths. Show what changes when you remove inherited thinking." },
+          { title: "Explain a topic simply (no jargon)", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Now explain [topic] as if I'm new to it. Use no jargon, no assumed knowledge, and include two different examples to make it clear. If anything is still unclear, simplify it further until it's genuinely easy to understand." },
+        ]
+      },
+      {
+        category: "Coding",
+        desc: "Write, fix and improve code.",
+        prompts: [
+          { title: "Fix a DAX formula", tool: "Claude", source: "Team submission", prompt: "I have a DAX formula that isn't working as expected. Review the code, identify the issue, and provide a corrected version with an explanation of what was wrong and why the fix works. [paste DAX code]" },
+          { title: "Generate UI code", tool: "Copilot", source: "Team submission", prompt: "Generate an Adaptive Card JSON for [describe the card's purpose and content]. It should include [list key elements e.g. title, body text, action buttons]. Make it clean and functional for use in [Teams / Outlook / Power Automate]." },
+          { title: "Fix bugs step by step", tool: "Claude", source: "Team submission", prompt: "I have a bug in my code that I can't resolve. Walk me through debugging it step by step. Ask me clarifying questions if needed, suggest what to check first, and help me identify the root cause before suggesting a fix. [paste code and describe the issue]" },
+          { title: "Improve application code", tool: "Claude", source: "Team submission", prompt: "Review the following code and suggest improvements. Focus on readability, performance, and best practices. Explain each change you recommend and why it makes the code better. [paste code]" },
+          { title: "Check SQL query", tool: "Snowflake Cortex", source: "Team submission", prompt: "Review the following SQL query and check it for errors, inefficiencies, or logic issues. Suggest improvements and explain your reasoning. If the query can be simplified or optimised, show me how. [paste SQL]" },
+          { title: "Aggregate data using code", tool: "Claude", source: "Team submission", prompt: "Write a script to aggregate data from [describe data source or structure]. The goal is to [describe output e.g. summarise by region, calculate totals by month]. Use [R / Python / SQL] and include comments explaining each step. [paste data sample if available]" },
+          { title: "Aggregate CSV data", tool: "Claude", source: "Team submission", prompt: "I have a CSV file with the following structure: [describe columns and data]. Write an R script to load the file, aggregate the data by [field], and output a summary table showing [desired metrics]. Include error handling and comments." },
+          { title: "Convert date format", tool: "Copilot", source: "Team submission", prompt: "I have a column in Excel with dates in [current format e.g. DD/MM/YYYY]. Write a formula to convert them to [target format e.g. YYYY-MM-DD]. Explain how the formula works and how to apply it to the full column." },
+          { title: "Improve data model", tool: "Claude", source: "Team submission", prompt: "Review the following data model or notebook and suggest improvements. Focus on structure, clarity, and performance. Highlight any issues with the current approach and recommend a better way to organise or write the code. [paste code or describe model]" },
+          { title: "Build a Workfront calculated field", tool: "Copilot", source: "Team submission", prompt: "Help me build a calculated field in Workfront for [describe the purpose]. The field should [describe logic or output]. Walk me through the formula syntax and how to set it up correctly in Workfront." },
+        ]
+      },
+      {
+        category: "Tools & Workflows",
+        desc: "Get more from your tools.",
+        prompts: [
+          { title: "Automate QA tasks", tool: "Copilot", source: "Team submission", prompt: "Help me automate the following quality assurance task in [tool or system]: [describe task]. Suggest a workflow or process that reduces manual effort, catches errors early, and can be repeated consistently. Include any formulas, scripts, or steps needed." },
+          { title: "Apply brand styling to app", tool: "Claude", source: "Team submission", prompt: "I have a Streamlit app and want to apply our brand colours and styling. Our primary colour is [hex code], secondary is [hex code], and font is [font name]. Update the app's CSS and layout to match these brand guidelines while keeping the functionality intact. [paste current code]" },
+        ]
+      },
+      {
+        category: "Design & Imagery",
+        desc: "Create and adapt visuals.",
+        prompts: [
+          { title: "Localise image for market", tool: "Adobe", source: "Team submission", prompt: "I need to localise the following image for the [market/region] market. Adapt any text, imagery, or cultural references to be appropriate and relevant for that audience. Highlight what changes you would make and why. [describe or attach image]" },
+          { title: "Localise video for market", tool: "Adobe", source: "Team submission", prompt: "I need to localise this video for the [market/region] market. Suggest changes to voiceover, on-screen text, visuals, and cultural references to make it suitable for the local audience. Provide a list of recommended adaptations. [describe video content]" },
+        ]
+      },
+    ];
+
+    const goodForMap = {
+      "Getting Started": "Getting a feel for what AI can do",
+      "Data & Analysis": "Making sense of data and numbers",
+      "Writing & Comms": "Faster, clearer communication",
+      "Strategy & Planning": "Big-picture thinking and planning",
+      "Learning & Exploration": "Going deeper on any topic",
+      "Go Deeper": "First-principles and advanced thinking",
+      "Coding": "Writing, fixing, or reviewing code",
+      "Tools & Workflows": "Getting more from your tools",
+      "Design & Imagery": "Creating and adapting visual content"
+    };
+
+    let lastSurpriseIndex = -1;
+    let currentSurprisePrompt = null;
+    let surpriseTimers = [];
+    let surpriseRolling = false;
+
+    function getAllPrompts() {
+      const all = [];
+      surpriseData.forEach((section) => {
+        section.prompts.forEach((prompt) => all.push({ ...prompt, category: section.category }));
+      });
+      return all;
+    }
+
+    function resetSurpriseButtons() {
+      const copyBtn = document.getElementById('surprise-copy-btn');
+      const rollBtn = document.getElementById('surprise-roll-btn');
+      const personaliseBtn = document.getElementById('surprise-personalise-btn');
+      if (copyBtn) {
+        copyBtn.textContent = 'Copy';
+        copyBtn.classList.remove('copied');
+      }
+      if (rollBtn) rollBtn.textContent = '🎲 Roll again';
+      if (personaliseBtn) personaliseBtn.textContent = 'Personalise';
+    }
+
+    function pickSurprisePrompt(all) {
+      let idx;
+      do {
+        idx = Math.floor(Math.random() * all.length);
+      } while (idx === lastSurpriseIndex && all.length > 1);
+
+      lastSurpriseIndex = idx;
+      return all[idx];
+    }
+
+    function surpriseMe() {
+      const overlay = document.getElementById('surprise-overlay');
+      if (!overlay) return;
+      overlay.classList.add('active');
+      overlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      rollSurpriseSequence();
+    }
+
+    function rollSurpriseSequence() {
+      if (surpriseRolling) return;
+
+      const all = getAllPrompts();
+      if (!all.length) return;
+
+      const card = document.getElementById('surprise-card');
+      const rollBtn = document.getElementById('surprise-roll-btn');
+      const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+      const steps = reduce ? 1 : 7;
+
+      surpriseTimers.forEach(clearTimeout);
+      surpriseTimers = [];
+      surpriseRolling = true;
+      resetSurpriseButtons();
+      if (card) card.classList.add('rolling');
+      if (rollBtn) rollBtn.textContent = 'Rolling...';
+
+      for (let i = 0; i < steps; i++) {
+        surpriseTimers.push(setTimeout(() => {
+          renderSurpriseCard(pickSurprisePrompt(all));
+
+          if (i === steps - 1) {
+            surpriseRolling = false;
+            if (card) card.classList.remove('rolling');
+            resetSurpriseButtons();
+          }
+        }, reduce ? 0 : 70 * i * (1 + i * 0.18)));
+      }
+    }
+
+    function rollAgain() {
+      rollSurpriseSequence();
+    }
+
+    function escSurpriseHtml(value) {
+      return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function formatSurprisePrompt(prompt) {
+      return escSurpriseHtml(prompt).replace(/\[([^\]]*)\]/g, (match) => {
+        return '<span class="prompt-var-bracketed">' + match + '</span>';
+      });
+    }
+
+    function renderSurpriseCard(prompt) {
+      currentSurprisePrompt = prompt;
+      document.getElementById('surprise-title').textContent = prompt.title;
+      document.getElementById('surprise-category').textContent = prompt.category;
+      document.getElementById('surprise-tool').textContent = prompt.tool ? 'Works with: ' + prompt.tool : '';
+      document.getElementById('surprise-goodfor').textContent = 'Good for: ' + (goodForMap[prompt.category] || prompt.category);
+      document.getElementById('surprise-prompt').innerHTML = formatSurprisePrompt(prompt.prompt);
+      document.getElementById('surprise-source').textContent = prompt.source || 'Prompt';
+    }
+
+    function closeSurprise() {
+      surpriseTimers.forEach(clearTimeout);
+      surpriseTimers = [];
+      surpriseRolling = false;
+      const card = document.getElementById('surprise-card');
+      const overlay = document.getElementById('surprise-overlay');
+      if (card) card.classList.remove('rolling');
+      resetSurpriseButtons();
+      if (overlay) {
+        overlay.classList.remove('active');
+        overlay.setAttribute('aria-hidden', 'true');
+      }
+      document.body.style.overflow = '';
+    }
+
+    function handleOverlayClick(event) {
+      if (event.target === document.getElementById('surprise-overlay')) closeSurprise();
+    }
+
+    function personaliseSurprisePrompt() {
+      if (!currentSurprisePrompt) return;
+      closeSurprise();
+      if (typeof window.showPromptLibraryPage === 'function') {
+        window.showPromptLibraryPage('library');
+      }
+      if (typeof openLibraryPersonaliser === 'function') {
+        openLibraryPersonaliser(currentSurprisePrompt);
+      }
+    }
+
+    function copySurprisePrompt() {
+      const btn = document.getElementById('surprise-copy-btn');
+      if (!currentSurprisePrompt || !btn) return;
+      navigator.clipboard.writeText(currentSurprisePrompt.prompt).then(() => {
+        btn.textContent = '✓ Copied';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 1800);
+      });
+    }
+
+
+
+    const libraryState = {
+      search: '',
+      activeCategory: -1,
+      modalPrompt: null,
+      persPrompt: null,
+      varValues: {},
+      copyLabels: {},
+      finalCopyLabel: 'Copy prompt'
+    };
+
+    const pillIcons = {
+      'All': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6 6.1 18.2l1.9-5.8L3 8.8h6.1z"/></svg>',
+      'Getting Started': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>',
+      'Data & Analysis': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>',
+      'Writing & Comms': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+      'Strategy & Planning': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+      'Learning & Exploration': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 1 4 12.7V17H8v-2.3A7 7 0 0 1 12 2z"/></svg>',
+      'Go Deeper': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>',
+      'Coding': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>',
+      'Tools & Workflows': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
+      'Design & Imagery': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></svg>'
+    };
+
+    function copyText(text) {
+      if (navigator.clipboard?.writeText) return navigator.clipboard.writeText(text);
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      const ok = document.execCommand('copy');
+      textarea.remove();
+      return ok ? Promise.resolve() : Promise.reject(new Error('Copy failed'));
+    }
+
+    function getLibraryPrompts() {
+      const search = libraryState.search.toLowerCase().trim();
+      const all = [];
+      surpriseData.forEach((section, sectionIndex) => {
+        if (libraryState.activeCategory !== -1 && sectionIndex !== libraryState.activeCategory) return;
+        section.prompts.forEach((prompt, promptIndex) => {
+          all.push({ ...prompt, category: section.category, sectionIndex, promptIndex, key: sectionIndex + '-' + promptIndex });
+        });
+      });
+      if (!search) return all;
+      return all.filter((p) =>
+        p.title.toLowerCase().includes(search) ||
+        p.prompt.toLowerCase().includes(search) ||
+        p.category.toLowerCase().includes(search) ||
+        String(p.tool || '').toLowerCase().includes(search)
+      );
+    }
+
+    function findPromptByKey(key) {
+      const [sectionIndex, promptIndex] = String(key).split('-').map(Number);
+      const section = surpriseData[sectionIndex];
+      const prompt = section?.prompts?.[promptIndex];
+      return prompt ? { ...prompt, category: section.category, sectionIndex, promptIndex, key } : null;
+    }
+
+    function escLibraryHtml(value) {
+      return String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function highlightLibraryVars(text) {
+      return escLibraryHtml(text).replace(/\[([^\]]*)\]/g, (match) => '<span class="lib-var">' + match + '</span>');
+    }
+
+    function extractLibraryVars(prompt) {
+      const vars = [];
+      const seen = new Set();
+      String(prompt || '').replace(/\[([^\]]*)\]/g, (match, key) => {
+        if (!seen.has(key)) {
+          seen.add(key);
+          vars.push(key);
+        }
+        return match;
+      });
+      return vars;
+    }
+
+    function renderLibraryPills() {
+      const holder = document.getElementById('lib-pills');
+      if (!holder) return;
+      const categories = ['All', ...surpriseData.map((section) => section.category)];
+      holder.innerHTML = categories.map((category, i) => {
+        const idx = i - 1;
+        const active = libraryState.activeCategory === idx;
+        return '<button class="lib-pill' + (active ? ' active' : '') + '" data-category-index="' + idx + '">' + (pillIcons[category] || '') + '<span>' + escLibraryHtml(category) + '</span></button>';
+      }).join('');
+    }
+
+    function renderLibraryCards() {
+      const grid = document.getElementById('lib-grid');
+      const noResults = document.getElementById('lib-no-results');
+      if (!grid || !noResults) return;
+      const cards = getLibraryPrompts();
+      noResults.hidden = cards.length !== 0;
+      grid.innerHTML = cards.map((p) => {
+        const copyLabel = libraryState.copyLabels[p.key] ? '✓ Copied' : 'Copy';
+        return `
+          <article class="lib-card" data-prompt-key="${p.key}">
+            <div>
+              <div class="lib-card-category">${escLibraryHtml(p.category)}</div>
+              <div class="lib-card-title">${escLibraryHtml(p.title)}</div>
+              <div class="lib-card-prompt">${highlightLibraryVars(p.prompt)}</div>
+            </div>
+            <div class="lib-card-actions">
+              <button class="trace-btn" data-action="personalise" data-prompt-key="${p.key}">
+                <svg class="trace-svg" viewBox="0 0 260 38" preserveAspectRatio="none"><rect class="trace-rect" x="1.5" y="1.5" width="257" height="35" rx="18" pathLength="1" fill="none" stroke="#00D639" stroke-width="2.2" vector-effect="non-scaling-stroke" opacity="0" stroke-linecap="round" stroke-dasharray="0.22 0.78" stroke-dashoffset="1"></rect></svg>
+                <span>Personalise</span>
+              </button>
+              <button class="lib-card-btn" data-action="copy" data-prompt-key="${p.key}">${copyLabel}</button>
+            </div>
+            <svg class="expand-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"></path><path d="M21 3l-7 7"></path><path d="M8 21H3v-5"></path><path d="M3 21l7-7"></path></svg>
+          </article>`;
+      }).join('');
+    }
+
+    function renderLibrary() {
+      renderLibraryPills();
+      renderLibraryCards();
+    }
+
+    function openLibraryModal(prompt) {
+      libraryState.modalPrompt = prompt;
+      document.getElementById('lib-modal-category').textContent = prompt.category;
+      document.getElementById('lib-modal-tool').textContent = prompt.tool || '';
+      document.getElementById('lib-modal-title').textContent = prompt.title;
+      document.getElementById('lib-modal-prompt').innerHTML = highlightLibraryVars(prompt.prompt);
+      document.getElementById('lib-modal-source').textContent = prompt.source || 'Prompt';
+      document.getElementById('lib-modal-copy').textContent = 'Copy';
+      document.getElementById('lib-modal-overlay').hidden = false;
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLibraryModal() {
+      libraryState.modalPrompt = null;
+      const overlay = document.getElementById('lib-modal-overlay');
+      if (overlay) overlay.hidden = true;
+      if (!document.getElementById('lib-personaliser-overlay') || document.getElementById('lib-personaliser-overlay').hidden) document.body.style.overflow = '';
+    }
+
+    function renderPersonaliserPreview() {
+      const prompt = libraryState.persPrompt;
+      const preview = document.getElementById('lib-live-preview');
+      if (!prompt || !preview) return;
+      preview.innerHTML = escLibraryHtml(prompt.prompt).replace(/\[([^\]]*)\]/g, (match, key) => {
+        const value = libraryState.varValues[key];
+        if (value && value.trim()) return '<span class="lib-var">' + escLibraryHtml(value.trim()) + '</span>';
+        return '<span class="lib-var">' + escLibraryHtml(match) + '</span>';
+      });
+    }
+
+    function openLibraryPersonaliser(prompt) {
+      libraryState.persPrompt = prompt;
+      libraryState.varValues = {};
+      libraryState.finalCopyLabel = 'Copy prompt';
+      const vars = extractLibraryVars(prompt.prompt);
+      vars.forEach((v) => { libraryState.varValues[v] = ''; });
+      document.getElementById('lib-personaliser-title').textContent = prompt.title;
+      document.getElementById('lib-copy-final').textContent = 'Copy prompt';
+      document.getElementById('lib-variable-inputs').innerHTML = vars.length ? vars.map((v) => `
+        <div class="lib-input-block">
+          <label>Fill in: <span>[${escLibraryHtml(v)}]</span></label>
+          <input type="text" placeholder="${escLibraryHtml(v)}" data-var-name="${escLibraryHtml(v)}">
+        </div>
+      `).join('') : '<div class="lib-input-block"><label>No bracketed fields found. You can still copy the prompt below.</label></div>';
+      renderPersonaliserPreview();
+      closeLibraryModal();
+      document.getElementById('lib-personaliser-overlay').hidden = false;
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLibraryPersonaliser() {
+      libraryState.persPrompt = null;
+      libraryState.varValues = {};
+      const overlay = document.getElementById('lib-personaliser-overlay');
+      if (overlay) overlay.hidden = true;
+      document.body.style.overflow = '';
+    }
+
+    function finalPersonalisedPrompt() {
+      const prompt = libraryState.persPrompt;
+      if (!prompt) return '';
+      return prompt.prompt.replace(/\[([^\]]*)\]/g, (match, key) => {
+        const value = libraryState.varValues[key];
+        return value && value.trim() ? value.trim() : match;
+      });
+    }
+
+    function startLibrarySurpriseAnimation() {
+      const btn = document.getElementById('libSurpriseBtn');
+      if (!btn || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const sequence = [
+        { className: 'is-shimmering', duration: 1200 },
+        { className: 'is-pulsing', duration: 1050 },
+        { className: 'is-bouncing', duration: 1000 },
+        { className: 'is-wiggling', duration: 1000 }
+      ];
+      const allClasses = sequence.map((s) => s.className);
+      let idx = 0;
+      const run = () => {
+        allClasses.forEach((c) => btn.classList.remove(c));
+        void btn.offsetWidth;
+        btn.classList.add(sequence[idx].className);
+        window.setTimeout(() => {
+          btn.classList.remove(sequence[idx].className);
+          idx = (idx + 1) % sequence.length;
+          window.setTimeout(run, idx === 0 ? 5000 : 850);
+        }, sequence[idx].duration);
+      };
+      window.setTimeout(run, 5000);
+    }
+
+    function initLibraryInteractions() {
+      renderLibrary();
+      startLibrarySurpriseAnimation();
+
+      const search = document.getElementById('lib-search');
+      if (search) search.addEventListener('input', (event) => {
+        libraryState.search = event.target.value;
+        renderLibraryCards();
+      });
+
+      document.getElementById('lib-pills')?.addEventListener('click', (event) => {
+        const pill = event.target.closest('.lib-pill');
+        if (!pill) return;
+        libraryState.activeCategory = Number(pill.dataset.categoryIndex);
+        renderLibrary();
+      });
+
+      document.getElementById('lib-grid')?.addEventListener('click', (event) => {
+        const actionButton = event.target.closest('[data-action]');
+        if (actionButton) {
+          event.preventDefault();
+          event.stopPropagation();
+          const prompt = findPromptByKey(actionButton.dataset.promptKey);
+          if (!prompt) return;
+          if (actionButton.dataset.action === 'copy') {
+            copyText(prompt.prompt).then(() => {
+              libraryState.copyLabels[prompt.key] = true;
+              renderLibraryCards();
+              setTimeout(() => {
+                delete libraryState.copyLabels[prompt.key];
+                renderLibraryCards();
+              }, 1800);
+            });
+          }
+          if (actionButton.dataset.action === 'personalise') openLibraryPersonaliser(prompt);
+          return;
+        }
+        const card = event.target.closest('.lib-card');
+        if (card) {
+          const prompt = findPromptByKey(card.dataset.promptKey);
+          if (prompt) openLibraryModal(prompt);
+        }
+      });
+
+      document.getElementById('lib-modal-close')?.addEventListener('click', closeLibraryModal);
+      document.getElementById('lib-modal-overlay')?.addEventListener('click', (event) => {
+        if (event.target.id === 'lib-modal-overlay') closeLibraryModal();
+      });
+      document.getElementById('lib-modal-copy')?.addEventListener('click', () => {
+        if (!libraryState.modalPrompt) return;
+        copyText(libraryState.modalPrompt.prompt).then(() => {
+          const btn = document.getElementById('lib-modal-copy');
+          btn.textContent = '✓ Copied';
+          setTimeout(() => { btn.textContent = 'Copy'; }, 1800);
+        });
+      });
+      document.getElementById('lib-modal-personalise')?.addEventListener('click', () => {
+        if (libraryState.modalPrompt) openLibraryPersonaliser(libraryState.modalPrompt);
+      });
+
+      document.getElementById('lib-personaliser-close')?.addEventListener('click', closeLibraryPersonaliser);
+      document.getElementById('lib-personaliser-overlay')?.addEventListener('click', (event) => {
+        if (event.target.id === 'lib-personaliser-overlay') closeLibraryPersonaliser();
+      });
+      document.getElementById('lib-variable-inputs')?.addEventListener('input', (event) => {
+        const input = event.target.closest('[data-var-name]');
+        if (!input) return;
+        libraryState.varValues[input.dataset.varName] = input.value;
+        renderPersonaliserPreview();
+      });
+      document.getElementById('lib-copy-final')?.addEventListener('click', () => {
+        copyText(finalPersonalisedPrompt()).then(() => {
+          const btn = document.getElementById('lib-copy-final');
+          btn.textContent = '✓ Copied!';
+          setTimeout(() => { btn.textContent = 'Copy prompt'; }, 1800);
+        });
+      });
+    }
+
+    document.addEventListener('keydown', (event) => {
+      const overlay = document.getElementById('surprise-overlay');
+      if (event.key === 'Escape' && overlay?.classList.contains('active')) closeSurprise();
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      startLandingSurpriseButton();
+      initLibraryInteractions();
+    });
+  </script>
+
+
+
+
+
+  <script>
+    (function () {
+      function setActiveNav(page) {
+        document.querySelectorAll('.nav-tab[data-page]').forEach((tab) => {
+          tab.classList.toggle('active', tab.dataset.page === page);
+        });
+      }
+
+      function showPage(page, pushHash) {
+        const nextPage = page === 'library' ? 'library' : 'home';
+        const homeView = document.getElementById('home-view');
+        const libraryView = document.getElementById('library-view');
+
+        if (homeView) homeView.classList.toggle('active', nextPage === 'home');
+        if (libraryView) libraryView.classList.toggle('active', nextPage === 'library');
+
+        setActiveNav(nextPage);
+        window.scrollTo({ top: 0, behavior: 'auto' });
+
+        if (pushHash !== false) {
+          history.pushState(null, '', nextPage === 'library' ? '#library' : '#home');
+        }
+      }
+
+      window.showPromptLibraryPage = showPage;
+
+      document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('[data-page]').forEach((el) => {
+          el.addEventListener('click', function (event) {
+            event.preventDefault();
+            showPage(el.dataset.page);
+          });
+        });
+
+        document.querySelectorAll('[data-noop]').forEach((el) => {
+          el.addEventListener('click', function (event) {
+            event.preventDefault();
+          });
+        });
+
+        showPage(location.hash === '#library' ? 'library' : 'home', false);
+      });
+
+      window.addEventListener('popstate', function () {
+        showPage(location.hash === '#library' ? 'library' : 'home', false);
+      });
+    })();
+  </script>
+
+</body>
+</html>

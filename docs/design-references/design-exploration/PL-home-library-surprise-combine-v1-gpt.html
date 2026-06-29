@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MA&A AI Prompt Library - Home</title>
+
+<style>
+  @font-face { font-family:"Sage Headline"; src:url("fonts/Sage_Headline-Black.woff2") format("woff2"), url("fonts/Sage_Headline-Black.woff") format("woff"); font-weight:900; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage UI"; src:url("fonts/Sage_UI-Regular.woff2") format("woff2"), url("fonts/Sage_UI-Regular.woff") format("woff"); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage UI"; src:url("fonts/Sage_UI-Medium.woff2") format("woff2"), url("fonts/Sage_UI-Medium.woff") format("woff"); font-weight:500; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage UI"; src:url("fonts/Sage_UI-Bold.woff2") format("woff2"), url("fonts/Sage_UI-Bold.woff") format("woff"); font-weight:700; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage Text"; src:url("fonts/Sage_Text-Regular.woff2") format("woff2"), url("fonts/Sage_Text-Regular.woff") format("woff"); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage Text"; src:url("fonts/Sage_Text-Bold.woff2") format("woff2"), url("fonts/Sage_Text-Bold.woff") format("woff"); font-weight:700; font-style:normal; font-display:swap; }
+
+  :root {
+    --sage-headline: "Sage Headline", "Segoe UI", system-ui, sans-serif;
+    --sage-ui: "Sage UI", "Segoe UI", system-ui, sans-serif;
+    --sage-text: "Sage Text", "Segoe UI", system-ui, sans-serif;
+    --bg: #000000;
+    --surface: #141414;
+    --surface2: #1C1C1C;
+    --border: #2A2A2A;
+    --soft-line: rgba(255,255,255,0.22);
+    --accent: #00D639;
+    --accent-dim: rgba(0,214,57,0.10);
+    --accent-border: rgba(0,214,57,0.25);
+    --text: #ffffff;
+    --text-muted: #C8C8C8;
+    --text-dim: #8A8A8A;
+    --radius-xl: 28px;
+    --radius-md: 16px;
+  }
+
+  body.light {
+    --bg: #f5f5f5;
+    --surface: #ffffff;
+    --surface2: #eeeeee;
+    --border: #dddddd;
+    --soft-line: rgba(0,0,0,0.18);
+    --accent: #00D639;
+    --accent-dim: rgba(0,214,57,0.10);
+    --accent-border: rgba(0,214,57,0.30);
+    --text: #000000;
+    --text-muted: #555555;
+    --text-dim: #777777;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sage-ui);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(180deg, #000 0%, #040404 100%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  body.light::before { background: linear-gradient(180deg, #f5f5f5 0%, #ffffff 100%); }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    height: 52px;
+    transition: background 0.3s, border-color 0.3s;
+  }
+
+  body.light nav { background: rgba(245,245,245,0.95); }
+
+  .nav-left { display: flex; align-items: center; gap: 16px; }
+
+  .nav-brand {
+    font-family: var(--sage-ui);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .nav-tabs { display: flex; gap: 4px; }
+
+  .nav-tab {
+    font-family: var(--sage-ui);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    padding: 14px 16px 13px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    color: var(--text-dim);
+    background: none;
+    transition: color 0.2s, border-color 0.2s;
+    text-decoration: none;
+  }
+
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+  .theme-toggle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--accent-border);
+    background: var(--accent-dim);
+    color: var(--accent);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .theme-toggle:hover { background: var(--accent); color: #000; }
+
+  .page-shell {
+    width: min(100%, 1360px);
+    margin: 0 auto;
+  }
+
+  .hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: calc(100svh - 52px);
+    padding: clamp(56px, 8vh, 96px) 24px clamp(72px, 10vh, 120px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-tag {
+    font-family: var(--sage-ui);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .hero-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  .hero-title {
+    font-family: var(--sage-headline);
+    font-size: clamp(54px, 6.4vw, 92px);
+    font-weight: 900;
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+    margin-bottom: 26px;
+    max-width: 900px;
+  }
+
+  .headline-line { display: inline-block; }
+
+  .headline-nowrap { white-space: nowrap; }
+
+  .rotator,
+  .rotator-period {
+    display: inline-block;
+    color: var(--accent);
+  }
+
+  .rotator.flip {
+    animation: snap 0.45s ease;
+  }
+
+  @keyframes snap {
+    0% { opacity: 0; transform: translateY(18px) rotateX(55deg); filter: blur(8px); }
+    100% { opacity: 1; transform: translateY(0) rotateX(0); filter: blur(0); }
+  }
+
+  .hero-sub {
+    font-family: var(--sage-text);
+    font-size: clamp(17px, 1.6vw, 22px);
+    color: var(--text-muted);
+    max-width: 620px;
+    line-height: 1.55;
+    margin-bottom: 36px;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero-btns .button,
+  .hero-btns button {
+    min-height: 52px;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  button,
+  .button {
+    appearance: none;
+    border: 1px solid var(--soft-line);
+    padding: 13px 20px;
+    border-radius: 999px;
+    font-family: var(--sage-ui);
+    font-size: 15px;
+    font-weight: 750;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease;
+  }
+
+  button:hover,
+  .button:hover { transform: translateY(-2px); }
+
+  .hero-action {
+    min-width: 176px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.045));
+    color: var(--text);
+    border-color: rgba(255,255,255,0.18);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+
+  .hero-action:hover {
+    border-color: rgba(255,255,255,0.34);
+    background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.055));
+  }
+
+  body.light .hero-action {
+    background: #ffffff;
+    border-color: rgba(0,0,0,0.14);
+    color: #000;
+  }
+
+  .hero-action-muted {
+    min-width: 190px;
+    background: rgba(255,255,255,0.025);
+    color: rgba(255,255,255,0.72);
+    border-color: rgba(255,255,255,0.14);
+  }
+
+  .hero-action-muted:hover {
+    color: var(--text);
+    border-color: rgba(255,255,255,0.28);
+    background: rgba(255,255,255,0.05);
+  }
+
+  body.light .hero-action-muted {
+    background: rgba(0,0,0,0.02);
+    color: rgba(0,0,0,0.68);
+    border-color: rgba(0,0,0,0.12);
+  }
+
+  body.light .hero-action-muted:hover { color: #000; border-color: rgba(0,0,0,0.28); }
+
+  .surprise-trace {
+    min-width: 154px;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: rgba(8,10,12,0.78);
+    color: var(--text);
+    border-color: rgba(255,255,255,0.12);
+  }
+
+  .surprise-trace::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: conic-gradient(from var(--trace-angle), transparent 0deg, transparent 245deg, rgba(0,214,57,0.10) 285deg, var(--accent) 320deg, rgba(0,214,57,0.10) 352deg, transparent 360deg);
+    z-index: -2;
+    opacity: 0;
+    animation: none;
+    transition: opacity 0.35s ease;
+  }
+
+  .surprise-trace.is-tracing::before {
+    opacity: 1;
+    animation: traceRound 4.6s linear infinite;
+  }
+
+  .surprise-trace::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    background: rgba(8,10,12,0.96);
+    z-index: -1;
+  }
+
+  body.light .surprise-trace { color: #000; background: #fff; }
+  body.light .surprise-trace::after { background: #fff; }
+
+
+  /* Landing page Surprise me button intro */
+  .landing-surprise-button {
+    overflow: hidden;
+  }
+
+  .landing-surprise-label {
+    position: relative;
+    z-index: 2;
+  }
+
+  .landing-surprise-shimmer {
+    position: absolute;
+    inset: -45%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-95%);
+    background: linear-gradient(
+      110deg,
+      transparent 35%,
+      rgba(255,255,255,0.55) 48%,
+      transparent 60%
+    );
+  }
+
+  .landing-surprise-button.shimmer-once .landing-surprise-shimmer {
+    animation: landingSurpriseShimmer 1100ms ease-in-out both;
+  }
+
+  @keyframes landingSurpriseShimmer {
+    0% { opacity: 0; transform: translateX(-95%); }
+    15% { opacity: 1; }
+    85% { opacity: 0.8; }
+    100% { opacity: 0; transform: translateX(95%); }
+  }
+
+  @property --trace-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  @keyframes traceRound { to { --trace-angle: 360deg; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .surprise-trace::before,
+    .surprise-trace.is-tracing::before,
+    .landing-surprise-button.shimmer-once .landing-surprise-shimmer {
+      animation: none;
+      opacity: 0;
+    }
+    .scroll-cue { animation: none; opacity: 1; }
+    html { scroll-behavior: auto; }
+  }
+
+
+
+  .scroll-cue {
+    position: absolute;
+    left: 50%;
+    bottom: 28px;
+    transform: translateX(-50%);
+    font-family: var(--sage-ui);
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.48);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: cueFadeIn 0.6s ease forwards;
+    animation-delay: 1.4s;
+    transition: color 0.2s ease;
+  }
+
+  .scroll-cue:hover {
+    color: var(--accent);
+  }
+
+  body.light .scroll-cue {
+    color: rgba(0,0,0,0.48);
+  }
+
+  body.light .scroll-cue:hover {
+    color: #00a82b;
+  }
+
+  @keyframes cueFadeIn {
+    to { opacity: 1; }
+  }
+
+  .wrapper {
+    width: min(100% - 48px, 1328px);
+    margin: 0 auto;
+    padding: 0 0 80px;
+  }
+
+  .how-it-works {
+    margin: 50px auto 0;
+    border: 1px solid var(--soft-line);
+    border-radius: var(--radius-xl);
+    background: rgba(255,255,255,0.045);
+    padding: clamp(22px, 2.6vw, 28px);
+  }
+
+  .how-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 22px;
+  }
+
+  .how-header h2 {
+    font-family: var(--sage-headline);
+    font-size: clamp(34px, 3.4vw, 48px);
+    line-height: 1;
+    letter-spacing: -0.06em;
+    margin: 0;
+  }
+
+  .how-header p {
+    font-family: var(--sage-text);
+    color: var(--text-muted);
+    font-size: 17px;
+    line-height: 1.55;
+    margin: 0;
+    max-width: 640px;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .step {
+    border: 1px solid var(--soft-line);
+    background: rgba(0,0,0,0.32);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    min-height: 178px;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  }
+
+  .step:hover {
+    border-color: rgba(0,214,57,0.38);
+    background: rgba(255,255,255,0.055);
+    transform: translateY(-2px);
+  }
+
+  body.light .step { background: rgba(255,255,255,0.55); }
+
+  .step-number {
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background: var(--accent);
+    color: #031107;
+    font-family: var(--sage-ui);
+    font-weight: 850;
+    margin-bottom: 18px;
+  }
+
+  .step strong {
+    display: block;
+    font-family: var(--sage-headline);
+    font-size: 23px;
+    line-height: 1.05;
+    letter-spacing: -0.055em;
+    margin-bottom: 12px;
+  }
+
+  .step span {
+    display: block;
+    font-family: var(--sage-text);
+    color: var(--text-muted);
+    line-height: 1.5;
+    font-size: 15px;
+  }
+
+  footer {
+    text-align: center;
+    padding-top: 40px;
+    color: var(--text-dim);
+    font-family: var(--sage-ui);
+    font-size: 12px;
+  }
+
+  @media (max-width: 820px) {
+    nav { padding: 0 14px; }
+    .nav-tabs { display: none; }
+    .hero { padding: 74px 20px 70px; }
+    .hero-title { font-size: clamp(48px, 13vw, 70px); }
+    .hero-btns { display: grid; grid-template-columns: 1fr; width: min(100%, 420px); }
+    .hero-btns .button,
+    .hero-btns button { width: 100%; }
+    .scroll-cue { bottom: 22px; font-size: 12px; }
+    .wrapper { width: min(100% - 22px, 1328px); padding-bottom: 48px; }
+    .how-header { align-items: flex-start; flex-direction: column; }
+    .steps { grid-template-columns: 1fr; }
+  }
+
+
+  /* Combined Home + Library routing */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  #library-view {
+    width: 100%;
+    min-height: calc(100vh - 52px);
+    background: #000;
+  }
+
+  #library-frame {
+    width: 100%;
+    height: calc(100vh - 52px);
+    border: 0;
+    display: block;
+    background: #000;
+  }
+
+  /* Shared navbar: homepage design with centre-out proportional underline */
+  .nav-tab {
+    position: relative;
+    border-bottom: none !important;
+  }
+
+  .nav-tab::after {
+    content: "";
+    position: absolute;
+    left: 18%;
+    right: 18%;
+    bottom: 5px;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 999px;
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 220ms ease, opacity 180ms ease;
+    pointer-events: none;
+  }
+
+  .nav-tab:hover::after,
+  .nav-tab.active::after {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  .nav-tab.active {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .nav-tab:not(.active):hover {
+    color: var(--text);
+  }
+
+
+  /* Shared Surprise Me modal */
+  .surprise-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.86);
+    backdrop-filter: blur(22px) saturate(0.55);
+    -webkit-backdrop-filter: blur(22px) saturate(0.55);
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .surprise-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .surprise-card {
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255,255,255,0.085), transparent 64%),
+      linear-gradient(180deg, rgba(255,255,255,0.060), rgba(255,255,255,0.018)),
+      #0B0B0B;
+    border: 1px solid rgba(255,255,255,0.34);
+    border-radius: 16px;
+    padding: 28px;
+    max-width: 740px;
+    width: min(100%, 740px);
+    min-height: 380px;
+    max-height: 84vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), 0 32px 110px rgba(0,0,0,0.72);
+    animation: surpriseFadeUp 0.22s ease both;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .surprise-card::-webkit-scrollbar { width: 4px; }
+  .surprise-card::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .surprise-card.rolling {
+    animation: surpriseShake 0.35s ease infinite;
+  }
+
+  @keyframes surpriseFadeUp {
+    from { opacity: 0; transform: translateY(14px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes surpriseShake {
+    0%, 100% { transform: rotate(0); }
+    25% { transform: rotate(-0.45deg) translateX(-2px); }
+    75% { transform: rotate(0.45deg) translateX(2px); }
+  }
+
+  .surprise-topline {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .surprise-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .surprise-category {
+    font-family: var(--sage-ui);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .surprise-tool {
+    font-family: var(--sage-ui);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.03em;
+  }
+
+  .surprise-goodfor {
+    font-family: var(--sage-text);
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .surprise-close {
+    flex-shrink: 0;
+    background: none;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    width: 34px;
+    height: 34px;
+    color: var(--text-dim);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    line-height: 1;
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  }
+
+  .surprise-close:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-1px);
+  }
+
+  .surprise-title {
+    font-family: var(--sage-headline);
+    font-size: clamp(34px, 5vw, 50px);
+    font-weight: 900;
+    letter-spacing: -0.055em;
+    line-height: 1;
+    color: var(--text);
+  }
+
+  .surprise-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.10);
+  }
+
+  .surprise-prompt {
+    font-family: var(--sage-ui);
+    font-size: 15px;
+    color: rgba(255,255,255,0.84);
+    line-height: 1.62;
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    padding: 20px;
+    min-height: 112px;
+    max-height: 240px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .surprise-prompt .prompt-var-bracketed {
+    color: var(--accent);
+    font-weight: 800;
+  }
+
+  .surprise-source-badge {
+    align-self: flex-start;
+    font-family: var(--sage-ui);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 5px 11px;
+    border-radius: 7px;
+    background: rgba(0,214,57,0.10);
+    color: var(--accent);
+    border: 1px solid rgba(0,214,57,0.24);
+  }
+
+  .surprise-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 0.86fr;
+    gap: 12px;
+    margin-top: auto;
+  }
+
+  .surprise-personalise-btn,
+  .surprise-copy-btn,
+  .surprise-roll-btn {
+    min-height: 48px;
+    border-radius: 999px;
+    padding: 12px 20px;
+    font-family: var(--sage-ui);
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s, transform 0.18s, border-color 0.2s, color 0.2s, background 0.2s;
+  }
+
+  .surprise-personalise-btn {
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.16);
+    color: var(--accent);
+  }
+
+  .surprise-personalise-btn:hover {
+    border-color: rgba(0,214,57,0.45);
+    background: rgba(0,214,57,0.08);
+    transform: translateY(-1px);
+  }
+
+  .surprise-copy-btn {
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    color: #000;
+  }
+
+  .surprise-copy-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .surprise-copy-btn.copied { background: var(--accent); opacity: 1; }
+
+  .surprise-roll-btn {
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.16);
+    color: rgba(255,255,255,0.78);
+  }
+
+  .surprise-roll-btn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+
+  @media (max-width: 640px) {
+    .surprise-overlay { padding: 16px; align-items: flex-end; }
+    .surprise-card { padding: 22px; width: 100%; min-height: 0; max-height: 88vh; }
+    .surprise-title { font-size: clamp(30px, 10vw, 40px); }
+    .surprise-actions { grid-template-columns: 1fr; }
+    .surprise-personalise-btn,
+    .surprise-copy-btn,
+    .surprise-roll-btn { width: 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .surprise-card,
+    .surprise-card.rolling {
+      animation: none;
+    }
+  }
+
+</style>
+</head>
+
+<body>
+  <nav>
+    <div class="nav-left">
+      <a class="nav-brand" href="#home" data-page="home">MA&amp;A · AI Prompts</a>
+      <div class="nav-tabs" aria-label="Main navigation">
+        <a class="nav-tab active" href="#home" data-page="home">Home</a>
+        <a class="nav-tab" href="#library" data-page="library">Library</a>
+        <a class="nav-tab" href="#personaliser" data-noop="true">Personaliser</a>
+        <a class="nav-tab" href="#feedback" data-noop="true">Feedback</a>
+      </div>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark">☀</button>
+  </nav>
+
+  <main class="page-shell view active" id="home-view">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-tag"><span class="hero-dot"></span>From the MA&amp;A Team</div>
+      <h1 class="hero-title" id="hero-title"><span class="headline-line">Prompts our teams</span><br><span class="headline-line headline-nowrap">have <span class="rotator" id="rotator">tried</span><span class="rotator-period">.</span></span></h1>
+      <p class="hero-sub">Copy, paste, and go. A practical library of 50+ AI prompts built by MA&amp;A.</p>
+      <div class="hero-btns">
+        <a class="button hero-action" href="#library" data-page="library">Browse prompts →</a>
+        <a class="button hero-action-muted" href="#personaliser" data-noop="true">Personalise for me</a>
+        <button class="surprise-trace landing-surprise-button" id="surpriseBtn" onclick="surpriseMe()">
+          <span class="landing-surprise-shimmer" aria-hidden="true"></span>
+          <span class="landing-surprise-label">Surprise me ✦</span>
+        </button>
+      </div>
+      <a class="scroll-cue" href="#how-it-works">See how it works ↓</a>
+    </section>
+
+    <div class="wrapper">
+      <section class="how-it-works" id="how-it-works" aria-labelledby="how-title">
+        <div class="how-header">
+          <h2 id="how-title">How it works</h2>
+        </div>
+        <div class="steps">
+          <article class="step">
+            <div class="step-number">1</div>
+            <strong>Explore</strong>
+            <span>Browse the library, find a prompt or just get inspired.</span>
+          </article>
+          <article class="step">
+            <div class="step-number">2</div>
+            <strong>Personalise</strong>
+            <span>Add your own details and make it yours.</span>
+          </article>
+          <article class="step">
+            <div class="step-number">3</div>
+            <strong>Copy and go</strong>
+            <span>Paste into Copilot, Claude, ChatGPT or wherever you're working.</span>
+          </article>
+        </div>
+      </section>
+
+      <footer>From the MA&amp;A Team - Sage</footer>
+    </div>
+  </main>
+
+  <section class="view" id="library-view" aria-label="Prompt library">
+    <iframe id="library-frame" title="Prompt library" loading="lazy"></iframe>
+  </section>
+
+
+
+  <!-- Shared Surprise Me Modal -->
+  <div class="surprise-overlay" id="surprise-overlay" onclick="handleOverlayClick(event)" aria-hidden="true">
+    <div class="surprise-card" id="surprise-card" role="dialog" aria-modal="true" aria-labelledby="surprise-title">
+      <div class="surprise-topline">
+        <div class="surprise-meta">
+          <div class="surprise-category" id="surprise-category"></div>
+          <div class="surprise-tool" id="surprise-tool"></div>
+          <div class="surprise-goodfor" id="surprise-goodfor"></div>
+        </div>
+        <button class="surprise-close" onclick="closeSurprise()" title="Close" aria-label="Close surprise prompt">✕</button>
+      </div>
+      <div class="surprise-title" id="surprise-title"></div>
+      <div class="surprise-divider"></div>
+      <div class="surprise-prompt" id="surprise-prompt"></div>
+      <div class="surprise-source-badge" id="surprise-source"></div>
+      <div class="surprise-actions">
+        <button class="surprise-personalise-btn" id="surprise-personalise-btn" onclick="personaliseSurprisePrompt()">Personalise</button>
+        <button class="surprise-copy-btn" id="surprise-copy-btn" onclick="copySurprisePrompt()">Copy</button>
+        <button class="surprise-roll-btn" id="surprise-roll-btn" onclick="rollAgain()">🎲 Roll again</button>
+      </div>
+    </div>
+  </div>
+
+  <script id="library-srcdoc" type="application/json">"<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"utf-8\">\n  <title>Bundled Page</title>\n  <style>\n    * { margin: 0; padding: 0; box-sizing: border-box; }\n    body { background: #000000; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }\n    #__bundler_loading { position: fixed; bottom: 20px; right: 20px; font: 13px/1.4 -apple-system, BlinkMacSystemFont, sans-serif; color: #666; background: #fff; padding: 8px 14px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.12); z-index: 10000; }\n    #__bundler_thumbnail { position: fixed; inset: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #000000; z-index: 9999; }\n    #__bundler_thumbnail svg { width: 100%; height: 100%; object-fit: contain; }\n    #__bundler_placeholder { color: #999; font-size: 14px; }\n  </style>\n  <noscript>\n    <style>#__bundler_loading { display: none; }</style>\n    <div style=\"position:fixed;bottom:12px;left:12px;font:13px/1.4 -apple-system,BlinkMacSystemFont,sans-serif;color:#999;background:rgba(255,255,255,0.9);padding:6px 12px;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,0.08);z-index:10000;\">\n      This page requires JavaScript to display.\n    </div>\n  </noscript>\n</head>\n<body>\n  <div id=\"__bundler_thumbnail\">\n  <svg viewBox=\"0 0 1200 800\" xmlns=\"http://www.w3.org/2000/svg\">\n    <!-- Green accent bar -->\n    <rect x=\"0\" y=\"0\" width=\"40\" height=\"200\" fill=\"#00D639\"></rect>\n    <!-- Title text simplified -->\n    <text x=\"100\" y=\"150\" font-size=\"120\" font-weight=\"bold\" fill=\"#00D639\" font-family=\"sans-serif\">Copy.</text>\n    <text x=\"100\" y=\"290\" font-size=\"120\" font-weight=\"bold\" fill=\"#ffffff\" font-family=\"sans-serif\">Paste.</text>\n    <text x=\"100\" y=\"430\" font-size=\"120\" font-weight=\"bold\" fill=\"#00D639\" font-family=\"sans-serif\">Go.</text>\n    <!-- Grid cards hint -->\n    <rect x=\"50\" y=\"500\" width=\"320\" height=\"220\" fill=\"none\" stroke=\"#00D639\" stroke-width=\"2\" rx=\"8\"></rect>\n    <rect x=\"420\" y=\"500\" width=\"320\" height=\"220\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" rx=\"8\" opacity=\"0.5\"></rect>\n    <rect x=\"790\" y=\"500\" width=\"320\" height=\"220\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" rx=\"8\" opacity=\"0.3\"></rect>\n  </svg>\n</div>\n  <div id=\"__bundler_loading\">Unpacking...</div>\n\n  <script>\n    \ndocument.addEventListener('DOMContentLoaded', async function() {\n  const loading = document.getElementById('__bundler_loading');\n  function setStatus(msg) { if (loading) loading.textContent = msg; }\n\n  // Error sink persists across replaceWith since it's on window, not the DOM.\n  window.addEventListener('error', function(e) {\n    var p = document.body || document.documentElement;\n    var d = document.getElementById('__bundler_err') || p.appendChild(document.createElement('div'));\n    d.id = '__bundler_err';\n    d.style.cssText = 'position:fixed;bottom:12px;left:12px;right:12px;font:12px/1.4 ui-monospace,monospace;background:#2a1215;color:#ff8a80;padding:10px 14px;border-radius:8px;border:1px solid #5c2b2e;z-index:99999;white-space:pre-wrap;max-height:40vh;overflow:auto';\n    d.textContent = (d.textContent ? d.textContent + String.fromCharCode(10) : '') +\n      '[bundle] ' + (e.message || e.type) +\n      (e.filename ? ' (' + e.filename.slice(0, 60) + ':' + e.lineno + ')' : '');\n  }, true);\n\n  try {\n    const manifestEl = document.querySelector('script[type=\"__bundler/manifest\"]');\n    const templateEl = document.querySelector('script[type=\"__bundler/template\"]');\n    if (!manifestEl || !templateEl) {\n      setStatus('Error: missing bundle data');\n      console.error('[bundler] Missing script tags \u2014 manifestEl:', !!manifestEl, 'templateEl:', !!templateEl);\n      return;\n    }\n\n    const manifest = JSON.parse(manifestEl.textContent);\n    let template = JSON.parse(templateEl.textContent);\n\n    const uuids = Object.keys(manifest);\n    setStatus('Unpacking ' + uuids.length + ' assets...');\n\n    const blobUrls = {};\n    await Promise.all(uuids.map(async (uuid) => {\n      const entry = manifest[uuid];\n      try {\n        const binaryStr = atob(entry.data);\n        const bytes = new Uint8Array(binaryStr.length);\n        for (let i = 0; i < binaryStr.length; i++) bytes[i] = binaryStr.charCodeAt(i);\n\n        let finalBytes = bytes;\n        if (entry.compressed) {\n          if (typeof DecompressionStream !== 'undefined') {\n            const ds = new DecompressionStream('gzip');\n            const writer = ds.writable.getWriter();\n            const reader = ds.readable.getReader();\n            writer.write(bytes);\n            writer.close();\n            const chunks = [];\n            let totalLen = 0;\n            while (true) {\n              const { done, value } = await reader.read();\n              if (done) break;\n              chunks.push(value);\n              totalLen += value.length;\n            }\n            finalBytes = new Uint8Array(totalLen);\n            let offset = 0;\n            for (const chunk of chunks) { finalBytes.set(chunk, offset); offset += chunk.length; }\n          } else {\n            console.warn('DecompressionStream not available, asset ' + uuid + ' may not render');\n          }\n        }\n\n        blobUrls[uuid] = URL.createObjectURL(new Blob([finalBytes], { type: entry.mime }));\n      } catch (err) {\n        console.error('Failed to decode asset ' + uuid + ':', err);\n        blobUrls[uuid] = URL.createObjectURL(new Blob([], { type: entry.mime }));\n      }\n    }));\n\n    const extResEl = document.querySelector('script[type=\"__bundler/ext_resources\"]');\n    const extResources = extResEl ? JSON.parse(extResEl.textContent) : [];\n    const resourceMap = {};\n    for (const entry of extResources) {\n      if (blobUrls[entry.uuid]) resourceMap[entry.id] = blobUrls[entry.uuid];\n    }\n\n    setStatus('Rendering...');\n    for (const uuid of uuids) template = template.split(uuid).join(blobUrls[uuid]);\n\n    // Strip integrity + crossorigin \u2014 blob URLs from a file:// document inherit\n    // a null origin, so crossorigin forces a CORS fetch that SRI then rejects.\n    // The manifest bytes are ours; SRI protects against CDN compromise, not this.\n    template = template.replace(/\\s+integrity=\"[^\"]*\"/gi, '').replace(/\\s+crossorigin=\"[^\"]*\"/gi, '');\n\n    const resourceScript = '<script>window.__resources = ' +\n      JSON.stringify(resourceMap).split('</' + 'script>').join('<\\\\/' + 'script>') +\n      ';</' + 'script>';\n    // Inject after <head> so the DOCTYPE stays first; prepending the script\n    // would push the parser into quirks mode. DOMParser always emits a <head>\n    // (synthesizing one if the source HTML omitted it) but may carry\n    // attributes through, so match the full opening tag. slice() rather than\n    // replace() keeps us clear of $-pattern substitution in resourceScript.\n    const headOpen = template.match(/<head[^>]*>/i);\n    if (headOpen) {\n      const i = headOpen.index + headOpen[0].length;\n      template = template.slice(0, i) + resourceScript + template.slice(i);\n    }\n\n    // Parse the template and swap the root element. Scripts inserted via\n    // DOMParser/replaceWith are inert per spec \u2014 re-create each with\n    // createElement so they execute, awaiting onload for src scripts to\n    // preserve ordering (React before ReactDOM before Babel before text/babel).\n    const doc = new DOMParser().parseFromString(template, 'text/html');\n    document.documentElement.replaceWith(doc.documentElement);\n    const dead = Array.from(document.scripts);\n    for (const old of dead) {\n      const s = document.createElement('script');\n      for (const a of old.attributes) s.setAttribute(a.name, a.value);\n      s.textContent = old.textContent;\n      // text/babel scripts with a src: fetch and inline. transformScriptTags\n      // does XHR against the src, but blob:null/ from a file:// origin is\n      // silently dropped. Inlining makes it a plain inline babel script,\n      // which transformScriptTags handles unconditionally.\n      if ((s.type === 'text/babel' || s.type === 'text/jsx') && s.src) {\n        const r = await fetch(s.src);\n        s.textContent = await r.text();\n        s.removeAttribute('src');\n      }\n      const p = s.src ? new Promise(function(r) { s.onload = s.onerror = r; }) : null;\n      old.replaceWith(s);\n      if (p) await p;\n    }\n    // Babel standalone auto-transforms type=text/babel on DOMContentLoaded,\n    // which fired before we swapped the document. Trigger manually if present.\n    if (window.Babel && typeof window.Babel.transformScriptTags === 'function') {\n      window.Babel.transformScriptTags();\n    }\n  } catch (err) {\n    setStatus('Error unpacking: ' + err.message);\n    console.error('Bundle unpack error:', err);\n  }\n});\n\n  <\/script>\n\n  <script type=\"__bundler/manifest\">\n{\"dcdf7369-f0de-49e7-8f1a-e10c5bec78f7\":{\"mime\":\"text/javascript\",\"compressed\":true,\"data\":\"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\"}}\n  <\/script>\n\n  <script type=\"__bundler/ext_resources\">\n[]\n  <\/script>\n\n  <script type=\"__bundler/template\">\n\"<!DOCTYPE html>\\n<html><head>\\n<meta charset=\\\"utf-8\\\">\\n<meta name=\\\"viewport\\\" content=\\\"width=device-width, initial-scale=1\\\">\\n<script src=\\\"dcdf7369-f0de-49e7-8f1a-e10c5bec78f7\\\"><\\/script>\\n</head>\\n<body>\\n<x-dc>\\n\\n\\n\\n<helmet>\\n  <style>\\n    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.7); } }\\n    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }\\n    @keyframes traceBorder { to { stroke-dashoffset: 0; } }\\n    @keyframes modalIn { from { opacity: 0; transform: scale(0.94) translateY(12px); } to { opacity: 1; transform: scale(1) translateY(0); } }\\n    @keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }\\n    body { margin: 0; background: #000; }\\n    /* Personalise trace animation */\\n    .trace-btn:hover .trace-rect, .trace-btn:active .trace-rect { opacity: 1 !important; animation-play-state: running !important; }\\n    /* Nav underline on hover */\\n    a:hover .nav-underline { opacity: 1 !important; transform: scaleX(1) !important; }\\n\\n    /* Library Surprise Me button */\\n    .lib-surprise-btn {\\n      min-width: 154px; min-height: 50px;\\n      position: relative; isolation: isolate; overflow: hidden;\\n      appearance: none; border: 1px solid rgba(255,255,255,0.12);\\n      padding: 13px 20px; border-radius: 999px;\\n      font-family: 'Segoe UI', system-ui, sans-serif;\\n      font-size: 15px; font-weight: 700;\\n      cursor: pointer; display: inline-flex; align-items: center;\\n      justify-content: center; gap: 9px;\\n      background: rgba(8,10,12,0.78); color: #fff;\\n      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);\\n      white-space: nowrap; flex-shrink: 0;\\n      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;\\n    }\\n    .lib-surprise-btn:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.28); background: rgba(255,255,255,0.055); }\\n    .lib-surprise-btn:focus-visible { outline: 2px solid #00D639; outline-offset: 4px; }\\n    .lib-surprise-shimmer {\\n      position: absolute; inset: -45%; z-index: 1; pointer-events: none;\\n      opacity: 0; transform: translateX(-95%);\\n      background: linear-gradient(110deg, transparent 35%, rgba(255,255,255,0.55) 48%, transparent 60%);\\n    }\\n    .lib-surprise-label { position: relative; z-index: 2; }\\n    .lib-surprise-btn.is-shimmering .lib-surprise-shimmer { animation: libShimmerSweep 1100ms ease-in-out both; }\\n    .lib-surprise-btn.is-bouncing { animation: libGentleBounce 900ms ease-in-out both; }\\n    .lib-surprise-btn.is-pulsing { animation: libSoftPulse 950ms ease-in-out both; }\\n    .lib-surprise-btn.is-wiggling { animation: libTinyWiggle 900ms ease-in-out both; transform-origin: 50% 80%; }\\n    @keyframes libShimmerSweep {\\n      0% { opacity:0; transform:translateX(-95%); }\\n      15% { opacity:1; }\\n      85% { opacity:0.8; }\\n      100% { opacity:0; transform:translateX(95%); }\\n    }\\n    @keyframes libGentleBounce {\\n      0%,100% { transform:translateY(0); }\\n      35% { transform:translateY(-7px); }\\n      62% { transform:translateY(0); }\\n      82% { transform:translateY(-3px); }\\n    }\\n    @keyframes libSoftPulse {\\n      0%,100% { transform:scale(1); }\\n      50% { transform:scale(1.045); }\\n    }\\n    @keyframes libTinyWiggle {\\n      0%,100% { transform:rotate(0deg); }\\n      28% { transform:rotate(-2.5deg); }\\n      54% { transform:rotate(2.5deg); }\\n      78% { transform:rotate(-1deg); }\\n    }\\n    @media (prefers-reduced-motion: reduce) {\\n      .lib-surprise-btn, .lib-surprise-btn.is-shimmering .lib-surprise-shimmer,\\n      .lib-surprise-btn.is-bouncing, .lib-surprise-btn.is-pulsing, .lib-surprise-btn.is-wiggling { animation: none; transition: none; }\\n    }\\n    /* Card hover expand icon */\\n    .lib-card:hover .expand-ico { opacity: 1 !important; transform: scale(1) translateY(0) !important; }\\n    /* Responsive grid */\\n    @media (max-width: 780px) { .lib-grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } }\\n    @media (max-width: 500px) { .lib-grid-3 { grid-template-columns: 1fr !important; } }\\n  </style>\\n</helmet>\\n\\n<template id=\\\"__bundler_thumbnail\\\" data-bg-color=\\\"#000000\\\">\\n  <svg viewBox=\\\"0 0 1200 800\\\" xmlns=\\\"http://www.w3.org/2000/svg\\\">\\n    <rect width=\\\"1200\\\" height=\\\"800\\\" fill=\\\"#000\\\"></rect>\\n    <text x=\\\"600\\\" y=\\\"120\\\" text-anchor=\\\"middle\\\" font-family=\\\"sans-serif\\\" font-size=\\\"18\\\" font-weight=\\\"700\\\" fill=\\\"rgba(255,255,255,0.4)\\\" letter-spacing=\\\"4\\\">FROM THE MA&amp;A TEAM</text>\\n    <text x=\\\"600\\\" y=\\\"190\\\" text-anchor=\\\"middle\\\" font-family=\\\"sans-serif\\\" font-size=\\\"52\\\" font-weight=\\\"900\\\" fill=\\\"#ffffff\\\">Copy. Paste. Go.</text>\\n    <rect x=\\\"200\\\" y=\\\"260\\\" width=\\\"240\\\" height=\\\"140\\\" rx=\\\"14\\\" fill=\\\"#0B0B0B\\\" stroke=\\\"rgba(255,255,255,0.46)\\\" stroke-width=\\\"1\\\"></rect>\\n    <rect x=\\\"480\\\" y=\\\"260\\\" width=\\\"240\\\" height=\\\"140\\\" rx=\\\"14\\\" fill=\\\"#0B0B0B\\\" stroke=\\\"rgba(255,255,255,0.46)\\\" stroke-width=\\\"1\\\"></rect>\\n    <rect x=\\\"760\\\" y=\\\"260\\\" width=\\\"240\\\" height=\\\"140\\\" rx=\\\"14\\\" fill=\\\"#0B0B0B\\\" stroke=\\\"rgba(255,255,255,0.46)\\\" stroke-width=\\\"1\\\"></rect>\\n    <rect x=\\\"200\\\" y=\\\"420\\\" width=\\\"240\\\" height=\\\"140\\\" rx=\\\"14\\\" fill=\\\"#0B0B0B\\\" stroke=\\\"rgba(255,255,255,0.46)\\\" stroke-width=\\\"1\\\"></rect>\\n    <rect x=\\\"480\\\" y=\\\"420\\\" width=\\\"240\\\" height=\\\"140\\\" rx=\\\"14\\\" fill=\\\"#0B0B0B\\\" stroke=\\\"rgba(255,255,255,0.46)\\\" stroke-width=\\\"1\\\"></rect>\\n    <rect x=\\\"760\\\" y=\\\"420\\\" width=\\\"240\\\" height=\\\"140\\\" rx=\\\"14\\\" fill=\\\"#0B0B0B\\\" stroke=\\\"rgba(255,255,255,0.46)\\\" stroke-width=\\\"1\\\"></rect>\\n    <rect x=\\\"460\\\" y=\\\"590\\\" width=\\\"120\\\" height=\\\"36\\\" rx=\\\"18\\\" fill=\\\"#00D639\\\"></rect>\\n    <text x=\\\"520\\\" y=\\\"614\\\" text-anchor=\\\"middle\\\" font-family=\\\"sans-serif\\\" font-size=\\\"13\\\" font-weight=\\\"700\\\" fill=\\\"#000\\\">Personalise</text>\\n  </svg>\\n</template>\\n\\n<div style=\\\"min-height: 100vh; background: #000; color: #fff; font-family: 'Segoe UI', system-ui, sans-serif; overflow-x: hidden\\\">\\n\\n  <!-- Header -->\\n  <div style=\\\"max-width: {{ containerMaxWidth }}px; margin: 0 auto; padding: 56px 32px 0\\\">\\n    <div style=\\\"border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 40px; margin-bottom: 40px\\\">\\n      <div style=\\\"display: flex; align-items: center; gap: 8px; margin-bottom: 18px\\\">\\n        <span style=\\\"width: 6px; height: 6px; border-radius: 50%; background: #00D639; display: inline-block; animation: pulse 2s ease-in-out infinite; font-size: 18px\\\"></span>\\n        <span style=\\\"font-size: 12px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.7); text-decoration-line: none\\\">From the MA&amp;A Team</span>\\n      </div>\\n      <h1 style=\\\"font-size: 52px; font-weight: 800; line-height: 1.02; letter-spacing: -0.03em; margin: 0 0 14px\\\">Copy.<br><span style=\\\"color: #00D639\\\">Paste.</span> Go.</h1>\\n      <p style=\\\"color: rgba(255,255,255,0.78); font-size: 16px; line-height: 1.6; max-width: 480px; margin: 0\\\">Prompts tried, tested and shared by the MA&amp;A team. Find what you need, copy it, and make it yours.</p>\\n    </div>\\n  </div>\\n\\n  <!-- Search + Filters -->\\n  <div style=\\\"max-width: {{ containerMaxWidth }}px; margin: 0 auto; padding: 0 32px\\\">\\n    <div style=\\\"max-width: {{ pillsContainerWidth }}px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; justify-content: center\\\">\\n      <sc-for list=\\\"{{ categoryPills }}\\\" as=\\\"pill\\\">\\n        <button onclick=\\\"{{ pill.onClick }}\\\" style=\\\"display: inline-flex; align-items: center; gap: 6px; font-family: 'Segoe UI', system-ui, sans-serif; font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 999px; cursor: pointer; transition: all 0.18s; white-space: nowrap; border: 1px solid {{ pill.borderColor }}; background: {{ pill.bg }}; color: {{ pill.color }}\\\" style-hover=\\\"border-color: #fff\\\">{{ pill.iconHtml }}{{ pill.label }}</button>\\n      </sc-for>\\n    </div>\\n    <div style=\\\"display: flex; gap: 12px; margin-bottom: 24px\\\">\\n      <div style=\\\"position: relative; flex: 1\\\">\\n        <svg style=\\\"position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: rgba(255,255,255,0.3); pointer-events: none\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\"><circle cx=\\\"11\\\" cy=\\\"11\\\" r=\\\"7.5\\\"></circle><path d=\\\"M21 21l-4.35-4.35\\\"></path></svg>\\n        <input id=\\\"lib-search\\\" type=\\\"text\\\" placeholder=\\\"Search prompts...\\\" autocomplete=\\\"off\\\" style=\\\"width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.35); border-radius: 14px; padding: 14px 18px 14px 46px; font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; color: #fff; outline: none; transition: border-color 0.2s, box-shadow 0.2s;\\\" onfocus=\\\"this.style.borderColor='#00D639'; this.style.boxShadow='0 0 0 3px rgba(0,214,57,0.1)'\\\" onblur=\\\"this.style.borderColor='rgba(255,255,255,0.35)'; this.style.boxShadow='none'\\\" oninput=\\\"{{ onSearch }}\\\">\\n      </div>\\n      <button id=\\\"libSurpriseBtn\\\" class=\\\"lib-surprise-btn\\\" onclick=\\\"{{ onSurpriseMe }}\\\" type=\\\"button\\\" aria-label=\\\"Surprise me \\u2014 library\\\">\\n        <span class=\\\"lib-surprise-shimmer\\\" aria-hidden=\\\"true\\\"></span>\\n        <span class=\\\"lib-surprise-label\\\">Surprise me \\u2726</span>\\n      </button>\\n    </div>\\n  </div>\\n\\n  <!-- Cards Grid -->\\n  <div style=\\\"max-width: {{ containerMaxWidth }}px; margin: 0 auto; padding: 0 32px 80px\\\">\\n    <div class=\\\"lib-grid-3\\\" style=\\\"display: grid; grid-template-columns: {{ gridCols }}; gap: 18px\\\">\\n      <sc-for list=\\\"{{ cards }}\\\" as=\\\"card\\\" hint-placeholder-count=\\\"6\\\">\\n        <div class=\\\"lib-card\\\" onclick=\\\"{{ card.onExpand }}\\\" style=\\\"position: relative; background: {{ card.cardBg }}; border: 1px solid {{ card.cardBorder }}; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; cursor: pointer; transition: border-color 0.18s, transform 0.18s, box-shadow 0.18s, background 0.18s; box-shadow: {{ card.cardShadow }}\\\" style-hover=\\\"border-color: {{ card.cardHoverBorder }}; transform: translateY(-2px); box-shadow: {{ card.cardHoverShadow }}; background: {{ card.cardHoverBg }}\\\">\\n\\n          <div>\\n            <!-- Category label -->\\n            <sc-if value=\\\"{{ card.showCategory }}\\\" hint-placeholder-val=\\\"{{ true }}\\\">\\n              <div style=\\\"font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.36); margin-bottom: 12px; padding-right: 30px\\\">{{ card.category }}</div>\\n            </sc-if>\\n\\n            <!-- Title -->\\n            <div style=\\\"font-size: 17px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 10px; color: #fff; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; padding-right: 22px\\\">{{ card.title }}</div>\\n\\n            <!-- Truncated prompt -->\\n            <div style=\\\"font-size: 14px; line-height: 1.45; color: rgba(255,255,255,0.85); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden\\\">{{ card.promptHtml }}</div>\\n          </div>\\n\\n          <!-- Buttons -->\\n          <div style=\\\"display: grid; grid-template-columns: 1fr 0.82fr; gap: 10px; margin-top: auto; padding-top: 18px\\\">\\n            <!-- Personalise button with trace -->\\n            <button class=\\\"trace-btn\\\" onclick=\\\"{{ card.onPersonalise }}\\\" style=\\\"position: relative; overflow: hidden; isolation: isolate; font-family: 'Segoe UI', system-ui, sans-serif; font-size: 13px; font-weight: 700; padding: 0 14px; height: 38px; border-radius: 999px; cursor: pointer; background: rgba(255,255,255,0.045); border: 1px solid rgba(255,255,255,0.12); color: #00D639; transition: border-color 0.16s, background 0.16s, transform 0.16s\\\" style-hover=\\\"border-color: transparent; background: rgba(255,255,255,0.06); transform: translateY(-1px)\\\">\\n              <svg style=\\\"position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; overflow: visible\\\" viewBox=\\\"0 0 260 38\\\" preserveAspectRatio=\\\"none\\\"><rect class=\\\"trace-rect\\\" x=\\\"1.5\\\" y=\\\"1.5\\\" width=\\\"257\\\" height=\\\"35\\\" rx=\\\"18\\\" pathLength=\\\"1\\\" fill=\\\"none\\\" stroke=\\\"#00D639\\\" stroke-width=\\\"2.2\\\" vector-effect=\\\"non-scaling-stroke\\\" opacity=\\\"0\\\" stroke-linecap=\\\"round\\\" stroke-dasharray=\\\"0.22 0.78\\\" stroke-dashoffset=\\\"1\\\" style=\\\"filter: drop-shadow(0 0 7px rgba(0,214,57,0.45)); transition: opacity 0.16s; animation: traceBorder 1.45s linear infinite; animation-play-state: paused\\\"></rect></svg>\\n              <span style=\\\"position: relative; z-index: 2\\\">Personalise</span>\\n            </button>\\n            <!-- Copy button -->\\n            <button onclick=\\\"{{ card.onCopy }}\\\" style=\\\"font-family: 'Segoe UI', system-ui, sans-serif; font-size: 13px; font-weight: 700; padding: 0 14px; height: 38px; border-radius: 999px; cursor: pointer; background: rgba(255,255,255,0.045); border: 1px solid rgba(255,255,255,0.12); color: #fff; transition: border-color 0.16s, background 0.16s, transform 0.16s, color 0.16s\\\" style-hover=\\\"border-color: rgba(255,255,255,0.26); background: rgba(255,255,255,0.075); transform: translateY(-1px)\\\">{{ card.copyLabel }}</button>\\n          </div>\\n\\n          <!-- Expand icon on hover -->\\n          <svg class=\\\"expand-ico\\\" style=\\\"position: absolute; top: 18px; right: 18px; width: 18px; height: 18px; color: #00D639; opacity: 0; transform: scale(0.92) translateY(4px); transition: opacity 0.16s, transform 0.16s; pointer-events: none\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2.6\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><path d=\\\"M16 3h5v5\\\"></path><path d=\\\"M21 3l-7 7\\\"></path><path d=\\\"M8 21H3v-5\\\"></path><path d=\\\"M3 21l7-7\\\"></path></svg>\\n        </div>\\n      </sc-for>\\n    </div>\\n\\n    <!-- No results -->\\n    <sc-if value=\\\"{{ showNoResults }}\\\" hint-placeholder-val=\\\"{{ false }}\\\">\\n      <div style=\\\"text-align: center; padding: 64px 20px; color: rgba(255,255,255,0.4); font-size: 15px\\\">No prompts match your search.</div>\\n    </sc-if>\\n\\n    <!-- Footer -->\\n  </div>\\n\\n  <div style=\\\"max-width: {{ containerMaxWidth }}px; margin: 0 auto; padding: 0 32px; text-align: center; padding-top: 48px; margin-top: 48px; border-top: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.3); font-size: 12px; letter-spacing: 0.04em\\\">From the MA&amp;A Team \\u2014 Sage</div>\\n\\n  <!-- Modal Overlay -->\\n  <sc-if value=\\\"{{ showModal }}\\\" hint-placeholder-val=\\\"{{ false }}\\\">\\n    <div onclick=\\\"{{ closeModal }}\\\" style=\\\"position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.86); backdrop-filter: blur(24px) saturate(0.5); display: flex; align-items: center; justify-content: center; padding: 24px; animation: overlayIn 0.2s ease\\\">\\n      <div onclick=\\\"{{ stopProp }}\\\" style=\\\"width: min(680px, calc(100% - 48px)); max-height: 82vh; overflow-y: auto; overflow-x: hidden; border: 1px solid rgba(255,255,255,0.22); border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.018)), #050505; box-shadow: 0 30px 110px rgba(0,0,0,0.72); padding: 28px; animation: modalIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1)\\\">\\n        <!-- Close button -->\\n        <div style=\\\"display: flex; justify-content: flex-end; margin-bottom: 4px\\\">\\n          <button onclick=\\\"{{ closeModal }}\\\" style=\\\"background: none; border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; width: 32px; height: 32px; color: rgba(255,255,255,0.4); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: border-color 0.2s, color 0.2s\\\" style-hover=\\\"border-color: rgba(255,255,255,0.3); color: #fff\\\">\\u2715</button>\\n        </div>\\n        <!-- Category -->\\n        <div style=\\\"font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #00D639; margin-bottom: 8px\\\">{{ modalData.category }}</div>\\n        <!-- Tools -->\\n        <div style=\\\"font-size: 12px; color: rgba(255,255,255,0.35); margin-bottom: 20px; letter-spacing: 0.03em\\\">{{ modalData.tool }}</div>\\n        <!-- Title -->\\n        <div style=\\\"font-size: 36px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 24px\\\">{{ modalData.title }}</div>\\n        <!-- Full prompt -->\\n        <div style=\\\"font-size: 16px; line-height: 1.65; color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 20px; white-space: pre-wrap; word-break: break-word\\\">{{ modalData.promptHtml }}</div>\\n        <!-- Source badge -->\\n        <div style=\\\"margin-top: 20px; display: flex; align-items: center; gap: 10px\\\">\\n          <span style=\\\"font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; background: rgba(0,214,57,0.1); color: #00D639; border: 1px solid rgba(0,214,57,0.2)\\\">{{ modalData.source }}</span>\\n        </div>\\n        <!-- Actions -->\\n        <div style=\\\"display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px\\\">\\n          <button onclick=\\\"{{ modalData.onPersonalise }}\\\" style=\\\"position: relative; overflow: hidden; isolation: isolate; font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; font-weight: 700; padding: 14px 20px; border-radius: 999px; cursor: pointer; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color: #00D639; transition: all 0.16s\\\" style-hover=\\\"border-color: rgba(255,255,255,0.22); background: rgba(255,255,255,0.06)\\\">\\n            <svg style=\\\"position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; overflow: visible\\\" viewBox=\\\"0 0 260 44\\\" preserveAspectRatio=\\\"none\\\"><rect x=\\\"1.5\\\" y=\\\"1.5\\\" width=\\\"257\\\" height=\\\"41\\\" rx=\\\"21\\\" pathLength=\\\"1\\\" fill=\\\"none\\\" stroke=\\\"#00D639\\\" stroke-width=\\\"2.2\\\" vector-effect=\\\"non-scaling-stroke\\\" opacity=\\\"0\\\" stroke-linecap=\\\"round\\\" stroke-dasharray=\\\"0.22 0.78\\\" stroke-dashoffset=\\\"1\\\" style=\\\"filter: drop-shadow(0 0 7px rgba(0,214,57,0.45)); transition: opacity 0.16s; animation: traceBorder 1.45s linear infinite; animation-play-state: paused\\\"></rect></svg>\\n            <span style=\\\"position: relative; z-index: 2\\\">Personalise</span>\\n          </button>\\n          <button onclick=\\\"{{ modalData.onCopy }}\\\" style=\\\"font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; font-weight: 700; padding: 14px 20px; border-radius: 999px; cursor: pointer; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color: #fff; transition: all 0.16s\\\" style-hover=\\\"border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.07)\\\">{{ modalData.copyLabel }}</button>\\n        </div>\\n      </div>\\n    </div>\\n  </sc-if>\\n\\n  <!-- Personaliser Overlay -->\\n  <sc-if value=\\\"{{ showPersonaliser }}\\\" hint-placeholder-val=\\\"{{ false }}\\\">\\n    <div onclick=\\\"{{ closePersonaliser }}\\\" style=\\\"position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.86); backdrop-filter: blur(24px) saturate(0.5); display: flex; align-items: center; justify-content: center; padding: 24px; animation: overlayIn 0.2s ease\\\">\\n      <div onclick=\\\"{{ stopProp }}\\\" style=\\\"width: min(680px, 100%); max-height: 85vh; overflow-y: auto; border: 1px solid rgba(255,255,255,0.18); border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015)), #0a0a0a; box-shadow: 0 32px 100px rgba(0,0,0,0.7); padding: 32px; animation: modalIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1)\\\">\\n        <!-- Close -->\\n        <div style=\\\"display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px\\\">\\n          <div style=\\\"font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #00D639\\\">Personalise prompt</div>\\n          <button onclick=\\\"{{ closePersonaliser }}\\\" style=\\\"background: none; border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; width: 32px; height: 32px; color: rgba(255,255,255,0.4); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: border-color 0.2s, color 0.2s\\\" style-hover=\\\"border-color: rgba(255,255,255,0.3); color: #fff\\\">\\u2715</button>\\n        </div>\\n        <!-- Title -->\\n        <div style=\\\"font-size: 24px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 24px\\\">{{ persData.title }}</div>\\n        <!-- Variable inputs -->\\n        <sc-for list=\\\"{{ persData.vars }}\\\" as=\\\"v\\\">\\n          <div style=\\\"margin-bottom: 16px\\\">\\n            <label style=\\\"display: block; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.5); margin-bottom: 6px\\\">Fill in: <span style=\\\"color: #00D639; font-weight: 700\\\">{{ v.label }}</span></label>\\n            <input type=\\\"text\\\" placeholder=\\\"{{ v.placeholder }}\\\" oninput=\\\"{{ v.onInput }}\\\" style=\\\"width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px 14px; font-family: 'Segoe UI', system-ui, sans-serif; font-size: 13px; color: #fff; outline: none; transition: border-color 0.2s, box-shadow 0.2s\\\" onfocus=\\\"this.style.borderColor='#00D639'; this.style.boxShadow='0 0 0 3px rgba(0,214,57,0.1)'\\\" onblur=\\\"this.style.borderColor='rgba(255,255,255,0.1)'; this.style.boxShadow='none'\\\">\\n          </div>\\n        </sc-for>\\n        <!-- Live preview -->\\n        <div style=\\\"margin-top: 8px; margin-bottom: 20px\\\">\\n          <div style=\\\"font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 12px\\\">Live preview</div>\\n          <div style=\\\"font-size: 14px; line-height: 1.7; color: rgba(255,255,255,0.65); background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px; white-space: pre-wrap; word-break: break-word\\\">{{ persData.previewHtml }}</div>\\n        </div>\\n        <!-- Copy -->\\n        <button onclick=\\\"{{ persData.onCopy }}\\\" style=\\\"width: 100%; font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; font-weight: 700; padding: 14px; border-radius: 12px; cursor: pointer; border: none; background: #00D639; color: #000; transition: opacity 0.2s, transform 0.15s\\\" style-hover=\\\"opacity: 0.88; transform: translateY(-1px)\\\">{{ persData.copyLabel }}</button>\\n      </div>\\n    </div>\\n  </sc-if>\\n</div>\\n\\n</x-dc>\\n<script type=\\\"text/x-dc\\\" data-dc-script=\\\"\\\" data-props=\\\"{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;100%&quot;},&quot;showCategories&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;columns&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;2&quot;,&quot;3&quot;,&quot;4&quot;],&quot;default&quot;:&quot;3&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;containerWidth&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:980,&quot;min&quot;:800,&quot;max&quot;:1400,&quot;step&quot;:50,&quot;tsType&quot;:&quot;number&quot;},&quot;pillsContainerWidth&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:850,&quot;min&quot;:600,&quot;max&quot;:1400,&quot;step&quot;:50,&quot;tsType&quot;:&quot;number&quot;}}\\\">\\n\\nclass Component extends DCLogic {\\n  state = {\\n    search: '',\\n    activeCategory: -1,\\n    modalPrompt: null,\\n    persPrompt: null,\\n    varValues: {},\\n    copyStates: {},\\n    modalCopyState: '',\\n    persCopyState: ''\\n  };\\n\\n  data = [\\n    {\\n      category: \\\"Getting Started\\\",\\n      prompts: [\\n        { title: \\\"What can you do?\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude \\u00b7 Cortex\\\", source: \\\"Starter prompt\\\", prompt: \\\"What can you do? Give me practical examples relevant to someone working in [your role].\\\" },\\n        { title: \\\"Smallest step today\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude \\u00b7 Cortex\\\", source: \\\"Starter prompt\\\", prompt: \\\"What's the smallest thing I can do today to get started with [topic] using AI?\\\" },\\n        { title: \\\"Break down a task into steps\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude \\u00b7 Cortex\\\", source: \\\"Starter prompt\\\", prompt: \\\"How can I break this down into smaller steps? [paste your task here]\\\" },\\n        { title: \\\"Help me prioritise tasks\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude \\u00b7 Cortex\\\", source: \\\"Starter prompt\\\", prompt: \\\"I have a list of tasks. Help me prioritise them by effort vs impact. [paste your list]\\\" },\\n      ]\\n    },\\n    {\\n      category: \\\"Data & Analysis\\\",\\n      prompts: [\\n        { title: \\\"Analyse data and surface key insights\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude \\u00b7 Cortex\\\", source: \\\"Starter prompt\\\", prompt: \\\"I'm analysing this dataset for [context or goal]. Identify 3\\u20135 key insights I should present. Focus on meaningful trends, patterns, or anomalies. For each insight, explain what's happening, why it matters, and what action it suggests. Present the insights in a clear, clean table. Then suggest a few follow-up questions or areas to explore next. [upload data]\\\" },\\n        { title: \\\"Spot the story in data\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude \\u00b7 Cortex\\\", source: \\\"Starter prompt\\\", prompt: \\\"Here's some [campaign or report] data. What's the main story I should be telling from this? [paste data or description]\\\" },\\n        { title: \\\"Get to the \\\\\\\"so what\\\\\\\"\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude \\u00b7 Cortex\\\", source: \\\"Starter prompt\\\", prompt: \\\"Here are my results: [paste results]. Help me get to the \\\\\\\"so what\\\\\\\" \\u2014 what does this mean and what should we do next?\\\" },\\n        { title: \\\"Build hypotheses from data\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude \\u00b7 Cortex\\\", source: \\\"Starter prompt\\\", prompt: \\\"I'm seeing [observation] in my data. Help me build 3 hypotheses for why this might be happening.\\\" },\\n        { title: \\\"Sense check analysis\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude \\u00b7 Cortex\\\", source: \\\"Starter prompt\\\", prompt: \\\"Here's my analysis and conclusion: [paste]. Can you sense check my logic and flag anything I might have missed?\\\" },\\n        { title: \\\"Analyse churn drivers\\\", tool: \\\"Copilot\\\", source: \\\"Team submission\\\", prompt: \\\"You are a data analyst. Analyse the following customer data and identify the top drivers of churn. Focus on patterns related to complexity score, engagement metrics, and support interactions. Provide a summary of findings and recommend actions to reduce churn. [paste data]\\\" },\\n        { title: \\\"Analyse A/B test results\\\", tool: \\\"Claude\\\", source: \\\"Team submission\\\", prompt: \\\"Analyse the results of an A/B test in Power BI using DAX. The test compares two versions of [describe test]. Calculate statistical significance, identify the winning variant, and summarise the key takeaways. [paste data or DAX code]\\\" },\\n        { title: \\\"Build a data dashboard\\\", tool: \\\"ChatGPT\\\", source: \\\"Team submission\\\", prompt: \\\"Help me design a Power BI dashboard for [business area or team]. Suggest key metrics to include, how to structure the layout, and which visualisations would work best for the audience. The goal is to make it easy to spot trends and take action.\\\" },\\n        { title: \\\"Compare organic vs brand search\\\", tool: \\\"Claude\\\", source: \\\"Team submission\\\", prompt: \\\"Analyse the following search data and compare organic vs brand search performance. Identify trends, highlight areas of concern, and suggest actions to improve organic visibility. [paste data]\\\" },\\n        { title: \\\"Reconcile email performance data\\\", tool: \\\"Snowflake Cortex\\\", source: \\\"Team submission\\\", prompt: \\\"I have email performance data from two sources that don't match. Help me identify discrepancies between [source A] and [source B]. Highlight rows where metrics differ significantly and suggest reasons for the gaps. [paste data]\\\" },\\n        { title: \\\"Analyse email fatigue\\\", tool: \\\"Snowflake Cortex\\\", source: \\\"Team submission\\\", prompt: \\\"Using the following email engagement data, identify signs of audience fatigue. Look for declining open rates, increasing unsubscribes, and drop-off patterns over time. Recommend actions to re-engage the audience. [paste data]\\\" },\\n      ]\\n    },\\n    {\\n      category: \\\"Writing & Comms\\\",\\n      prompts: [\\n        { title: \\\"Improve written content\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude\\\", source: \\\"Starter prompt\\\", prompt: \\\"Here's a draft I've written. Improve the clarity and cut anything unnecessary while keeping the meaning. [paste draft]\\\" },\\n        { title: \\\"Summarise for leadership\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude \\u00b7 Cortex\\\", source: \\\"Starter prompt\\\", prompt: \\\"Summarise the following for a senior leadership audience. Start with a single sentence that clearly states the key insight or takeaway (\\\\\\\"the so what\\\\\\\"). Then provide 2\\u20133 short bullet points covering the key impacts or recommended actions. Use clear, direct language and avoid unnecessary detail. [paste content]\\\" },\\n        { title: \\\"Write a team update\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude\\\", source: \\\"Starter prompt\\\", prompt: \\\"Write a short team update about [topic]. Use 3\\u20135 bullet points, clear and direct language, and focus on key updates and actions.\\\" },\\n        { title: \\\"Translate into plain English\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude\\\", source: \\\"Starter prompt\\\", prompt: \\\"Rewrite this in plain English for a non-technical stakeholder. [paste text]\\\" },\\n        { title: \\\"Generate content angles\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude\\\", source: \\\"Starter prompt\\\", prompt: \\\"I'm creating content about [topic] for [audience]. Give me 5 different angles or hooks.\\\" },\\n        { title: \\\"Improve marketing copy\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude\\\", source: \\\"Starter prompt\\\", prompt: \\\"Rewrite this copy to be more compelling and specific. Remove generic phrases. [paste copy]\\\" },\\n        { title: \\\"Generate subject line options\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude\\\", source: \\\"Starter prompt\\\", prompt: \\\"Write 5 subject line variants for a campaign about [topic]. Audience: [audience]. Goal: [goal].\\\" },\\n        { title: \\\"Tailor message to audience\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude\\\", source: \\\"Starter prompt\\\", prompt: \\\"How would you position [message] for [specific audience]? What language would resonate?\\\" },\\n        { title: \\\"Review and improve content\\\", tool: \\\"Copilot\\\", source: \\\"Team submission\\\", prompt: \\\"Review and improve the following written content. Make it clearer, more concise, and more engaging while keeping the original meaning. Highlight any changes you make and explain why. [paste content]\\\" },\\n        { title: \\\"Generate internal social posts\\\", tool: \\\"Copilot\\\", source: \\\"Team submission\\\", prompt: \\\"Write 3 Viva Engage posts about [topic] for an internal audience. Keep each post under 150 words. The tone should be [professional/conversational/inspiring]. Include a call to action in each post.\\\" },\\n        { title: \\\"Rewrite email from notes\\\", tool: \\\"Copilot\\\", source: \\\"Team submission\\\", prompt: \\\"I have rough notes from a meeting or conversation. Turn them into a clear, professional email. Keep it concise, lead with the key message, and include a clear next step. [paste notes]\\\" },\\n      ]\\n    },\\n    {\\n      category: \\\"Strategy & Planning\\\",\\n      prompts: [\\n        { title: \\\"Challenge ideas with devil's advocate\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude \\u00b7 Cortex\\\", source: \\\"Team submission\\\", prompt: \\\"Play devil's advocate on the following idea or plan. Identify the biggest risks, weaknesses, and assumptions. Be specific and constructive \\u2014 the goal is to stress-test the thinking, not just criticise. [describe idea or paste plan]\\\" },\\n        { title: \\\"Research customer journey stages\\\", tool: \\\"ChatGPT\\\", source: \\\"Team submission\\\", prompt: \\\"Research and summarise the typical journey a [type of customer] goes through when [describe decision or process]. Identify the key stages, what they're thinking and feeling at each stage, and what information or support they need. Format this as a clear journey map.\\\" },\\n      ]\\n    },\\n    {\\n      category: \\\"Learning & Exploration\\\",\\n      prompts: [\\n        { title: \\\"Learn a topic quickly\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude \\u00b7 Cortex\\\", source: \\\"Starter prompt\\\", prompt: \\\"Give me a clear, structured overview of [topic]. Include key concepts, a simple example, and when it's used in practice. Keep it concise.\\\" },\\n        { title: \\\"Compare two concepts\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude \\u00b7 Cortex\\\", source: \\\"Starter prompt\\\", prompt: \\\"What's the difference between [concept A] and [concept B]? Use a real-world example.\\\" },\\n        { title: \\\"Quiz me on a topic\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude \\u00b7 Cortex\\\", source: \\\"Starter prompt\\\", prompt: \\\"Quiz me on [topic] with 5 questions, starting easy and getting harder. After each answer, tell me if I'm right and explain why.\\\" },\\n        { title: \\\"Recommend next learning step\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude \\u00b7 Cortex\\\", source: \\\"Starter prompt\\\", prompt: \\\"I've just learned about [topic]. What should I explore next to go deeper?\\\" },\\n        { title: \\\"Explain using a simple diagram\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude \\u00b7 Cortex\\\", source: \\\"Starter prompt\\\", prompt: \\\"Explain how [concept] works using a simple text-based (ASCII) diagram and include a short explanation alongside it. Make it easy to follow and clearly show the structure or flow.\\\" },\\n        { title: \\\"Learn a topic quickly (80/20)\\\", tool: \\\"ChatGPT\\\", source: \\\"Team submission\\\", prompt: \\\"I want to learn about [topic]. Use the 80/20 rule to focus on the 20% of concepts that will give me 80% of the understanding. Give me a structured overview with the most important ideas first, practical examples, and what to focus on to get up to speed quickly.\\\" },\\n        { title: \\\"Break down complex ideas\\\", tool: \\\"Claude\\\", source: \\\"Team submission\\\", prompt: \\\"Take the following complex concept and break it down so that someone new to the topic can understand it. Use simple language, avoid jargon, and include a real-world analogy to make it stick. [paste concept or topic]\\\" },\\n      ]\\n    },\\n    {\\n      category: \\\"Go Deeper\\\",\\n      prompts: [\\n        { title: \\\"Break down a topic from first principles\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude \\u00b7 Cortex\\\", source: \\\"Starter prompt\\\", prompt: \\\"Break [topic] down using first principles thinking. Start by identifying the common assumptions people make about this topic. Then strip those assumptions away and focus only on what is fundamentally true. Rebuild the concept step by step from these core truths. Show what changes when you remove inherited thinking.\\\" },\\n        { title: \\\"Explain a topic simply (no jargon)\\\", tool: \\\"ChatGPT \\u00b7 Copilot \\u00b7 Claude \\u00b7 Cortex\\\", source: \\\"Starter prompt\\\", prompt: \\\"Now explain [topic] as if I'm new to it. Use no jargon, no assumed knowledge, and include two different examples to make it clear. If anything is still unclear, simplify it further until it's genuinely easy to understand.\\\" },\\n      ]\\n    },\\n    {\\n      category: \\\"Coding\\\",\\n      prompts: [\\n        { title: \\\"Fix a DAX formula\\\", tool: \\\"Claude\\\", source: \\\"Team submission\\\", prompt: \\\"I have a DAX formula that isn't working as expected. Review the code, identify the issue, and provide a corrected version with an explanation of what was wrong and why the fix works. [paste DAX code]\\\" },\\n        { title: \\\"Generate UI code\\\", tool: \\\"Copilot\\\", source: \\\"Team submission\\\", prompt: \\\"Generate an Adaptive Card JSON for [describe the card's purpose and content]. It should include [list key elements e.g. title, body text, action buttons]. Make it clean and functional for use in [Teams / Outlook / Power Automate].\\\" },\\n        { title: \\\"Fix bugs step by step\\\", tool: \\\"Claude\\\", source: \\\"Team submission\\\", prompt: \\\"I have a bug in my code that I can't resolve. Walk me through debugging it step by step. Ask me clarifying questions if needed, suggest what to check first, and help me identify the root cause before suggesting a fix. [paste code and describe the issue]\\\" },\\n        { title: \\\"Improve application code\\\", tool: \\\"Claude\\\", source: \\\"Team submission\\\", prompt: \\\"Review the following code and suggest improvements. Focus on readability, performance, and best practices. Explain each change you recommend and why it makes the code better. [paste code]\\\" },\\n        { title: \\\"Check SQL query\\\", tool: \\\"Snowflake Cortex\\\", source: \\\"Team submission\\\", prompt: \\\"Review the following SQL query and check it for errors, inefficiencies, or logic issues. Suggest improvements and explain your reasoning. If the query can be simplified or optimised, show me how. [paste SQL]\\\" },\\n        { title: \\\"Aggregate data using code\\\", tool: \\\"Claude\\\", source: \\\"Team submission\\\", prompt: \\\"Write a script to aggregate data from [describe data source or structure]. The goal is to [describe output e.g. summarise by region, calculate totals by month]. Use [R / Python / SQL] and include comments explaining each step. [paste data sample if available]\\\" },\\n        { title: \\\"Aggregate CSV data\\\", tool: \\\"Claude\\\", source: \\\"Team submission\\\", prompt: \\\"I have a CSV file with the following structure: [describe columns and data]. Write an R script to load the file, aggregate the data by [field], and output a summary table showing [desired metrics]. Include error handling and comments.\\\" },\\n        { title: \\\"Convert date format\\\", tool: \\\"Copilot\\\", source: \\\"Team submission\\\", prompt: \\\"I have a column in Excel with dates in [current format e.g. DD/MM/YYYY]. Write a formula to convert them to [target format e.g. YYYY-MM-DD]. Explain how the formula works and how to apply it to the full column.\\\" },\\n        { title: \\\"Improve data model\\\", tool: \\\"Claude\\\", source: \\\"Team submission\\\", prompt: \\\"Review the following data model or notebook and suggest improvements. Focus on structure, clarity, and performance. Highlight any issues with the current approach and recommend a better way to organise or write the code. [paste code or describe model]\\\" },\\n        { title: \\\"Build a Workfront calculated field\\\", tool: \\\"Copilot\\\", source: \\\"Team submission\\\", prompt: \\\"Help me build a calculated field in Workfront for [describe the purpose]. The field should [describe logic or output]. Walk me through the formula syntax and how to set it up correctly in Workfront.\\\" },\\n      ]\\n    },\\n    {\\n      category: \\\"Tools & Workflows\\\",\\n      prompts: [\\n        { title: \\\"Automate QA tasks\\\", tool: \\\"Copilot\\\", source: \\\"Team submission\\\", prompt: \\\"Help me automate the following quality assurance task in [tool or system]: [describe task]. Suggest a workflow or process that reduces manual effort, catches errors early, and can be repeated consistently. Include any formulas, scripts, or steps needed.\\\" },\\n        { title: \\\"Apply brand styling to app\\\", tool: \\\"Claude\\\", source: \\\"Team submission\\\", prompt: \\\"I have a Streamlit app and want to apply our brand colours and styling. Our primary colour is [hex code], secondary is [hex code], and font is [font name]. Update the app's CSS and layout to match these brand guidelines while keeping the functionality intact. [paste current code]\\\" },\\n      ]\\n    },\\n    {\\n      category: \\\"Design & Imagery\\\",\\n      prompts: [\\n        { title: \\\"Localise image for market\\\", tool: \\\"Adobe\\\", source: \\\"Team submission\\\", prompt: \\\"I need to localise the following image for the [market/region] market. Adapt any text, imagery, or cultural references to be appropriate and relevant for that audience. Highlight what changes you would make and why. [describe or attach image]\\\" },\\n        { title: \\\"Localise video for market\\\", tool: \\\"Adobe\\\", source: \\\"Team submission\\\", prompt: \\\"I need to localise this video for the [market/region] market. Suggest changes to voiceover, on-screen text, visuals, and cultural references to make it suitable for the local audience. Provide a list of recommended adaptations. [describe video content]\\\" },\\n      ]\\n    },\\n  ];\\n\\n  escHtml(s) {\\n    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\\n  }\\n\\n  highlightVars(text) {\\n    return this.escHtml(text).replace(/\\\\[([^\\\\]]*)\\\\]/g, (m, k) => {\\n      return '<span style=\\\"color:#00D639;font-weight:700\\\">[' + k + ']</span>';\\n    });\\n  }\\n\\n  extractVars(prompt) {\\n    const matches = [...prompt.matchAll(/\\\\[([^\\\\]]*)\\\\]/g)];\\n    const seen = new Set();\\n    return matches.filter(m => { if (seen.has(m[1])) return false; seen.add(m[1]); return true; }).map(m => m[1]);\\n  }\\n\\n  getAllPrompts() {\\n    const search = this.state.search.toLowerCase().trim();\\n    const catIdx = this.state.activeCategory;\\n    let all = [];\\n    this.data.forEach((section, si) => {\\n      if (catIdx !== -1 && si !== catIdx) return;\\n      section.prompts.forEach(p => {\\n        all.push({ ...p, category: section.category });\\n      });\\n    });\\n    if (search) {\\n      all = all.filter(p =>\\n        p.title.toLowerCase().includes(search) ||\\n        p.prompt.toLowerCase().includes(search) ||\\n        p.category.toLowerCase().includes(search) ||\\n        (p.tool && p.tool.toLowerCase().includes(search)));\\n    }\\n    return all;\\n  }\\n\\n  copyToClipboard(text, key) {\\n    navigator.clipboard.writeText(text).then(() => {\\n      this.setState(s => ({ copyStates: { ...s.copyStates, [key]: true } }));\\n      setTimeout(() => {\\n        this.setState(s => {\\n          const next = { ...s.copyStates };\\n          delete next[key];\\n          return { copyStates: next };\\n        });\\n      }, 1800);\\n    });\\n  }\\n\\n  renderVals() {\\n    const allPrompts = this.getAllPrompts();\\n    const allCategories = ['All', ...this.data.map(s => s.category)];\\n\\n    const pillIcons = {\\n      'All': '<svg width=\\\"15\\\" height=\\\"15\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><path d=\\\"M12 3l1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6 6.1 18.2l1.9-5.8L3 8.8h6.1z\\\"/></svg>',\\n      'Getting Started': '<svg width=\\\"15\\\" height=\\\"15\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><path d=\\\"M22 10v6M2 10l10-5 10 5-10 5z\\\"/><path d=\\\"M6 12v5c3 3 9 3 12 0v-5\\\"/></svg>',\\n      'Data & Analysis': '<svg width=\\\"15\\\" height=\\\"15\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><ellipse cx=\\\"12\\\" cy=\\\"5\\\" rx=\\\"9\\\" ry=\\\"3\\\"/><path d=\\\"M21 12c0 1.66-4 3-9 3s-9-1.34-9-3\\\"/><path d=\\\"M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5\\\"/></svg>',\\n      'Writing & Comms': '<svg width=\\\"15\\\" height=\\\"15\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><path d=\\\"M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z\\\"/></svg>',\\n      'Strategy & Planning': '<svg width=\\\"15\\\" height=\\\"15\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><circle cx=\\\"12\\\" cy=\\\"12\\\" r=\\\"10\\\"/><circle cx=\\\"12\\\" cy=\\\"12\\\" r=\\\"6\\\"/><circle cx=\\\"12\\\" cy=\\\"12\\\" r=\\\"2\\\"/></svg>',\\n      'Learning & Exploration': '<svg width=\\\"15\\\" height=\\\"15\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><path d=\\\"M9 18h6\\\"/><path d=\\\"M10 22h4\\\"/><path d=\\\"M12 2a7 7 0 0 1 4 12.7V17H8v-2.3A7 7 0 0 1 12 2z\\\"/></svg>',\\n      'Go Deeper': '<svg width=\\\"15\\\" height=\\\"15\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><circle cx=\\\"12\\\" cy=\\\"12\\\" r=\\\"10\\\"/><polygon points=\\\"16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76\\\"/></svg>',\\n      'Coding': '<svg width=\\\"15\\\" height=\\\"15\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><polyline points=\\\"16 18 22 12 16 6\\\"/><polyline points=\\\"8 6 2 12 8 18\\\"/></svg>',\\n      'Tools & Workflows': '<svg width=\\\"15\\\" height=\\\"15\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><path d=\\\"M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z\\\"/></svg>',\\n      'Design & Imagery': '<svg width=\\\"15\\\" height=\\\"15\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><circle cx=\\\"12\\\" cy=\\\"12\\\" r=\\\"10\\\"/><circle cx=\\\"12\\\" cy=\\\"10\\\" r=\\\"3\\\"/><path d=\\\"M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662\\\"/></svg>'\\n    };\\n\\n    const categoryPills = allCategories.map((name, i) => {\\n      const idx = i - 1;\\n      const isActive = this.state.activeCategory === idx;\\n      return {\\n        label: name,\\n        iconHtml: React.createElement('span', { dangerouslySetInnerHTML: { __html: pillIcons[name] || '' }, style: { display: 'inline-flex', alignItems: 'center', opacity: isActive ? 1 : 0.5 } }),\\n        bg: isActive ? '#00D639' : 'transparent',\\n        color: isActive ? '#000' : '#fff',\\n        borderColor: isActive ? '#00D639' : 'rgba(255,255,255,0.4)',\\n        onClick: (e) => {\\n          e.stopPropagation();\\n          this.setState({ activeCategory: idx });\\n        }\\n      };\\n    });\\n\\n    const onSurpriseMe = () => {\\n      const pool = this.data.flatMap(s => s.prompts.map(p => ({ ...p, category: s.category })));\\n      const random = pool[Math.floor(Math.random() * pool.length)];\\n      this.setState({ modalPrompt: random, modalCopyState: '' });\\n    };\\n\\n    // Fixed card style\\n    const cardBg = '#0B0B0B';\\n    const cardBorder = 'rgba(255,255,255,0.46)';\\n    const cardShadow = 'inset 0 1px 0 rgba(255,255,255,0.045), 0 18px 50px rgba(0,0,0,0.34)';\\n    const cardHoverBg = 'radial-gradient(circle at 50% 0%, rgba(255,255,255,0.085), transparent 64%), linear-gradient(180deg, rgba(255,255,255,0.060), rgba(255,255,255,0.018)), #0D0D0D';\\n    const cardHoverBorder = 'rgba(255,255,255,0.66)';\\n    const cardHoverShadow = 'inset 0 1px 0 rgba(255,255,255,0.09), 0 24px 70px rgba(0,0,0,0.56)';\\n\\n    // Tweak: show categories\\n    const showCats = this.props.showCategories ?? true;\\n\\n    // Tweak: columns\\n    const cols = this.props.columns ?? '3';\\n\\n    // Tweak: container width\\n    const containerMaxWidth = this.props.containerWidth ?? 1080;\\n\\n    // Tweak: pills container width\\n    const pillsContainerWidth = this.props.pillsContainerWidth ?? 950;\\n\\n    const cards = allPrompts.map((p, i) => {\\n      const key = 'card-' + i;\\n      return {\\n        category: showCats ? p.category : '',\\n        showCategory: showCats,\\n        title: p.title,\\n        promptHtml: React.createElement('span', { dangerouslySetInnerHTML: { __html: this.highlightVars(p.prompt) } }),\\n        copyLabel: this.state.copyStates[key] ? '\\u2713 Copied' : 'Copy',\\n        cardBg: cardBg,\\n        cardBorder: cardBorder,\\n        cardShadow: cardShadow || '0 0 0 rgba(0,0,0,0)',\\n        cardHoverBg: cardHoverBg,\\n        cardHoverBorder: cardHoverBorder,\\n        cardHoverShadow: cardHoverShadow || '0 0 0 1px rgba(255,255,255,0.06), 0 22px 80px rgba(0,0,0,0.55)',\\n        onCopy: (e) => { e.stopPropagation(); this.copyToClipboard(p.prompt, key); },\\n        onPersonalise: (e) => {\\n          e.stopPropagation();\\n          const vars = this.extractVars(p.prompt);\\n          const varValues = {};\\n          vars.forEach(v => varValues[v] = '');\\n          this.setState({ persPrompt: p, varValues, modalPrompt: null });\\n        },\\n        onExpand: () => {\\n          this.setState({ modalPrompt: p, modalCopyState: '' });\\n        }\\n      };\\n    });\\n\\n    const showNoResults = allPrompts.length === 0;\\n\\n    // Modal data\\n    const mp = this.state.modalPrompt;\\n    const modalData = mp ? {\\n      category: this.data.find(s => s.prompts.includes(mp))?.category || '',\\n      tool: mp.tool,\\n      title: mp.title,\\n      source: mp.source,\\n      promptHtml: React.createElement('span', { dangerouslySetInnerHTML: { __html: this.highlightVars(mp.prompt) } }),\\n      copyLabel: this.state.modalCopyState === 'copied' ? '\\u2713 Copied' : 'Copy',\\n      onCopy: (e) => {\\n        e.stopPropagation();\\n        navigator.clipboard.writeText(mp.prompt).then(() => {\\n          this.setState({ modalCopyState: 'copied' });\\n          setTimeout(() => this.setState({ modalCopyState: '' }), 1800);\\n        });\\n      },\\n      onPersonalise: (e) => {\\n        e.stopPropagation();\\n        const vars = this.extractVars(mp.prompt);\\n        const varValues = {};\\n        vars.forEach(v => varValues[v] = '');\\n        this.setState({ persPrompt: mp, varValues, modalPrompt: null });\\n      }\\n    } : { category: '', tool: '', title: '', source: '', promptHtml: '', copyLabel: 'Copy', onCopy: () => {}, onPersonalise: () => {} };\\n\\n    // Personaliser data\\n    const pp = this.state.persPrompt;\\n    const persData = pp ? (() => {\\n      const vars = this.extractVars(pp.prompt);\\n      const vv = this.state.varValues;\\n      const previewHtml = React.createElement('span', {\\n        dangerouslySetInnerHTML: {\\n          __html: this.escHtml(pp.prompt).replace(/\\\\[([^\\\\]]*)\\\\]/g, (match, key) => {\\n            const val = vv[key];\\n            if (val && val.trim()) return '<span style=\\\"color:#00D639;font-weight:700\\\">' + this.escHtml(val.trim()) + '</span>';\\n            return '<span style=\\\"color:#00D639;font-weight:600\\\">[' + this.escHtml(key) + ']</span>';\\n          })\\n        }\\n      });\\n      const finalText = pp.prompt.replace(/\\\\[([^\\\\]]*)\\\\]/g, (match, key) => {\\n        const val = vv[key];\\n        return (val && val.trim()) ? val.trim() : match;\\n      });\\n      return {\\n        title: pp.title,\\n        vars: vars.map(v => ({\\n          label: '[' + v + ']',\\n          placeholder: v,\\n          onInput: (e) => {\\n            const val = e.target.value;\\n            this.setState(s => ({ varValues: { ...s.varValues, [v]: val } }));\\n          }\\n        })),\\n        previewHtml,\\n        copyLabel: this.state.persCopyState === 'copied' ? '\\u2713 Copied!' : 'Copy prompt',\\n        onCopy: () => {\\n          navigator.clipboard.writeText(finalText).then(() => {\\n            this.setState({ persCopyState: 'copied' });\\n            setTimeout(() => this.setState({ persCopyState: '' }), 1800);\\n          });\\n        }\\n      };\\n    })() : { title: '', vars: [], previewHtml: '', copyLabel: 'Copy prompt', onCopy: () => {} };\\n\\n    return {\\n      categoryPills,\\n      cards,\\n      promptCount: allPrompts.length,\\n      showNoResults,\\n      showModal: !!this.state.modalPrompt,\\n      modalData,\\n      showPersonaliser: !!this.state.persPrompt,\\n      persData,\\n      onSearch: (e) => this.setState({ search: e.target.value }),\\n      onSurpriseMe,\\n      gridCols: cols === '2' ? 'repeat(2, minmax(0, 1fr))' : cols === '4' ? 'repeat(4, minmax(0, 1fr))' : 'repeat(3, minmax(0, 1fr))',\\n      containerMaxWidth,\\n      pillsContainerWidth,\\n      closeModal: () => this.setState({ modalPrompt: null }),\\n      closePersonaliser: () => this.setState({ persPrompt: null }),\\n      stopProp: (e) => e.stopPropagation()\\n    };\\n  }\\n\\n  componentDidMount() {\\n    // Library Surprise Me button animation sequence\\n    const btn = document.getElementById('libSurpriseBtn');\\n    if (btn && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {\\n      const sequence = [\\n        { className: 'is-shimmering', duration: 1200 },\\n        { className: 'is-pulsing',    duration: 1050 },\\n        { className: 'is-bouncing',   duration: 1000 },\\n        { className: 'is-wiggling',   duration: 1000 }\\n      ];\\n      const allClasses = sequence.map(s => s.className);\\n      let idx = 0;\\n      const run = () => {\\n        allClasses.forEach(c => btn.classList.remove(c));\\n        void btn.offsetWidth;\\n        btn.classList.add(sequence[idx].className);\\n        window.setTimeout(() => {\\n          btn.classList.remove(sequence[idx].className);\\n          idx = (idx + 1) % sequence.length;\\n          window.setTimeout(run, idx === 0 ? 5000 : 850);\\n        }, sequence[idx].duration);\\n      };\\n      window.setTimeout(run, 5000);\\n    }\\n    document.addEventListener('keydown', (e) => {\\n      if (e.key === 'Escape') {\\n        if (this.state.persPrompt) this.setState({ persPrompt: null });\\n        else if (this.state.modalPrompt) this.setState({ modalPrompt: null });\\n      }\\n    });\\n  }\\n}\\n\\n<\\/script>\\n\\n\\n</body></html>\"\n  <\/script>\n</body>\n</html>"</script>
+
+
+  <script>
+    const words = ['tried', 'tested', 'refined', 'used'];
+    let wordIndex = 0;
+
+    function animateWords() {
+      const rotator = document.getElementById('rotator');
+      if (!rotator) return;
+
+      wordIndex = (wordIndex + 1) % words.length;
+      rotator.classList.remove('flip');
+      void rotator.offsetWidth;
+      rotator.textContent = words[wordIndex];
+      rotator.classList.add('flip');
+
+      const delay = words[wordIndex] === 'used' ? 2600 : 900;
+      window.setTimeout(animateWords, delay);
+    }
+
+    window.setTimeout(animateWords, 900);
+
+    function toggleTheme() {
+      document.body.classList.toggle('light');
+      const toggle = document.querySelector('.theme-toggle');
+      toggle.textContent = document.body.classList.contains('light') ? '☾' : '☀';
+    }
+
+    function startLandingSurpriseButton() {
+      const button = document.getElementById('surpriseBtn');
+      if (!button) return;
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) return;
+
+      window.setTimeout(() => {
+        button.classList.add('shimmer-once');
+      }, 1600);
+
+      window.setTimeout(() => {
+        button.classList.remove('shimmer-once');
+        button.classList.add('is-tracing');
+      }, 2850);
+    }
+
+    const surpriseData = [
+      {
+        category: "Getting Started",
+        desc: "New to AI? Begin here.",
+        prompts: [
+          { title: "What can you do?", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "What can you do? Give me practical examples relevant to someone working in []." },
+          { title: "Smallest step today", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "What's the smallest thing I can do today to get started with [topic] using AI?" },
+          { title: "Break down a task into steps", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "How can I break this down into smaller steps? [paste your task here]" },
+          { title: "Help me prioritise tasks", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I have a list of tasks. Help me prioritise them by effort vs impact. [paste your list]" },
+        ]
+      },
+      {
+        category: "Data & Analysis",
+        desc: "Turn numbers into narratives.",
+        prompts: [
+          { title: "Analyse data and surface key insights", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I'm analysing this dataset for [context or goal]. Identify 3–5 key insights I should present. Focus on meaningful trends, patterns, or anomalies. For each insight, explain what's happening, why it matters, and what action it suggests. Present the insights in a clear, clean table. Then suggest a few follow-up questions or areas to explore next. [upload data]" },
+          { title: "Spot the story in data", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Here's some [campaign or report] data. What's the main story I should be telling from this? [paste data or description]" },
+          { title: "Get to the \"so what\"", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Here are my results: [paste results]. Help me get to the \"so what\" — what does this mean and what should we do next?" },
+          { title: "Build hypotheses from data", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I'm seeing [observation] in my data. Help me build 3 hypotheses for why this might be happening." },
+          { title: "Sense check analysis", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Here's my analysis and conclusion: [paste]. Can you sense check my logic and flag anything I might have missed?" },
+          { title: "Analyse churn drivers", tool: "Copilot", source: "Team submission", prompt: "You are a data analyst. Analyse the following customer data and identify the top drivers of churn. Focus on patterns related to complexity score, engagement metrics, and support interactions. Provide a summary of findings and recommend actions to reduce churn. [paste data]" },
+          { title: "Analyse A/B test results", tool: "Claude", source: "Team submission", prompt: "Analyse the results of an A/B test in Power BI using DAX. The test compares two versions of [describe test]. Calculate statistical significance, identify the winning variant, and summarise the key takeaways. [paste data or DAX code]" },
+          { title: "Build a data dashboard", tool: "ChatGPT", source: "Team submission", prompt: "Help me design a Power BI dashboard for [business area or team]. Suggest key metrics to include, how to structure the layout, and which visualisations would work best for the audience. The goal is to make it easy to spot trends and take action." },
+          { title: "Compare organic vs brand search", tool: "Claude", source: "Team submission", prompt: "Analyse the following search data and compare organic vs brand search performance. Identify trends, highlight areas of concern, and suggest actions to improve organic visibility. [paste data]" },
+          { title: "Reconcile email performance data", tool: "Snowflake Cortex", source: "Team submission", prompt: "I have email performance data from two sources that don't match. Help me identify discrepancies between [source A] and [source B]. Highlight rows where metrics differ significantly and suggest reasons for the gaps. [paste data]" },
+          { title: "Analyse email fatigue", tool: "Snowflake Cortex", source: "Team submission", prompt: "Using the following email engagement data, identify signs of audience fatigue. Look for declining open rates, increasing unsubscribes, and drop-off patterns over time. Recommend actions to re-engage the audience. [paste data]" },
+        ]
+      },
+      {
+        category: "Writing & Comms",
+        desc: "Clearer, faster communication.",
+        prompts: [
+          { title: "Improve written content", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Here's a draft I've written. Improve the clarity and cut anything unnecessary while keeping the meaning. [paste draft]" },
+          { title: "Summarise for leadership", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Summarise the following for a senior leadership audience. Start with a single sentence that clearly states the key insight or takeaway (\"the so what\"). Then provide 2–3 short bullet points covering the key impacts or recommended actions. Use clear, direct language and avoid unnecessary detail. [paste content]" },
+          { title: "Write a team update", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Write a short team update about [topic]. Use 3–5 bullet points, clear and direct language, and focus on key updates and actions." },
+          { title: "Translate into plain English", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Rewrite this in plain English for a non-technical stakeholder. [paste text]" },
+          { title: "Generate content angles", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "I'm creating content about [topic] for [audience]. Give me 5 different angles or hooks." },
+          { title: "Improve marketing copy", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Rewrite this copy to be more compelling and specific. Remove generic phrases. [paste copy]" },
+          { title: "Generate subject line options", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Write 5 subject line variants for a campaign about [topic]. Audience: [audience]. Goal: [goal]." },
+          { title: "Tailor message to audience", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "How would you position [message] for [specific audience]? What language would resonate?" },
+          { title: "Review and improve content", tool: "Copilot", source: "Team submission", prompt: "Review and improve the following written content. Make it clearer, more concise, and more engaging while keeping the original meaning. Highlight any changes you make and explain why. [paste content]" },
+          { title: "Generate internal social posts", tool: "Copilot", source: "Team submission", prompt: "Write 3 Viva Engage posts about [topic] for an internal audience. Keep each post under 150 words. The tone should be [professional/conversational/inspiring]. Include a call to action in each post." },
+          { title: "Rewrite email from notes", tool: "Copilot", source: "Team submission", prompt: "I have rough notes from a meeting or conversation. Turn them into a clear, professional email. Keep it concise, lead with the key message, and include a clear next step. [paste notes]" },
+        ]
+      },
+      {
+        category: "Strategy & Planning",
+        desc: "Think bigger, plan smarter.",
+        prompts: [
+          { title: "Challenge ideas with devil's advocate", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Team submission", prompt: "Play devil's advocate on the following idea or plan. Identify the biggest risks, weaknesses, and assumptions. Be specific and constructive — the goal is to stress-test the thinking, not just criticise. [describe idea or paste plan]" },
+          { title: "Research customer journey stages", tool: "ChatGPT", source: "Team submission", prompt: "Research and summarise the typical journey a [type of customer] goes through when [describe decision or process]. Identify the key stages, what they're thinking and feeling at each stage, and what information or support they need. Format this as a clear journey map." },
+        ]
+      },
+      {
+        category: "Learning & Exploration",
+        desc: "Go deeper on anything.",
+        prompts: [
+          { title: "Learn a topic quickly", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Give me a clear, structured overview of [topic]. Include key concepts, a simple example, and when it's used in practice. Keep it concise." },
+          { title: "Compare two concepts", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "What's the difference between [concept A] and [concept B]? Use a real-world example." },
+          { title: "Quiz me on a topic", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Quiz me on [topic] with 5 questions, starting easy and getting harder. After each answer, tell me if I'm right and explain why." },
+          { title: "Recommend next learning step", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I've just learned about [topic]. What should I explore next to go deeper?" },
+          { title: "Explain using a simple diagram", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Explain how [concept] works using a simple text-based (ASCII) diagram and include a short explanation alongside it. Make it easy to follow and clearly show the structure or flow." },
+          { title: "Learn a topic quickly (80/20)", tool: "ChatGPT", source: "Team submission", prompt: "I want to learn about [topic]. Use the 80/20 rule to focus on the 20% of concepts that will give me 80% of the understanding. Give me a structured overview with the most important ideas first, practical examples, and what to focus on to get up to speed quickly." },
+          { title: "Break down complex ideas", tool: "Claude", source: "Team submission", prompt: "Take the following complex concept and break it down so that someone new to the topic can understand it. Use simple language, avoid jargon, and include a real-world analogy to make it stick. [paste concept or topic]" },
+        ]
+      },
+      {
+        category: "Go Deeper",
+        desc: "Push beyond the surface.",
+        prompts: [
+          { title: "Break down a topic from first principles", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Break [topic] down using first principles thinking. Start by identifying the common assumptions people make about this topic. Then strip those assumptions away and focus only on what is fundamentally true. Rebuild the concept step by step from these core truths. Show what changes when you remove inherited thinking." },
+          { title: "Explain a topic simply (no jargon)", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Now explain [topic] as if I'm new to it. Use no jargon, no assumed knowledge, and include two different examples to make it clear. If anything is still unclear, simplify it further until it's genuinely easy to understand." },
+        ]
+      },
+      {
+        category: "Coding",
+        desc: "Write, fix and improve code.",
+        prompts: [
+          { title: "Fix a DAX formula", tool: "Claude", source: "Team submission", prompt: "I have a DAX formula that isn't working as expected. Review the code, identify the issue, and provide a corrected version with an explanation of what was wrong and why the fix works. [paste DAX code]" },
+          { title: "Generate UI code", tool: "Copilot", source: "Team submission", prompt: "Generate an Adaptive Card JSON for [describe the card's purpose and content]. It should include [list key elements e.g. title, body text, action buttons]. Make it clean and functional for use in [Teams / Outlook / Power Automate]." },
+          { title: "Fix bugs step by step", tool: "Claude", source: "Team submission", prompt: "I have a bug in my code that I can't resolve. Walk me through debugging it step by step. Ask me clarifying questions if needed, suggest what to check first, and help me identify the root cause before suggesting a fix. [paste code and describe the issue]" },
+          { title: "Improve application code", tool: "Claude", source: "Team submission", prompt: "Review the following code and suggest improvements. Focus on readability, performance, and best practices. Explain each change you recommend and why it makes the code better. [paste code]" },
+          { title: "Check SQL query", tool: "Snowflake Cortex", source: "Team submission", prompt: "Review the following SQL query and check it for errors, inefficiencies, or logic issues. Suggest improvements and explain your reasoning. If the query can be simplified or optimised, show me how. [paste SQL]" },
+          { title: "Aggregate data using code", tool: "Claude", source: "Team submission", prompt: "Write a script to aggregate data from [describe data source or structure]. The goal is to [describe output e.g. summarise by region, calculate totals by month]. Use [R / Python / SQL] and include comments explaining each step. [paste data sample if available]" },
+          { title: "Aggregate CSV data", tool: "Claude", source: "Team submission", prompt: "I have a CSV file with the following structure: [describe columns and data]. Write an R script to load the file, aggregate the data by [field], and output a summary table showing [desired metrics]. Include error handling and comments." },
+          { title: "Convert date format", tool: "Copilot", source: "Team submission", prompt: "I have a column in Excel with dates in [current format e.g. DD/MM/YYYY]. Write a formula to convert them to [target format e.g. YYYY-MM-DD]. Explain how the formula works and how to apply it to the full column." },
+          { title: "Improve data model", tool: "Claude", source: "Team submission", prompt: "Review the following data model or notebook and suggest improvements. Focus on structure, clarity, and performance. Highlight any issues with the current approach and recommend a better way to organise or write the code. [paste code or describe model]" },
+          { title: "Build a Workfront calculated field", tool: "Copilot", source: "Team submission", prompt: "Help me build a calculated field in Workfront for [describe the purpose]. The field should [describe logic or output]. Walk me through the formula syntax and how to set it up correctly in Workfront." },
+        ]
+      },
+      {
+        category: "Tools & Workflows",
+        desc: "Get more from your tools.",
+        prompts: [
+          { title: "Automate QA tasks", tool: "Copilot", source: "Team submission", prompt: "Help me automate the following quality assurance task in [tool or system]: [describe task]. Suggest a workflow or process that reduces manual effort, catches errors early, and can be repeated consistently. Include any formulas, scripts, or steps needed." },
+          { title: "Apply brand styling to app", tool: "Claude", source: "Team submission", prompt: "I have a Streamlit app and want to apply our brand colours and styling. Our primary colour is [hex code], secondary is [hex code], and font is [font name]. Update the app's CSS and layout to match these brand guidelines while keeping the functionality intact. [paste current code]" },
+        ]
+      },
+      {
+        category: "Design & Imagery",
+        desc: "Create and adapt visuals.",
+        prompts: [
+          { title: "Localise image for market", tool: "Adobe", source: "Team submission", prompt: "I need to localise the following image for the [market/region] market. Adapt any text, imagery, or cultural references to be appropriate and relevant for that audience. Highlight what changes you would make and why. [describe or attach image]" },
+          { title: "Localise video for market", tool: "Adobe", source: "Team submission", prompt: "I need to localise this video for the [market/region] market. Suggest changes to voiceover, on-screen text, visuals, and cultural references to make it suitable for the local audience. Provide a list of recommended adaptations. [describe video content]" },
+        ]
+      },
+    ];
+
+    const goodForMap = {
+      "Getting Started": "Getting a feel for what AI can do",
+      "Data & Analysis": "Making sense of data and numbers",
+      "Writing & Comms": "Faster, clearer communication",
+      "Strategy & Planning": "Big-picture thinking and planning",
+      "Learning & Exploration": "Going deeper on any topic",
+      "Go Deeper": "First-principles and advanced thinking",
+      "Coding": "Writing, fixing, or reviewing code",
+      "Tools & Workflows": "Getting more from your tools",
+      "Design & Imagery": "Creating and adapting visual content"
+    };
+
+    let lastSurpriseIndex = -1;
+    let currentSurprisePrompt = null;
+    let surpriseTimers = [];
+    let surpriseRolling = false;
+
+    function getAllPrompts() {
+      const all = [];
+      surpriseData.forEach((section) => {
+        section.prompts.forEach((prompt) => all.push({ ...prompt, category: section.category }));
+      });
+      return all;
+    }
+
+    function resetSurpriseButtons() {
+      const copyBtn = document.getElementById('surprise-copy-btn');
+      const rollBtn = document.getElementById('surprise-roll-btn');
+      const personaliseBtn = document.getElementById('surprise-personalise-btn');
+      if (copyBtn) {
+        copyBtn.textContent = 'Copy';
+        copyBtn.classList.remove('copied');
+      }
+      if (rollBtn) rollBtn.textContent = '🎲 Roll again';
+      if (personaliseBtn) personaliseBtn.textContent = 'Personalise';
+    }
+
+    function pickSurprisePrompt(all) {
+      let idx;
+      do {
+        idx = Math.floor(Math.random() * all.length);
+      } while (idx === lastSurpriseIndex && all.length > 1);
+
+      lastSurpriseIndex = idx;
+      return all[idx];
+    }
+
+    function surpriseMe() {
+      const overlay = document.getElementById('surprise-overlay');
+      if (!overlay) return;
+      overlay.classList.add('active');
+      overlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      rollSurpriseSequence();
+    }
+
+    function rollSurpriseSequence() {
+      if (surpriseRolling) return;
+
+      const all = getAllPrompts();
+      if (!all.length) return;
+
+      const card = document.getElementById('surprise-card');
+      const rollBtn = document.getElementById('surprise-roll-btn');
+      const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+      const steps = reduce ? 1 : 7;
+
+      surpriseTimers.forEach(clearTimeout);
+      surpriseTimers = [];
+      surpriseRolling = true;
+      resetSurpriseButtons();
+      if (card) card.classList.add('rolling');
+      if (rollBtn) rollBtn.textContent = 'Rolling...';
+
+      for (let i = 0; i < steps; i++) {
+        surpriseTimers.push(setTimeout(() => {
+          renderSurpriseCard(pickSurprisePrompt(all));
+
+          if (i === steps - 1) {
+            surpriseRolling = false;
+            if (card) card.classList.remove('rolling');
+            resetSurpriseButtons();
+          }
+        }, reduce ? 0 : 70 * i * (1 + i * 0.18)));
+      }
+    }
+
+    function rollAgain() {
+      rollSurpriseSequence();
+    }
+
+    function escSurpriseHtml(value) {
+      return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function formatSurprisePrompt(prompt) {
+      return escSurpriseHtml(prompt).replace(/\[([^\]]*)\]/g, (match) => {
+        return '<span class="prompt-var-bracketed">' + match + '</span>';
+      });
+    }
+
+    function renderSurpriseCard(prompt) {
+      currentSurprisePrompt = prompt;
+      document.getElementById('surprise-title').textContent = prompt.title;
+      document.getElementById('surprise-category').textContent = prompt.category;
+      document.getElementById('surprise-tool').textContent = prompt.tool ? 'Works with: ' + prompt.tool : '';
+      document.getElementById('surprise-goodfor').textContent = 'Good for: ' + (goodForMap[prompt.category] || prompt.category);
+      document.getElementById('surprise-prompt').innerHTML = formatSurprisePrompt(prompt.prompt);
+      document.getElementById('surprise-source').textContent = prompt.source || 'Prompt';
+    }
+
+    function closeSurprise() {
+      surpriseTimers.forEach(clearTimeout);
+      surpriseTimers = [];
+      surpriseRolling = false;
+      const card = document.getElementById('surprise-card');
+      const overlay = document.getElementById('surprise-overlay');
+      if (card) card.classList.remove('rolling');
+      resetSurpriseButtons();
+      if (overlay) {
+        overlay.classList.remove('active');
+        overlay.setAttribute('aria-hidden', 'true');
+      }
+      document.body.style.overflow = '';
+    }
+
+    function handleOverlayClick(event) {
+      if (event.target === document.getElementById('surprise-overlay')) closeSurprise();
+    }
+
+    function personaliseSurprisePrompt() {
+      if (!currentSurprisePrompt) return;
+      const personaliseBtn = document.getElementById('surprise-personalise-btn');
+      if (personaliseBtn) personaliseBtn.textContent = 'Opening...';
+
+      closeSurprise();
+      if (typeof window.showPromptLibraryPage === 'function') {
+        window.showPromptLibraryPage('library');
+      }
+
+      const frame = document.getElementById('library-frame');
+      const title = currentSurprisePrompt.title;
+      let attempts = 0;
+
+      const openMatchingPersonaliser = () => {
+        attempts += 1;
+        const doc = frame?.contentDocument;
+        if (!doc?.body) return false;
+
+        const cards = Array.from(doc.querySelectorAll('.lib-card'));
+        const matchingCard = cards.find((card) => card.textContent.includes(title));
+        const personaliseButton = matchingCard?.querySelector('.trace-btn');
+        if (personaliseButton) {
+          personaliseButton.click();
+          matchingCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return true;
+        }
+        return false;
+      };
+
+      const interval = window.setInterval(() => {
+        if (openMatchingPersonaliser() || attempts > 14) {
+          window.clearInterval(interval);
+        }
+      }, 250);
+    }
+
+    function copySurprisePrompt() {
+      const btn = document.getElementById('surprise-copy-btn');
+      if (!currentSurprisePrompt || !btn) return;
+      navigator.clipboard.writeText(currentSurprisePrompt.prompt).then(() => {
+        btn.textContent = '✓ Copied';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 1800);
+      });
+    }
+
+    document.addEventListener('keydown', (event) => {
+      const overlay = document.getElementById('surprise-overlay');
+      if (event.key === 'Escape' && overlay?.classList.contains('active')) closeSurprise();
+    });
+
+    window.addEventListener('DOMContentLoaded', startLandingSurpriseButton);
+  </script>
+
+
+  <script>
+    (function () {
+      let libraryLoaded = false;
+
+      function attachLibrarySurpriseBridge(frame) {
+        if (!frame || !frame.contentWindow) return;
+        const frameWindow = frame.contentWindow;
+        if (frameWindow.__surpriseBridgeAttached) return;
+        frameWindow.__surpriseBridgeAttached = true;
+
+        frameWindow.addEventListener('click', function (event) {
+          const target = event.target?.closest?.('#libSurpriseBtn, .lib-surprise-btn');
+          if (!target) return;
+          event.preventDefault();
+          event.stopPropagation();
+          if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
+          window.surpriseMe();
+        }, true);
+      }
+
+      function loadLibraryFrame() {
+        if (libraryLoaded) return;
+        const frame = document.getElementById('library-frame');
+        const source = document.getElementById('library-srcdoc');
+        if (!frame || !source) return;
+        frame.addEventListener('load', function () {
+          attachLibrarySurpriseBridge(frame);
+          window.setTimeout(() => attachLibrarySurpriseBridge(frame), 600);
+          window.setTimeout(() => attachLibrarySurpriseBridge(frame), 1600);
+        });
+        frame.srcdoc = JSON.parse(source.textContent);
+        libraryLoaded = true;
+      }
+
+      function setActiveNav(page) {
+        document.querySelectorAll('.nav-tab[data-page]').forEach((tab) => {
+          tab.classList.toggle('active', tab.dataset.page === page);
+        });
+      }
+
+      function showPage(page, pushHash) {
+        const nextPage = page === 'library' ? 'library' : 'home';
+        const homeView = document.getElementById('home-view');
+        const libraryView = document.getElementById('library-view');
+
+        if (homeView) homeView.classList.toggle('active', nextPage === 'home');
+        if (libraryView) libraryView.classList.toggle('active', nextPage === 'library');
+
+        setActiveNav(nextPage);
+
+        if (nextPage === 'library') {
+          loadLibraryFrame();
+          window.scrollTo({ top: 0, behavior: 'auto' });
+        }
+
+        if (pushHash !== false) {
+          history.pushState(null, '', nextPage === 'library' ? '#library' : '#home');
+        }
+      }
+
+      window.showPromptLibraryPage = showPage;
+
+      document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('[data-page]').forEach((el) => {
+          el.addEventListener('click', function (event) {
+            event.preventDefault();
+            showPage(el.dataset.page);
+          });
+        });
+
+        document.querySelectorAll('[data-noop]').forEach((el) => {
+          el.addEventListener('click', function (event) {
+            event.preventDefault();
+          });
+        });
+
+        showPage(location.hash === '#library' ? 'library' : 'home', false);
+      });
+
+      window.addEventListener('popstate', function () {
+        showPage(location.hash === '#library' ? 'library' : 'home', false);
+      });
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prompt Card Button Variants</title>
+  <style>
+    :root {
+      --bg: #000;
+      --panel: #050505;
+      --border: rgba(255,255,255,0.13);
+      --border-active: rgba(255,255,255,0.34);
+      --text: #fff;
+      --muted: rgba(255,255,255,0.58);
+      --muted-2: rgba(255,255,255,0.36);
+      --sage: #00D639;
+      --sage-soft: rgba(0,214,57,0.14);
+      --sage-border: rgba(0,214,57,0.38);
+      --radius: 26px;
+      --button-bg: rgba(255,255,255,0.045);
+      --button-border: rgba(255,255,255,0.12);
+      --button-hover-bg: rgba(255,255,255,0.075);
+      --button-hover-border: rgba(255,255,255,0.26);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      min-height: 100vh;
+      background: #000;
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      padding: 38px 16px 64px;
+    }
+
+    .wrap { width: min(1180px, 100%); margin: 0 auto; }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 42px;
+    }
+
+    .brand {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .menu-button {
+      width: 46px;
+      height: 46px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.035);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .hamburger {
+      width: 18px;
+      display: grid;
+      gap: 5px;
+    }
+
+    .hamburger span {
+      display: block;
+      height: 2px;
+      border-radius: 999px;
+      background: #fff;
+      opacity: 0.9;
+    }
+
+    .hero {
+      text-align: center;
+      margin: 0 auto 32px;
+      max-width: 860px;
+    }
+
+    .eyebrow {
+      color: var(--sage);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(36px, 7vw, 68px);
+      line-height: 0.96;
+      letter-spacing: -0.065em;
+    }
+
+    .subtitle {
+      margin: 18px auto 0;
+      color: var(--muted);
+      font-size: clamp(17px, 2.9vw, 24px);
+      line-height: 1.4;
+      letter-spacing: -0.03em;
+      font-weight: 500;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .variant-block {
+      display: grid;
+      gap: 10px;
+    }
+
+    .variant-label {
+      color: rgba(255,255,255,0.74);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding-left: 4px;
+    }
+
+    .card {
+      position: relative;
+      min-height: 292px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,0.07), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,0.024), rgba(255,255,255,0.006));
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: border-color 180ms ease, transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
+      -webkit-tap-highlight-color: transparent;
+      cursor: pointer;
+    }
+
+    .card:hover,
+    .card:active,
+    .card:focus-within {
+      border-color: var(--border-active);
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,0.1), transparent 64%),
+        linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.012));
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.025), 0 22px 80px rgba(0,0,0,0.55);
+      transform: translateY(-2px);
+    }
+
+    .expand-icon {
+      position: absolute;
+      top: 22px;
+      right: 22px;
+      width: 26px;
+      height: 26px;
+      color: var(--sage);
+      opacity: 0;
+      transform: scale(0.92) translateY(4px);
+      transition: opacity 160ms ease, transform 160ms ease;
+      pointer-events: none;
+    }
+
+    .card:hover .expand-icon,
+    .card:active .expand-icon,
+    .card:focus-within .expand-icon {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    .tool {
+      color: var(--muted-2);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+      padding-right: 36px;
+    }
+
+    .title {
+      font-size: 28px;
+      line-height: 1.04;
+      letter-spacing: -0.045em;
+      font-weight: 800;
+      margin-bottom: 16px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .prompt {
+      color: var(--text);
+      font-size: 17px;
+      line-height: 1.42;
+      letter-spacing: -0.02em;
+      font-weight: 500;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .var { color: var(--sage); font-weight: 750; white-space: nowrap; }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 0.82fr;
+      gap: 10px;
+      margin-top: 26px;
+    }
+
+    button {
+      appearance: none;
+      border: 1px solid var(--button-border);
+      background: var(--button-bg);
+      color: var(--text);
+      border-radius: 999px;
+      min-height: 44px;
+      padding: 0 15px;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 750;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease, box-shadow 160ms ease, color 160ms ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button:hover, button:active {
+      border-color: var(--button-hover-border);
+      background: var(--button-hover-bg);
+      transform: translateY(-1px);
+    }
+
+    .copy-button {
+      color: #fff;
+    }
+
+    .p1 {
+      color: var(--sage);
+      background: var(--sage-soft);
+      border-color: var(--sage-border);
+      box-shadow: inset 0 0 0 1px rgba(0,214,57,0.08);
+    }
+    .p1:hover, .p1:active {
+      background: rgba(0,214,57,0.2);
+      border-color: rgba(0,214,57,0.62);
+    }
+
+    .p2 {
+      color: var(--sage);
+      background: var(--button-bg);
+      border-color: var(--button-border);
+    }
+    .p2:hover, .p2:active {
+      color: #0ceb4c;
+      border-color: rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.07);
+    }
+
+    .p3 {
+      color: var(--sage);
+      background: rgba(0,214,57,0.04);
+      border-color: rgba(0,214,57,0.48);
+      box-shadow: 0 0 0 1px rgba(0,214,57,0.05);
+    }
+    .p3:hover, .p3:active {
+      background: rgba(0,214,57,0.08);
+      border-color: rgba(0,214,57,0.75);
+      box-shadow: 0 0 0 4px rgba(0,214,57,0.10);
+    }
+
+    .p4 {
+      color: var(--sage);
+      background: var(--button-bg);
+      border-color: rgba(255,255,255,0.16);
+    }
+    .p4::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1.25px;
+      background: conic-gradient(from 180deg, transparent 0deg, transparent 250deg, rgba(0,214,57,0.95) 310deg, rgba(0,214,57,0.15) 360deg);
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 180ms ease;
+      animation: trace 1.6s linear infinite;
+      pointer-events: none;
+    }
+    .p4:hover::before, .p4:active::before {
+      opacity: 1;
+    }
+    .p4:hover, .p4:active {
+      color: #10e84d;
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.18);
+    }
+
+    @keyframes trace {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 20;
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal-card {
+      width: min(720px, 100%);
+      max-height: min(78vh, 760px);
+      overflow: auto;
+      border: 1px solid var(--border-active);
+      border-radius: 30px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.018)), var(--panel);
+      box-shadow: 0 30px 110px rgba(0,0,0,0.72);
+      padding: 30px;
+    }
+
+    .modal-category {
+      color: var(--muted-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .modal-tools {
+      color: var(--sage);
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 22px;
+    }
+
+    .modal-title {
+      font-size: clamp(34px, 7vw, 56px);
+      line-height: 0.98;
+      letter-spacing: -0.06em;
+      font-weight: 850;
+      margin-bottom: 22px;
+    }
+
+    .modal-prompt {
+      color: var(--text);
+      font-size: clamp(18px, 3vw, 24px);
+      line-height: 1.42;
+      letter-spacing: -0.03em;
+      font-weight: 550;
+      white-space: normal;
+    }
+
+    .modal-actions {
+      display: grid;
+      grid-template-columns: 1fr 0.82fr;
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 28px 14px 54px; }
+      .topbar { margin-bottom: 34px; }
+      .hero { margin-bottom: 26px; }
+      .card { min-height: 272px; padding: 22px; border-radius: 22px; }
+      .title { font-size: 25px; }
+      .prompt { font-size: 16px; }
+      .actions, .modal-actions { grid-template-columns: 1fr 1fr; }
+      .modal-card { padding: 24px; border-radius: 24px; max-height: 82vh; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="topbar" aria-label="Page navigation">
+      <div class="brand">AI Prompt Library</div>
+      <button class="menu-button" aria-label="Open menu" type="button">
+        <span class="hamburger" aria-hidden="true"><span></span><span></span></span>
+      </button>
+    </header>
+
+    <section class="hero">
+      <div class="eyebrow">Button exploration</div>
+      <h1>Four Personalise button treatments</h1>
+      <p class="subtitle">Same card, same layout, same copy. Only the Personalise button changes.</p>
+    </section>
+
+    <section class="grid" aria-label="Prompt card button variants">
+      <div class="variant-block">
+        <div class="variant-label">Option 1 · Current filled green</div>
+        <article class="card" tabindex="0" data-category="Communication" data-tools="ChatGPT · Claude · Copilot" data-title="Status Update Writer" data-prompt="Turn these notes into a clear weekly update for [audience]. Keep it concise, include progress, risks, decisions needed, blockers, and next steps.">
+          <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5"/><path d="M21 3l-7 7"/><path d="M8 21H3v-5"/><path d="M3 21l7-7"/></svg>
+          <div>
+            <div class="tool">Communication</div>
+            <div class="title">Status Update Writer</div>
+            <div class="prompt">Turn these notes into a clear weekly update for <span class="var">[audience]</span>. Keep it concise, include progress, risks, decisions needed, blockers, and next steps.</div>
+          </div>
+          <div class="actions"><button class="p1" type="button">Personalise</button><button class="copy-button" type="button">Copy</button></div>
+        </article>
+      </div>
+
+      <div class="variant-block">
+        <div class="variant-label">Option 2 · Dark button with green text</div>
+        <article class="card" tabindex="0" data-category="Communication" data-tools="ChatGPT · Claude · Copilot" data-title="Status Update Writer" data-prompt="Turn these notes into a clear weekly update for [audience]. Keep it concise, include progress, risks, decisions needed, blockers, and next steps.">
+          <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5"/><path d="M21 3l-7 7"/><path d="M8 21H3v-5"/><path d="M3 21l7-7"/></svg>
+          <div>
+            <div class="tool">Communication</div>
+            <div class="title">Status Update Writer</div>
+            <div class="prompt">Turn these notes into a clear weekly update for <span class="var">[audience]</span>. Keep it concise, include progress, risks, decisions needed, blockers, and next steps.</div>
+          </div>
+          <div class="actions"><button class="p2" type="button">Personalise</button><button class="copy-button" type="button">Copy</button></div>
+        </article>
+      </div>
+
+      <div class="variant-block">
+        <div class="variant-label">Option 3 · Subtle green outline</div>
+        <article class="card" tabindex="0" data-category="Communication" data-tools="ChatGPT · Claude · Copilot" data-title="Status Update Writer" data-prompt="Turn these notes into a clear weekly update for [audience]. Keep it concise, include progress, risks, decisions needed, blockers, and next steps.">
+          <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5"/><path d="M21 3l-7 7"/><path d="M8 21H3v-5"/><path d="M3 21l7-7"/></svg>
+          <div>
+            <div class="tool">Communication</div>
+            <div class="title">Status Update Writer</div>
+            <div class="prompt">Turn these notes into a clear weekly update for <span class="var">[audience]</span>. Keep it concise, include progress, risks, decisions needed, blockers, and next steps.</div>
+          </div>
+          <div class="actions"><button class="p3" type="button">Personalise</button><button class="copy-button" type="button">Copy</button></div>
+        </article>
+      </div>
+
+      <div class="variant-block">
+        <div class="variant-label">Option 4 · Animated trace outline on hover</div>
+        <article class="card" tabindex="0" data-category="Communication" data-tools="ChatGPT · Claude · Copilot" data-title="Status Update Writer" data-prompt="Turn these notes into a clear weekly update for [audience]. Keep it concise, include progress, risks, decisions needed, blockers, and next steps.">
+          <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5"/><path d="M21 3l-7 7"/><path d="M8 21H3v-5"/><path d="M3 21l7-7"/></svg>
+          <div>
+            <div class="tool">Communication</div>
+            <div class="title">Status Update Writer</div>
+            <div class="prompt">Turn these notes into a clear weekly update for <span class="var">[audience]</span>. Keep it concise, include progress, risks, decisions needed, blockers, and next steps.</div>
+          </div>
+          <div class="actions"><button class="p4" type="button">Personalise</button><button class="copy-button" type="button">Copy</button></div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" id="modal" aria-hidden="true">
+    <section class="modal-card" role="dialog" aria-modal="true" aria-label="Expanded prompt">
+      <div class="modal-category" id="modalCategory"></div>
+      <div class="modal-tools" id="modalTools"></div>
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-prompt" id="modalPrompt"></div>
+      <div class="modal-actions"><button class="p2" type="button">Personalise</button><button class="copy-button" type="button">Copy</button></div>
+    </section>
+  </div>
+
+  <script>
+    const modal = document.getElementById('modal');
+    const modalCategory = document.getElementById('modalCategory');
+    const modalTools = document.getElementById('modalTools');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalPrompt = document.getElementById('modalPrompt');
+
+    function highlightVariables(text) {
+      return text.replace(/\[[^\]]+\]/g, match => `<span class="var">${match}</span>`);
+    }
+
+    function openModal(card) {
+      modalCategory.textContent = card.dataset.category;
+      modalTools.textContent = card.dataset.tools;
+      modalTitle.textContent = card.dataset.title;
+      modalPrompt.innerHTML = highlightVariables(card.dataset.prompt);
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', event => {
+        if (event.target.closest('button')) return;
+        openModal(card);
+      });
+      card.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openModal(card);
+        }
+      });
+    });
+
+    modal.addEventListener('click', event => {
+      if (event.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeModal();
+    });
+  </script>
+</body>
+</html>

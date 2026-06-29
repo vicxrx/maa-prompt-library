@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prompt Library Pro Mockup</title>
+  <style>
+    :root {
+      --sage-green: #00D639;
+      --black: #000000;
+      --white: #ffffff;
+      --muted: rgba(255,255,255,0.66);
+      --soft: rgba(255,255,255,0.10);
+      --softer: rgba(255,255,255,0.06);
+      --line: rgba(255,255,255,0.22);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --shadow: 0 24px 80px rgba(0,0,0,0.55);
+      --font: "Sage Text", "Sage Headline", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #000;
+      color: var(--white);
+      font-family: var(--font);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(0,214,57,0.12), transparent 28%),
+        radial-gradient(circle at 80% 5%, rgba(255,255,255,0.07), transparent 22%),
+        linear-gradient(180deg, #000 0%, #050505 100%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 56px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 18px 0 34px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .mark {
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      color: var(--sage-green);
+      box-shadow: inset 0 0 0 1px rgba(0,214,57,0.25);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    nav a {
+      color: inherit;
+      text-decoration: none;
+      padding: 9px 12px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+    }
+
+    nav a:hover {
+      color: white;
+      border-color: var(--line);
+      background: var(--softer);
+    }
+
+    .hero {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      background: linear-gradient(135deg, rgba(255,255,255,0.09), rgba(255,255,255,0.035));
+      box-shadow: var(--shadow);
+      padding: clamp(28px, 6vw, 72px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      border: 1px solid rgba(255,255,255,0.13);
+      border-radius: 50%;
+      right: -170px;
+      top: -170px;
+      box-shadow: 0 0 90px rgba(0,214,57,0.14);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      color: var(--muted);
+      font-size: 13px;
+      background: rgba(0,0,0,0.38);
+      backdrop-filter: blur(10px);
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--sage-green);
+      box-shadow: 0 0 18px var(--sage-green);
+    }
+
+    h1 {
+      font-size: clamp(44px, 8vw, 104px);
+      line-height: 0.92;
+      letter-spacing: -0.075em;
+      margin: 30px 0 22px;
+      max-width: 940px;
+    }
+
+    .rotator {
+      display: inline-block;
+      color: var(--sage-green);
+      min-width: 0.01px;
+      position: relative;
+    }
+
+    .rotator.flip {
+      animation: snap 0.45s ease;
+    }
+
+    @keyframes snap {
+      0% { opacity: 0; transform: translateY(18px) rotateX(55deg); filter: blur(8px); }
+      100% { opacity: 1; transform: translateY(0) rotateX(0); filter: blur(0); }
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: clamp(17px, 2vw, 22px);
+      line-height: 1.55;
+      max-width: 720px;
+      margin: 0 0 30px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    button, .button {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--white);
+      color: var(--black);
+      padding: 13px 18px;
+      border-radius: 999px;
+      font-weight: 750;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    button:hover, .button:hover { transform: translateY(-2px); }
+
+    .ghost {
+      background: rgba(255,255,255,0.06);
+      color: white;
+    }
+
+    .green {
+      background: var(--sage-green);
+      color: #031107;
+      border-color: var(--sage-green);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .stat {
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,0.32);
+      border-radius: var(--radius-md);
+      padding: 16px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 24px;
+      letter-spacing: -0.04em;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .section {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 22px;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.045);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+    }
+
+    .panel h2 {
+      font-size: clamp(24px, 3vw, 38px);
+      line-height: 1;
+      letter-spacing: -0.055em;
+      margin: 0 0 10px;
+    }
+
+    .panel p {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .surprise-card {
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      background: #000;
+      border-radius: 22px;
+      padding: 20px;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .tag {
+      display: inline-flex;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 10px;
+      color: var(--muted);
+      font-size: 12px;
+      width: fit-content;
+    }
+
+    .prompt-title {
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      margin: 14px 0 8px;
+    }
+
+    .prompt-text {
+      color: rgba(255,255,255,0.85);
+      line-height: 1.55;
+      font-size: 15px;
+    }
+
+    .var {
+      color: var(--sage-green);
+      font-weight: 800;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .toggle {
+      display: inline-grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(0,0,0,0.5);
+    }
+
+    .toggle button {
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 10px 12px;
+      transform: none;
+    }
+
+    .toggle button.active {
+      background: var(--sage-green);
+      color: #021205;
+    }
+
+    .icon {
+      width: 18px;
+      height: 18px;
+      display: inline-grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 3px;
+    }
+
+    .icon span {
+      border: 1.5px solid currentColor;
+      border-radius: 3px;
+    }
+
+    .list-icon {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 4px;
+      width: 18px;
+    }
+
+    .list-icon span {
+      height: 2px;
+      background: currentColor;
+      border-radius: 2px;
+    }
+
+    .prompt-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .prompt-grid.list {
+      grid-template-columns: 1fr;
+    }
+
+    .prompt-card {
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,0.58);
+      border-radius: 22px;
+      padding: 18px;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .prompt-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(0,214,57,0.72);
+      background: rgba(0,214,57,0.055);
+    }
+
+    .prompt-grid.list .prompt-card {
+      display: grid;
+      grid-template-columns: 150px 1fr auto;
+      align-items: center;
+      gap: 18px;
+      border-radius: 999px;
+    }
+
+    .prompt-grid.list .prompt-card .prompt-title {
+      margin: 0 0 4px;
+      font-size: 18px;
+    }
+
+    .prompt-grid.list .prompt-card .prompt-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .personalise {
+      margin-top: 28px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      background: linear-gradient(135deg, rgba(0,214,57,0.08), rgba(255,255,255,0.035));
+    }
+
+    .personal-box {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    label {
+      color: var(--muted);
+      font-size: 13px;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #000;
+      color: white;
+      border-radius: 16px;
+      padding: 14px;
+      font: inherit;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--sage-green);
+      box-shadow: 0 0 0 3px rgba(0,214,57,0.13);
+    }
+
+    .output {
+      border: 1px solid rgba(0,214,57,0.45);
+      border-radius: 16px;
+      padding: 14px;
+      background: rgba(0,214,57,0.055);
+      min-height: 150px;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.9);
+    }
+
+    @media (max-width: 820px) {
+      nav { display: none; }
+      .section, .personal-box { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr; }
+      .prompt-grid { grid-template-columns: 1fr; }
+      .prompt-grid.list .prompt-card {
+        grid-template-columns: 1fr;
+        border-radius: 22px;
+      }
+      .toolbar { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="brand"><div class="mark">✦</div> Prompt Library</div>
+      <nav>
+        <a href="#home">Home</a>
+        <a href="#browse">Browse</a>
+        <a href="#personalise">Personalise</a>
+        <a href="#feedback">Feedback</a>
+      </nav>
+    </header>
+
+    <main id="home">
+      <section class="hero">
+        <div class="eyebrow"><span class="dot"></span> Built from real team workflows</div>
+        <h1>Prompts our team have tried, tested and built for <span class="rotator" id="rotator">users</span>.</h1>
+        <p>A practical prompt library for turning repeatable tasks into better starting points. Browse what works, copy it, or personalise it for your own context.</p>
+        <div class="actions">
+          <a class="button green" href="#browse">Explore prompts</a>
+          <button class="ghost" onclick="surpriseMe()">Surprise me</button>
+        </div>
+        <div class="stats">
+          <div class="stat"><strong>50+</strong><span>team-submitted prompts</span></div>
+          <div class="stat"><strong>8</strong><span>starter categories</span></div>
+          <div class="stat"><strong>1-click</strong><span>copy and personalise flow</span></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="panel">
+          <h2>Surprise me</h2>
+          <p>For people who do not know where to start. Roll a prompt, copy it, or personalise the variables.</p>
+          <div class="surprise-card" id="surpriseCard"></div>
+        </div>
+
+        <div class="panel" id="browse">
+          <div class="toolbar">
+            <div>
+              <h2>Browse prompts</h2>
+              <p>Switch between a visual card layout and a compact list layout.</p>
+            </div>
+            <div class="toggle" aria-label="View toggle">
+              <button id="cardBtn" class="active" onclick="setView('card')" title="Card view">
+                <span class="icon"><span></span><span></span><span></span><span></span></span>
+              </button>
+              <button id="listBtn" onclick="setView('list')" title="List view">
+                <span class="list-icon"><span></span><span></span><span></span></span>
+              </button>
+            </div>
+          </div>
+          <div class="prompt-grid" id="promptGrid"></div>
+        </div>
+      </section>
+
+      <section class="personalise" id="personalise">
+        <div class="toolbar">
+          <div>
+            <h2>Personalise this</h2>
+            <p>Variables are highlighted in brilliant green. Fill them in, then copy the finished version.</p>
+          </div>
+          <button class="green" onclick="copyOutput()">Copy personalised prompt</button>
+        </div>
+        <div class="personal-box">
+          <div>
+            <label for="topicInput">Replace <span class="var">[topic]</span> with:</label>
+            <input id="topicInput" value="monthly performance update" oninput="updatePersonalised()" />
+            <label for="promptInput" style="margin-top:14px;">Prompt template</label>
+            <textarea id="promptInput" oninput="updatePersonalised()">Create a clear summary of [topic] for a busy senior stakeholder. Include the headline, three key insights, risks, and recommended next actions.</textarea>
+          </div>
+          <div>
+            <label>Personalised output</label>
+            <div class="output" id="outputBox"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const prompts = [
+      {
+        title: "Stakeholder summary",
+        category: "Communication",
+        text: "Create a clear summary of [topic] for a busy senior stakeholder. Include the headline, three key insights, risks, and recommended next actions."
+      },
+      {
+        title: "Meeting actions",
+        category: "Productivity",
+        text: "Turn these notes into clear actions for [team]. Group by owner, deadline, dependency, and decision needed."
+      },
+      {
+        title: "Campaign review",
+        category: "Marketing",
+        text: "Analyse the performance of [campaign] and explain what worked, what did not, and what to test next."
+      },
+      {
+        title: "Plain English explainer",
+        category: "Writing",
+        text: "Explain [topic] in simple terms for someone who is smart but new to the subject. Avoid jargon."
+      }
+    ];
+
+    const words = ["teams", "marketers", "managers", "users"];
+    let wordIndex = 0;
+
+    function animateWords() {
+      const rotator = document.getElementById("rotator");
+      wordIndex = (wordIndex + 1) % words.length;
+      rotator.classList.remove("flip");
+      void rotator.offsetWidth;
+      rotator.textContent = words[wordIndex];
+      rotator.classList.add("flip");
+    }
+
+    setInterval(animateWords, 1500);
+
+    function highlightVariables(text) {
+      return text.replace(/\[([^\]]+)\]/g, '<span class="var">[$1]</span>');
+    }
+
+    function renderPrompts() {
+      const grid = document.getElementById("promptGrid");
+      grid.innerHTML = prompts.map((p, index) => `
+        <article class="prompt-card">
+          <span class="tag">${p.category}</span>
+          <div>
+            <div class="prompt-title">${p.title}</div>
+            <div class="prompt-text">${highlightVariables(p.text)}</div>
+          </div>
+          <button class="ghost" onclick="loadPrompt(${index})">Personalise</button>
+        </article>
+      `).join("");
+    }
+
+    function setView(view) {
+      const grid = document.getElementById("promptGrid");
+      const cardBtn = document.getElementById("cardBtn");
+      const listBtn = document.getElementById("listBtn");
+
+      if (view === "list") {
+        grid.classList.add("list");
+        listBtn.classList.add("active");
+        cardBtn.classList.remove("active");
+      } else {
+        grid.classList.remove("list");
+        cardBtn.classList.add("active");
+        listBtn.classList.remove("active");
+      }
+    }
+
+    function surpriseMe() {
+      const random = prompts[Math.floor(Math.random() * prompts.length)];
+      const card = document.getElementById("surpriseCard");
+      card.innerHTML = `
+        <div>
+          <span class="tag">${random.category}</span>
+          <div class="prompt-title">${random.title}</div>
+          <div class="prompt-text">${highlightVariables(random.text)}</div>
+        </div>
+        <div class="actions" style="margin-top:18px;">
+          <button class="green" onclick='loadPromptByText(${JSON.stringify(random.text)})'>Personalise this</button>
+          <button class="ghost" onclick="surpriseMe()">Roll again</button>
+        </div>
+      `;
+    }
+
+    function loadPrompt(index) {
+      loadPromptByText(prompts[index].text);
+      location.hash = "personalise";
+    }
+
+    function loadPromptByText(text) {
+      document.getElementById("promptInput").value = text;
+      updatePersonalised();
+      location.hash = "personalise";
+    }
+
+    function updatePersonalised() {
+      const topic = document.getElementById("topicInput").value || "[topic]";
+      const template = document.getElementById("promptInput").value;
+      const output = template.replaceAll("[topic]", topic);
+      document.getElementById("outputBox").textContent = output;
+    }
+
+    async function copyOutput() {
+      const text = document.getElementById("outputBox").textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+        alert("Copied personalised prompt");
+      } catch {
+        alert("Copy failed. Highlight the text and copy manually.");
+      }
+    }
+
+    renderPrompts();
+    surpriseMe();
+    updatePersonalised();
+  </script>
+</body>
+</html>

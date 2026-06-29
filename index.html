@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MA&A AI Prompt Library</title>
+<title>MA&amp;A AI Prompt Library</title>
 
 <style>
-  /* ── Sage Webfonts ── */
+/* ── Sage Webfonts ── */
   @font-face {
     font-family: "Sage Headline";
     src: url("fonts/Sage_Headline-Black.woff2") format("woff2"),
@@ -189,13 +189,13 @@
     cursor: pointer;
     color: var(--text);
     background: none;
-    transition: color 0.2s, background 0.2s, border-color 0.2s;
+    transition: color 0.2s, border-color 0.2s;
     text-transform: uppercase;
     white-space: nowrap;
   }
 
-  .nav-tab:hover { color: var(--text); background: var(--surface); }
-  .nav-tab.active { color: var(--accent); background: var(--accent-dim); border-color: var(--accent-border); }
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab.active { color: var(--accent); }
 
   .theme-toggle {
     min-width: 132px;
@@ -625,12 +625,12 @@
   .prompt-selector::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
   .selector-group-label {
-    font-family: "Courier New", monospace;
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
     font-size: 9px;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--text-dim);
-    padding: 12px 16px 6px;
+    padding: 16px 16px 8px;
     border-top: 1px solid var(--border);
     background: var(--bg);
   }
@@ -656,7 +656,7 @@
   .panel-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
 
   .panel-label {
-    font-family: "Courier New", monospace;
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
     font-size: 10px;
     letter-spacing: 0.15em;
     text-transform: uppercase;
@@ -664,18 +664,30 @@
     margin-bottom: 14px;
   }
 
+  .current-prompt-label {
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin: -4px 0 12px;
+  }
+
+  .current-prompt-label span {
+    color: var(--text);
+    font-weight: 600;
+  }
+
   .var-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
   .var-row:last-child { margin-bottom: 0; }
 
-  .var-label { font-family: "Courier New", monospace; font-size: 11px; color: var(--text-muted); }
+  .var-label { font-family: "Sage UI", "Segoe UI", system-ui, sans-serif; font-size: 11px; color: var(--text-muted); }
   .var-label span { color: var(--accent); font-weight: 600; }
 
   .var-input {
     background: var(--surface2);
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 9px 12px;
-    font-family: "Courier New", monospace;
+    padding: 11px 14px;
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
     font-size: 12px;
     color: var(--text);
     outline: none;
@@ -687,17 +699,17 @@
   .var-input::placeholder { color: var(--text-dim); }
 
   .preview-text {
-    font-family: "Courier New", monospace;
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
     font-size: 12.5px;
     line-height: 1.75;
-    color: var(--text-muted);
+    color: var(--text);
     white-space: pre-wrap;
     word-break: break-word;
     min-height: 60px;
   }
 
   .preview-text .filled { color: var(--accent); font-weight: 600; }
-  .preview-text .unfilled { color: var(--text-dim); text-decoration: underline; text-decoration-style: dashed; }
+  .preview-text .unfilled { color: var(--accent); font-weight: 600; }
 
   .copy-final-btn {
     width: 100%;
@@ -718,94 +730,11 @@
 
   .empty-hint {
     color: var(--text-dim);
-    font-family: "Courier New", monospace;
+    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
     font-size: 12px;
     padding: 6px 0;
     line-height: 1.6;
   }
-
-  /* ── Feedback ── */
-  .feedback-wrap { max-width: 560px; }
-  .feedback-field { margin-bottom: 18px; }
-  .feedback-label { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
-
-  .feedback-input, .feedback-textarea {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 13px;
-    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
-    font-size: 13px;
-    color: var(--text);
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    resize: vertical;
-    line-height: 1.6;
-  }
-
-  .feedback-input:focus, .feedback-textarea:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px var(--accent-dim);
-  }
-
-  .feedback-input::placeholder, .feedback-textarea::placeholder {
-    color: var(--text-dim);
-    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
-  }
-
-  .feedback-submit {
-    background: var(--accent);
-    border: none;
-    border-radius: 9px;
-    padding: 12px 28px;
-    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: #000;
-    cursor: pointer;
-    transition: opacity 0.2s, transform 0.18s;
-  }
-
-  .feedback-submit:hover { opacity: 0.88; transform: translateY(-1px); }
-
-  .feedback-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-
-  .feedback-email-link {
-    font-family: "Courier New", monospace;
-    font-size: 12px;
-    color: var(--accent);
-    font-weight: 600;
-    text-decoration: none;
-  }
-
-  .feedback-email-link:hover { text-decoration: underline; }
-
-  .feedback-direct {
-    font-family: "Courier New", monospace;
-    font-size: 11px;
-    color: var(--text-dim);
-  }
-
-  /* ── Success state ── */
-  .success-state { text-align: center; padding: 52px 20px; }
-  .success-icon { font-size: 40px; margin-bottom: 16px; }
-  .success-title { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; color: var(--text); }
-  .success-sub { font-size: 13px; color: var(--text-muted); line-height: 1.7; margin-bottom: 24px; }
-
-  .reset-btn {
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 9px 20px;
-    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
-    font-size: 13px;
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: border-color 0.2s, color 0.2s;
-  }
-
-  .reset-btn:hover { border-color: var(--accent); color: var(--accent); }
 
   /* ── Footer ── */
   footer {
@@ -1103,666 +1032,3891 @@
   }
 
   .surprise-roll-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+@font-face { font-family:"Sage Headline"; src:url("fonts/Sage_Headline-Black.woff2") format("woff2"), url("fonts/Sage_Headline-Black.woff") format("woff"); font-weight:900; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage UI"; src:url("fonts/Sage_UI-Regular.woff2") format("woff2"), url("fonts/Sage_UI-Regular.woff") format("woff"); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage UI"; src:url("fonts/Sage_UI-Medium.woff2") format("woff2"), url("fonts/Sage_UI-Medium.woff") format("woff"); font-weight:500; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage UI"; src:url("fonts/Sage_UI-Bold.woff2") format("woff2"), url("fonts/Sage_UI-Bold.woff") format("woff"); font-weight:700; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage Text"; src:url("fonts/Sage_Text-Regular.woff2") format("woff2"), url("fonts/Sage_Text-Regular.woff") format("woff"); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage Text"; src:url("fonts/Sage_Text-Bold.woff2") format("woff2"), url("fonts/Sage_Text-Bold.woff") format("woff"); font-weight:700; font-style:normal; font-display:swap; }
+
+  :root {
+    --sage-headline: "Sage Headline", "Segoe UI", system-ui, sans-serif;
+    --sage-ui: "Sage UI", "Segoe UI", system-ui, sans-serif;
+    --sage-text: "Sage Text", "Segoe UI", system-ui, sans-serif;
+    --bg: #000000;
+    --surface: #141414;
+    --surface2: #1C1C1C;
+    --border: #2A2A2A;
+    --soft-line: rgba(255,255,255,0.22);
+    --accent: #00D639;
+    --accent-dim: rgba(0,214,57,0.10);
+    --accent-border: rgba(0,214,57,0.25);
+    --text: #ffffff;
+    --text-muted: #C8C8C8;
+    --text-dim: #8A8A8A;
+    --radius-xl: 28px;
+    --radius-md: 16px;
+  }
+
+  body.light {
+    --bg: #f5f5f5;
+    --surface: #ffffff;
+    --surface2: #eeeeee;
+    --border: #dddddd;
+    --soft-line: rgba(0,0,0,0.18);
+    --accent: #00D639;
+    --accent-dim: rgba(0,214,57,0.10);
+    --accent-border: rgba(0,214,57,0.30);
+    --text: #000000;
+    --text-muted: #555555;
+    --text-dim: #777777;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sage-ui);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(180deg, #000 0%, #040404 100%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  body.light::before { background: linear-gradient(180deg, #f5f5f5 0%, #ffffff 100%); }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    height: 52px;
+    transition: background 0.3s, border-color 0.3s;
+  }
+
+  body.light nav { background: rgba(245,245,245,0.95); }
+
+  .nav-left { display: flex; align-items: center; gap: 16px; }
+
+  .nav-brand {
+    font-family: var(--sage-ui);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .nav-tabs { display: flex; gap: 4px; }
+
+  .nav-tab {
+    font-family: var(--sage-ui);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    padding: 14px 16px 13px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    color: var(--text-dim);
+    background: none;
+    transition: color 0.2s, border-color 0.2s;
+    text-decoration: none;
+  }
+
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+  .theme-toggle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--accent-border);
+    background: var(--accent-dim);
+    color: var(--accent);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .theme-toggle:hover { background: var(--accent); color: #000; }
+
+  .page-shell {
+    width: min(100%, 1360px);
+    margin: 0 auto;
+  }
+
+  .hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: calc(100svh - 52px);
+    padding: clamp(56px, 8vh, 96px) 24px clamp(72px, 10vh, 120px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-tag {
+    font-family: var(--sage-ui);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .hero-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  .hero-title {
+    font-family: var(--sage-headline);
+    font-size: clamp(54px, 6.4vw, 92px);
+    font-weight: 900;
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+    margin-bottom: 26px;
+    max-width: 900px;
+  }
+
+  .headline-line { display: inline-block; }
+
+  .headline-nowrap { white-space: nowrap; }
+
+  .rotator,
+  .rotator-period {
+    display: inline-block;
+    color: var(--accent);
+  }
+
+  .rotator.flip {
+    animation: snap 0.45s ease;
+  }
+
+  @keyframes snap {
+    0% { opacity: 0; transform: translateY(18px) rotateX(55deg); filter: blur(8px); }
+    100% { opacity: 1; transform: translateY(0) rotateX(0); filter: blur(0); }
+  }
+
+  .hero-sub {
+    font-family: var(--sage-text);
+    font-size: clamp(17px, 1.6vw, 22px);
+    color: var(--text-muted);
+    max-width: 620px;
+    line-height: 1.55;
+    margin-bottom: 36px;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero-btns .button,
+  .hero-btns button {
+    min-height: 52px;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  button,
+  .button {
+    appearance: none;
+    border: 1px solid var(--soft-line);
+    padding: 13px 20px;
+    border-radius: 999px;
+    font-family: var(--sage-ui);
+    font-size: 15px;
+    font-weight: 750;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease;
+  }
+
+  button:hover,
+  .button:hover { transform: translateY(-2px); }
+
+  .hero-action {
+    min-width: 176px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.045));
+    color: var(--text);
+    border-color: rgba(255,255,255,0.18);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+
+  .hero-action:hover {
+    border-color: rgba(255,255,255,0.34);
+    background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.055));
+  }
+
+  body.light .hero-action {
+    background: #ffffff;
+    border-color: rgba(0,0,0,0.14);
+    color: #000;
+  }
+
+  .hero-action-muted {
+    min-width: 190px;
+    background: rgba(255,255,255,0.025);
+    color: rgba(255,255,255,0.72);
+    border-color: rgba(255,255,255,0.14);
+  }
+
+  .hero-action-muted:hover {
+    color: var(--text);
+    border-color: rgba(255,255,255,0.28);
+    background: rgba(255,255,255,0.05);
+  }
+
+  body.light .hero-action-muted {
+    background: rgba(0,0,0,0.02);
+    color: rgba(0,0,0,0.68);
+    border-color: rgba(0,0,0,0.12);
+  }
+
+  body.light .hero-action-muted:hover { color: #000; border-color: rgba(0,0,0,0.28); }
+
+  .surprise-trace {
+    min-width: 154px;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: rgba(8,10,12,0.78);
+    color: var(--text);
+    border-color: rgba(255,255,255,0.12);
+  }
+
+  .surprise-trace::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: conic-gradient(from var(--trace-angle), transparent 0deg, transparent 245deg, rgba(0,214,57,0.10) 285deg, var(--accent) 320deg, rgba(0,214,57,0.10) 352deg, transparent 360deg);
+    z-index: -2;
+    opacity: 0;
+    animation: none;
+    transition: opacity 0.35s ease;
+  }
+
+  .surprise-trace.is-tracing::before {
+    opacity: 1;
+    animation: traceRound 4.6s linear infinite;
+  }
+
+  .surprise-trace::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    background: rgba(8,10,12,0.96);
+    z-index: -1;
+  }
+
+  body.light .surprise-trace { color: #000; background: #fff; }
+  body.light .surprise-trace::after { background: #fff; }
+
+
+  /* Landing page Surprise me button intro */
+  .landing-surprise-button {
+    overflow: hidden;
+  }
+
+  .landing-surprise-label {
+    position: relative;
+    z-index: 2;
+  }
+
+  .landing-surprise-shimmer {
+    position: absolute;
+    inset: -45%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-95%);
+    background: linear-gradient(
+      110deg,
+      transparent 35%,
+      rgba(255,255,255,0.55) 48%,
+      transparent 60%
+    );
+  }
+
+  .landing-surprise-button.shimmer-once .landing-surprise-shimmer {
+    animation: landingSurpriseShimmer 1100ms ease-in-out both;
+  }
+
+  @keyframes landingSurpriseShimmer {
+    0% { opacity: 0; transform: translateX(-95%); }
+    15% { opacity: 1; }
+    85% { opacity: 0.8; }
+    100% { opacity: 0; transform: translateX(95%); }
+  }
+
+  @property --trace-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  @keyframes traceRound { to { --trace-angle: 360deg; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .surprise-trace::before,
+    .surprise-trace.is-tracing::before,
+    .landing-surprise-button.shimmer-once .landing-surprise-shimmer {
+      animation: none;
+      opacity: 0;
+    }
+    .scroll-cue { animation: none; opacity: 1; }
+    html { scroll-behavior: auto; }
+  }
+
+
+
+  .scroll-cue {
+    position: absolute;
+    left: 50%;
+    bottom: 28px;
+    transform: translateX(-50%);
+    font-family: var(--sage-ui);
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.48);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: cueFadeIn 0.6s ease forwards;
+    animation-delay: 1.4s;
+    transition: color 0.2s ease;
+  }
+
+  .scroll-cue:hover {
+    color: var(--accent);
+  }
+
+  body.light .scroll-cue {
+    color: rgba(0,0,0,0.48);
+  }
+
+  body.light .scroll-cue:hover {
+    color: #00a82b;
+  }
+
+  @keyframes cueFadeIn {
+    to { opacity: 1; }
+  }
+
+  .wrapper {
+    width: min(100% - 48px, 1328px);
+    margin: 0 auto;
+    padding: 0 0 80px;
+  }
+
+  .how-it-works {
+    margin: 50px auto 0;
+    border: 1px solid var(--soft-line);
+    border-radius: var(--radius-xl);
+    background: rgba(255,255,255,0.045);
+    padding: clamp(22px, 2.6vw, 28px);
+  }
+
+  .how-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 22px;
+  }
+
+  .how-header h2 {
+    font-family: var(--sage-headline);
+    font-size: clamp(34px, 3.4vw, 48px);
+    line-height: 1;
+    letter-spacing: -0.06em;
+    margin: 0;
+  }
+
+  .how-header p {
+    font-family: var(--sage-text);
+    color: var(--text-muted);
+    font-size: 17px;
+    line-height: 1.55;
+    margin: 0;
+    max-width: 640px;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .step {
+    border: 1px solid var(--soft-line);
+    background: rgba(0,0,0,0.32);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    min-height: 178px;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  }
+
+  .step:hover {
+    border-color: rgba(0,214,57,0.38);
+    background: rgba(255,255,255,0.055);
+    transform: translateY(-2px);
+  }
+
+  body.light .step { background: rgba(255,255,255,0.55); }
+
+  .step-number {
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background: var(--accent);
+    color: #031107;
+    font-family: var(--sage-ui);
+    font-weight: 850;
+    margin-bottom: 18px;
+  }
+
+  .step strong {
+    display: block;
+    font-family: var(--sage-headline);
+    font-size: 23px;
+    line-height: 1.05;
+    letter-spacing: -0.055em;
+    margin-bottom: 12px;
+  }
+
+  .step span {
+    display: block;
+    font-family: var(--sage-text);
+    color: var(--text-muted);
+    line-height: 1.5;
+    font-size: 15px;
+  }
+
+  footer {
+    text-align: center;
+    padding-top: 40px;
+    color: var(--text-dim);
+    font-family: var(--sage-ui);
+    font-size: 12px;
+  }
+
+  @media (max-width: 820px) {
+    nav { padding: 0 14px; }
+    .nav-tabs { display: none; }
+    .hero { padding: 74px 20px 70px; }
+    .hero-title { font-size: clamp(48px, 13vw, 70px); }
+    .hero-btns { display: grid; grid-template-columns: 1fr; width: min(100%, 420px); }
+    .hero-btns .button,
+    .hero-btns button { width: 100%; }
+    .scroll-cue { bottom: 22px; font-size: 12px; }
+    .wrapper { width: min(100% - 22px, 1328px); padding-bottom: 48px; }
+    .how-header { align-items: flex-start; flex-direction: column; }
+    .steps { grid-template-columns: 1fr; }
+  }
+
+
+  /* Combined Home + Library routing */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  #library-view {
+    width: 100%;
+    min-height: calc(100vh - 52px);
+    background: #000;
+  }
+
+
+  /* Shared navbar: homepage design with centre-out proportional underline */
+  .nav-tab {
+    position: relative;
+    border-bottom: none !important;
+  }
+
+  .nav-tab::after {
+    content: "";
+    position: absolute;
+    left: 18%;
+    right: 18%;
+    bottom: 5px;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 999px;
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 220ms ease, opacity 180ms ease;
+    pointer-events: none;
+  }
+
+  .nav-tab:hover::after,
+  .nav-tab.active::after {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  .nav-tab.active {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .nav-tab:not(.active):hover {
+    color: var(--text);
+  }
+
+
+  /* Shared Surprise Me modal */
+  .surprise-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.86);
+    backdrop-filter: blur(22px) saturate(0.55);
+    -webkit-backdrop-filter: blur(22px) saturate(0.55);
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .surprise-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .surprise-card {
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255,255,255,0.085), transparent 64%),
+      linear-gradient(180deg, rgba(255,255,255,0.060), rgba(255,255,255,0.018)),
+      #0B0B0B;
+    border: 1px solid rgba(255,255,255,0.34);
+    border-radius: 16px;
+    padding: 28px;
+    max-width: 740px;
+    width: min(100%, 740px);
+    min-height: 380px;
+    max-height: 84vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), 0 32px 110px rgba(0,0,0,0.72);
+    animation: surpriseFadeUp 0.22s ease both;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .surprise-card::-webkit-scrollbar { width: 4px; }
+  .surprise-card::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .surprise-card.rolling {
+    animation: surpriseShake 0.35s ease infinite;
+  }
+
+  @keyframes surpriseFadeUp {
+    from { opacity: 0; transform: translateY(14px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes surpriseShake {
+    0%, 100% { transform: rotate(0); }
+    25% { transform: rotate(-0.45deg) translateX(-2px); }
+    75% { transform: rotate(0.45deg) translateX(2px); }
+  }
+
+  .surprise-topline {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .surprise-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .surprise-category {
+    font-family: var(--sage-ui);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .surprise-tool {
+    font-family: var(--sage-ui);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.03em;
+  }
+
+  .surprise-goodfor {
+    font-family: var(--sage-text);
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .surprise-close {
+    flex-shrink: 0;
+    background: none;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    width: 34px;
+    height: 34px;
+    color: var(--text-dim);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    line-height: 1;
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  }
+
+  .surprise-close:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-1px);
+  }
+
+  .surprise-title {
+    font-family: var(--sage-headline);
+    font-size: clamp(34px, 5vw, 50px);
+    font-weight: 900;
+    letter-spacing: -0.055em;
+    line-height: 1;
+    color: var(--text);
+  }
+
+  .surprise-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.10);
+  }
+
+  .surprise-prompt {
+    font-family: var(--sage-ui);
+    font-size: 15px;
+    color: rgba(255,255,255,0.84);
+    line-height: 1.62;
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    padding: 20px;
+    min-height: 112px;
+    max-height: 240px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .surprise-prompt .prompt-var-bracketed {
+    color: var(--accent);
+    font-weight: 800;
+  }
+
+  .surprise-source-badge {
+    align-self: flex-start;
+    font-family: var(--sage-ui);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 5px 11px;
+    border-radius: 7px;
+    background: rgba(0,214,57,0.10);
+    color: var(--accent);
+    border: 1px solid rgba(0,214,57,0.24);
+  }
+
+  .surprise-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 0.86fr;
+    gap: 12px;
+    margin-top: auto;
+  }
+
+  .surprise-personalise-btn,
+  .surprise-copy-btn,
+  .surprise-roll-btn {
+    min-height: 48px;
+    border-radius: 999px;
+    padding: 12px 20px;
+    font-family: var(--sage-ui);
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s, transform 0.18s, border-color 0.2s, color 0.2s, background 0.2s;
+  }
+
+  .surprise-personalise-btn {
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.16);
+    color: var(--accent);
+  }
+
+  .surprise-personalise-btn:hover {
+    border-color: rgba(0,214,57,0.45);
+    background: rgba(0,214,57,0.08);
+    transform: translateY(-1px);
+  }
+
+  .surprise-copy-btn {
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    color: #000;
+  }
+
+  .surprise-copy-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .surprise-copy-btn.copied { background: var(--accent); opacity: 1; }
+
+  .surprise-roll-btn {
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.16);
+    color: rgba(255,255,255,0.78);
+  }
+
+  .surprise-roll-btn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+
+  body.light .surprise-overlay {
+    background: rgba(247,245,240,0.78);
+  }
+
+  body.light .surprise-card {
+    background:
+      radial-gradient(circle at top, rgba(0,214,57,0.10), transparent 54%),
+      linear-gradient(180deg, rgba(255,255,255,0.98), rgba(244,242,236,0.98));
+    border-color: rgba(0,0,0,0.12);
+    box-shadow:
+      0 30px 90px rgba(0,0,0,0.16),
+      inset 0 1px 0 rgba(255,255,255,0.75);
+  }
+
+  body.light .surprise-close {
+    border-color: rgba(0,0,0,0.12);
+    color: rgba(0,0,0,0.52);
+  }
+
+  body.light .surprise-close:hover {
+    border-color: rgba(0,214,57,0.4);
+    color: var(--accent);
+  }
+
+  body.light .surprise-title {
+    color: #000;
+  }
+
+  body.light .surprise-divider {
+    background: rgba(0,0,0,0.10);
+  }
+
+  body.light .surprise-goodfor {
+    color: rgba(0,0,0,0.48);
+  }
+
+  body.light .surprise-prompt {
+    color: rgba(0,0,0,0.78);
+    background: rgba(0,0,0,0.025);
+    border-color: rgba(0,0,0,0.10);
+  }
+
+  body.light .surprise-personalise-btn {
+    background: rgba(0,0,0,0.025);
+    border-color: rgba(0,0,0,0.12);
+    color: var(--accent);
+  }
+
+  body.light .surprise-personalise-btn:hover {
+    background: rgba(0,214,57,0.08);
+    border-color: rgba(0,214,57,0.36);
+  }
+
+  body.light .surprise-roll-btn {
+    background: rgba(0,0,0,0.025);
+    border-color: rgba(0,0,0,0.12);
+    color: rgba(0,0,0,0.68);
+  }
+
+  body.light .surprise-roll-btn:hover {
+    border-color: rgba(0,214,57,0.36);
+    color: var(--accent);
+  }
+
+  @media (max-width: 640px) {
+    .surprise-overlay { padding: 16px; align-items: flex-end; }
+    .surprise-card { padding: 22px; width: 100%; min-height: 0; max-height: 88vh; }
+    .surprise-title { font-size: clamp(30px, 10vw, 40px); }
+    .surprise-actions { grid-template-columns: 1fr; }
+    .surprise-personalise-btn,
+    .surprise-copy-btn,
+    .surprise-roll-btn { width: 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .surprise-card,
+    .surprise-card.rolling {
+      animation: none;
+    }
+  }
+
+
+  /* Direct Library section — same visual treatment, no iframe */
+  #library-view {
+    width: 100%;
+    min-height: calc(100vh - 52px);
+    background: #000;
+  }
+
+  .library-root {
+    min-height: calc(100vh - 52px);
+    background: #000;
+    color: #fff;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    overflow-x: hidden;
+  }
+
+  .lib-header-wrap,
+  .lib-controls-wrap,
+  .lib-grid-wrap,
+  .lib-footer {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .lib-header-wrap { padding-top: 56px; }
+
+  .lib-header {
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+  }
+
+  .lib-kicker {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .lib-kicker-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00D639;
+    display: inline-block;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .lib-title {
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 52px;
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    margin: 0 0 14px;
+  }
+
+  .lib-title span { color: #00D639; }
+
+  .lib-subtitle {
+    color: rgba(255,255,255,0.78);
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0;
+  }
+
+  .lib-pills {
+    max-width: 950px;
+    margin: 0 auto 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .library-root button,
+  .lib-overlay button {
+    appearance: none;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    cursor: pointer;
+  }
+
+  .lib-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 999px;
+    transition: all 0.18s;
+    white-space: nowrap;
+    border: 1px solid rgba(255,255,255,0.4);
+    background: transparent;
+    color: #fff;
+  }
+
+  .lib-pill:hover { border-color: #fff; transform: none; }
+  .lib-pill svg { width: 15px; height: 15px; opacity: 0.5; }
+  .lib-pill.active { background: #00D639; border-color: #00D639; color: #000; }
+  .lib-pill.active svg { opacity: 1; }
+
+  .lib-search-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .lib-search-box {
+    position: relative;
+    flex: 1;
+  }
+
+  .lib-search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    color: rgba(255,255,255,0.3);
+    pointer-events: none;
+  }
+
+  #lib-search {
+    width: 100%;
+    box-sizing: border-box;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 14px;
+    padding: 14px 18px 14px 46px;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    color: #fff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  #lib-search:focus {
+    border-color: #00D639;
+    box-shadow: 0 0 0 3px rgba(0,214,57,0.1);
+  }
+
+  .lib-surprise-btn {
+    min-width: 154px;
+    min-height: 50px;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 13px 20px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    background: rgba(8,10,12,0.78);
+    color: #fff;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+  }
+
+  .lib-surprise-btn:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255,255,255,0.28);
+    background: rgba(255,255,255,0.055);
+  }
+
+  .lib-surprise-btn:focus-visible { outline: 2px solid #00D639; outline-offset: 4px; }
+  .lib-surprise-label { position: relative; z-index: 2; }
+
+  .lib-surprise-shimmer {
+    position: absolute;
+    inset: -45%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-95%);
+    background: linear-gradient(110deg, transparent 35%, rgba(255,255,255,0.55) 48%, transparent 60%);
+  }
+
+  .lib-surprise-btn.is-shimmering .lib-surprise-shimmer { animation: libShimmerSweep 1100ms ease-in-out both; }
+  .lib-surprise-btn.is-bouncing { animation: libGentleBounce 900ms ease-in-out both; }
+  .lib-surprise-btn.is-pulsing { animation: libSoftPulse 950ms ease-in-out both; }
+  .lib-surprise-btn.is-wiggling { animation: libTinyWiggle 900ms ease-in-out both; transform-origin: 50% 80%; }
+
+  @keyframes libShimmerSweep {
+    0% { opacity:0; transform:translateX(-95%); }
+    15% { opacity:1; }
+    85% { opacity:0.8; }
+    100% { opacity:0; transform:translateX(95%); }
+  }
+
+  @keyframes libGentleBounce {
+    0%,100% { transform:translateY(0); }
+    35% { transform:translateY(-7px); }
+    62% { transform:translateY(0); }
+    82% { transform:translateY(-3px); }
+  }
+
+  @keyframes libSoftPulse {
+    0%,100% { transform:scale(1); }
+    50% { transform:scale(1.045); }
+  }
+
+  @keyframes libTinyWiggle {
+    0%,100% { transform:rotate(0deg); }
+    28% { transform:rotate(-2.5deg); }
+    54% { transform:rotate(2.5deg); }
+    78% { transform:rotate(-1deg); }
+  }
+
+  .lib-grid-wrap { padding-bottom: 80px; }
+
+  .lib-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .lib-card {
+    position: relative;
+    background: #0B0B0B;
+    border: 1px solid rgba(255,255,255,0.46);
+    border-radius: 14px;
+    padding: 20px;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: border-color 0.18s, transform 0.18s, box-shadow 0.18s, background 0.18s;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.045), 0 18px 50px rgba(0,0,0,0.34);
+  }
+
+  .lib-card:hover {
+    border-color: rgba(255,255,255,0.66);
+    transform: translateY(-2px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.09), 0 24px 70px rgba(0,0,0,0.56);
+    background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.085), transparent 64%), linear-gradient(180deg, rgba(255,255,255,0.060), rgba(255,255,255,0.018)), #0D0D0D;
+  }
+
+  .lib-card-category {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.36);
+    margin-bottom: 12px;
+    padding-right: 30px;
+  }
+
+  .lib-card-title {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 10px;
+    color: #fff;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    padding-right: 22px;
+  }
+
+  .lib-card-prompt {
+    font-size: 14px;
+    line-height: 1.45;
+    color: rgba(255,255,255,0.85);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .prompt-var-bracketed,
+  .lib-var { color: #00D639; font-weight: 700; }
+
+  .lib-card-actions {
+    display: grid;
+    grid-template-columns: 1fr 0.82fr;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 18px;
+  }
+
+  .lib-card-btn,
+  .trace-btn {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 0 14px;
+    height: 38px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.045);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #fff;
+    transition: border-color 0.16s, background 0.16s, transform 0.16s, color 0.16s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .trace-btn { color: #00D639; }
+  .lib-card-btn:hover { border-color: rgba(255,255,255,0.26); background: rgba(255,255,255,0.075); transform: translateY(-1px); }
+  .trace-btn:hover { border-color: transparent; background: rgba(255,255,255,0.06); transform: translateY(-1px); }
+
+  .trace-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  .trace-rect {
+    filter: drop-shadow(0 0 7px rgba(0,214,57,0.45));
+    transition: opacity 0.16s;
+    animation: traceBorder 1.45s linear infinite;
+    animation-play-state: paused;
+  }
+
+  .trace-btn:hover .trace-rect,
+  .trace-btn:active .trace-rect {
+    opacity: 1;
+    animation-play-state: running;
+  }
+
+  .trace-btn span { position: relative; z-index: 2; }
+
+  .expand-ico {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 18px;
+    height: 18px;
+    color: #00D639;
+    opacity: 0;
+    transform: scale(0.92) translateY(4px);
+    transition: opacity 0.16s, transform 0.16s;
+    pointer-events: none;
+  }
+
+  .lib-card:hover .expand-ico { opacity: 1; transform: scale(1) translateY(0); }
+
+  .lib-no-results {
+    text-align: center;
+    padding: 64px 20px;
+    color: rgba(255,255,255,0.4);
+    font-size: 15px;
+  }
+
+  .lib-footer {
+    text-align: center;
+    padding-top: 48px;
+    padding-bottom: 48px;
+    margin-top: 48px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.3);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+
+  .lib-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 520;
+    background: rgba(0,0,0,0.86);
+    backdrop-filter: blur(24px) saturate(0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    animation: overlayIn 0.2s ease;
+  }
+
+  .lib-overlay[hidden] { display: none; }
+
+  @keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes modalIn { from { opacity: 0; transform: scale(0.94) translateY(12px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+  @keyframes traceBorder { to { stroke-dashoffset: 0; } }
+
+  .lib-modal {
+    width: min(680px, calc(100% - 48px));
+    max-height: 82vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.018)), #050505;
+    box-shadow: 0 30px 110px rgba(0,0,0,0.72);
+    padding: 28px;
+    animation: modalIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .lib-modal-close-row { display: flex; justify-content: flex-end; margin-bottom: 4px; }
+
+  .lib-modal-close {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    color: rgba(255,255,255,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: border-color 0.2s, color 0.2s;
+    padding: 0;
+  }
+
+  .lib-modal-close:hover { border-color: rgba(255,255,255,0.3); color: #fff; transform: none; }
+  .lib-modal-category { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #00D639; margin-bottom: 8px; }
+  .lib-modal-tool { font-size: 12px; color: rgba(255,255,255,0.35); margin-bottom: 20px; letter-spacing: 0.03em; }
+  .lib-modal-title { font-size: 36px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 24px; }
+
+  .lib-modal-prompt,
+  .lib-live-preview {
+    font-size: 16px;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.85);
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 20px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .lib-modal-source {
+    margin-top: 20px;
+    display: inline-flex;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: rgba(0,214,57,0.1);
+    color: #00D639;
+    border: 1px solid rgba(0,214,57,0.2);
+  }
+
+  .lib-modal-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .lib-modal-personalise,
+  .lib-modal-copy {
+    font-size: 14px;
+    font-weight: 700;
+    padding: 14px 20px;
+    height: auto;
+    border-radius: 999px;
+    transition: all 0.16s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lib-modal-copy {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #fff;
+  }
+
+  .lib-modal-copy:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.07); transform: none; }
+
+  .lib-personaliser {
+    width: min(680px, 100%);
+    max-height: 85vh;
+    overflow-y: auto;
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015)), #0a0a0a;
+    box-shadow: 0 32px 100px rgba(0,0,0,0.7);
+    padding: 32px;
+    animation: modalIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .lib-personaliser-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .lib-personaliser-kicker { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #00D639; }
+  .lib-personaliser-title { font-size: 24px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 24px; }
+  .lib-input-block { margin-bottom: 16px; }
+  .lib-input-block label { display: block; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.5); margin-bottom: 6px; }
+  .lib-input-block label span { color: #00D639; font-weight: 700; }
+
+  .lib-input-block input {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 13px;
+    color: #fff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .lib-input-block input:focus { border-color: #00D639; box-shadow: 0 0 0 3px rgba(0,214,57,0.1); }
+  .lib-live-preview-label { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin: 8px 0 12px; }
+  .lib-live-preview { font-size: 14px; line-height: 1.7; color: rgba(255,255,255,0.65); border-color: rgba(255,255,255,0.08); border-radius: 12px; }
+
+  .lib-copy-final {
+    width: 100%;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    background: #00D639;
+    color: #000;
+    transition: opacity 0.2s, transform 0.15s;
+    margin-top: 20px;
+  }
+
+  .lib-copy-final:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  @media (max-width: 780px) { .lib-grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) {
+    .lib-header-wrap, .lib-controls-wrap, .lib-grid-wrap, .lib-footer { padding-left: 16px; padding-right: 16px; }
+    .lib-search-row { flex-direction: column; }
+    .lib-surprise-btn { width: 100%; }
+    .lib-modal, .lib-personaliser { width: 100%; padding: 22px; }
+    .lib-modal-actions { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 500px) { .lib-grid-3 { grid-template-columns: 1fr; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lib-surprise-btn,
+    .lib-surprise-btn.is-shimmering .lib-surprise-shimmer,
+    .lib-surprise-btn.is-bouncing,
+    .lib-surprise-btn.is-pulsing,
+    .lib-surprise-btn.is-wiggling { animation: none; transition: none; }
+  }
+
+
+  /* Light mode support for direct Library section */
+  body.light #library-view,
+  body.light .library-root {
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  body.light .lib-header { border-bottom-color: rgba(0,0,0,0.08); }
+  body.light .lib-kicker { color: rgba(0,0,0,0.62); }
+  body.light .lib-subtitle { color: rgba(0,0,0,0.68); }
+  body.light .lib-pill {
+    border-color: rgba(0,0,0,0.24);
+    background: transparent;
+    color: #000;
+  }
+  body.light .lib-pill:hover { border-color: rgba(0,0,0,0.52); }
+  body.light .lib-pill.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+  }
+  body.light .lib-search-icon { color: rgba(0,0,0,0.34); }
+  body.light #lib-search {
+    background: rgba(0,0,0,0.025);
+    border-color: rgba(0,0,0,0.22);
+    color: #000;
+  }
+  body.light #lib-search::placeholder { color: rgba(0,0,0,0.42); }
+  body.light .lib-surprise-btn {
+    background: #fff;
+    border-color: rgba(0,0,0,0.14);
+    color: #000;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 10px 28px rgba(0,0,0,0.06);
+  }
+  body.light .lib-surprise-btn:hover {
+    border-color: rgba(0,0,0,0.28);
+    background: rgba(0,0,0,0.025);
+  }
+  body.light .lib-card {
+    background: #fff;
+    border-color: rgba(0,0,0,0.18);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 16px 42px rgba(0,0,0,0.07);
+  }
+  body.light .lib-card:hover {
+    background: radial-gradient(circle at 50% 0%, rgba(0,0,0,0.035), transparent 64%), linear-gradient(180deg, rgba(0,0,0,0.025), rgba(0,0,0,0.006)), #fff;
+    border-color: rgba(0,0,0,0.34);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 22px 60px rgba(0,0,0,0.10);
+  }
+  body.light .lib-card-category { color: rgba(0,0,0,0.45); }
+  body.light .lib-card-title { color: #000; }
+  body.light .lib-card-prompt { color: rgba(0,0,0,0.74); }
+  body.light .lib-card-btn,
+  body.light .trace-btn {
+    background: rgba(0,0,0,0.025);
+    border-color: rgba(0,0,0,0.12);
+    color: #000;
+  }
+  body.light .trace-btn { color: #00a82b; }
+  body.light .lib-card-btn:hover {
+    border-color: rgba(0,0,0,0.24);
+    background: rgba(0,0,0,0.045);
+  }
+  body.light .trace-btn:hover {
+    border-color: transparent;
+    background: rgba(0,214,57,0.075);
+  }
+  body.light .lib-no-results { color: rgba(0,0,0,0.45); }
+  body.light .lib-footer {
+    border-top-color: rgba(0,0,0,0.08);
+    color: rgba(0,0,0,0.38);
+  }
+
+  body.light .lib-modal,
+  body.light .lib-personaliser {
+    background: linear-gradient(180deg, rgba(0,0,0,0.025), rgba(0,0,0,0.006)), #fff;
+    border-color: rgba(0,0,0,0.14);
+    color: #000;
+    box-shadow: 0 30px 90px rgba(0,0,0,0.18);
+  }
+  body.light .lib-modal-close {
+    border-color: rgba(0,0,0,0.14);
+    color: rgba(0,0,0,0.45);
+  }
+  body.light .lib-modal-close:hover {
+    border-color: rgba(0,0,0,0.32);
+    color: #000;
+  }
+  body.light .lib-modal-tool { color: rgba(0,0,0,0.44); }
+  body.light .lib-modal-prompt,
+  body.light .lib-live-preview {
+    background: rgba(0,0,0,0.025);
+    border-color: rgba(0,0,0,0.10);
+    color: rgba(0,0,0,0.76);
+  }
+  body.light .lib-modal-copy {
+    background: rgba(0,0,0,0.025);
+    border-color: rgba(0,0,0,0.12);
+    color: #000;
+  }
+  body.light .lib-modal-copy:hover {
+    border-color: rgba(0,0,0,0.24);
+    background: rgba(0,0,0,0.045);
+  }
+  body.light .lib-input-block label { color: rgba(0,0,0,0.52); }
+  body.light .lib-input-block input {
+    background: rgba(0,0,0,0.025);
+    border-color: rgba(0,0,0,0.12);
+    color: #000;
+  }
+  body.light .lib-live-preview-label { color: rgba(0,0,0,0.36); }
+
+  /* Legacy pages kept available until their redesigns are supplied. */
+  .page { display: none; }
+  .page.active { display: block; }
+  #page-personaliser,
+  #page-feedback {
+    min-height: calc(100vh - 52px);
+    padding-top: 48px;
+    padding-bottom: 72px;
+  }
+  #page-personaliser .wrapper,
+  #page-feedback .wrapper {
+    width: min(100% - 48px, 1180px);
+    margin: 0 auto;
+  }
+
+  /* Keep the redesigned homepage/nav from inheriting legacy page styles. */
+  #home-view .wrapper {
+    max-width: 1328px;
+  }
+  #home-view .hero {
+    margin-bottom: 0;
+  }
+  nav .nav-tab {
+    text-transform: none;
+    border-radius: 0;
+  }
+  .hero-title .headline-line { color: var(--text); }
+  .hero-title .rotator,
+  .hero-title .rotator-period { color: var(--accent); }
+  .theme-toggle {
+    min-width: 34px;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border-radius: 50%;
+    justify-content: center;
+    gap: 0;
+    box-shadow: none;
+  }
+  .theme-toggle:hover { box-shadow: none; }
+
+  /* Personaliser redesign: scoped so it does not disturb Home, Library, or Feedback. */
+  #page-personaliser {
+    min-height: calc(100vh - 52px);
+    padding: 0;
+  }
+
+  #page-personaliser .personaliser-page-shell {
+    width: min(100%, 1360px);
+    margin: 0 auto;
+  }
+
+  #page-personaliser .personaliser-hero {
+    position: relative;
+    text-align: center;
+    padding: clamp(64px, 9vh, 100px) 24px clamp(38px, 6vh, 58px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  #page-personaliser .hero-title {
+    font-family: var(--sage-headline);
+    font-size: clamp(54px, 6.4vw, 88px);
+    font-weight: 900;
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+    margin: 0 auto 24px;
+    max-width: 900px;
+    text-align: center;
+  }
+
+  #page-personaliser .hero-title span { color: var(--accent); }
+
+  #page-personaliser .hero-sub {
+    font-family: var(--sage-text);
+    font-size: clamp(17px, 1.6vw, 21px);
+    color: var(--text-muted);
+    max-width: 680px;
+    line-height: 1.55;
+    margin: 0 auto 28px;
+  }
+
+  #page-personaliser .hero-mini-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  #page-personaliser .button,
+  #page-personaliser button {
+    appearance: none;
+    border: 1px solid var(--soft-line);
+    padding: 13px 20px;
+    border-radius: 999px;
+    font-family: var(--sage-ui);
+    font-size: 15px;
+    font-weight: 750;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease, opacity 180ms ease;
+  }
+
+  #page-personaliser .button:hover,
+  #page-personaliser button:hover { transform: translateY(-2px); }
+
+  #page-personaliser .hero-action {
+    background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.045));
+    color: var(--text);
+    border-color: rgba(255,255,255,0.18);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+
+  #page-personaliser .hero-action:hover {
+    border-color: rgba(255,255,255,0.34);
+    background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.055));
+  }
+
+  #page-personaliser .hero-action-muted {
+    position: relative;
+    overflow: hidden;
+    background: rgba(255,255,255,0.025);
+    color: rgba(255,255,255,0.72);
+    border-color: rgba(255,255,255,0.14);
+    justify-content: center;
+    line-height: 1;
+  }
+
+  #page-personaliser .hero-action-muted:hover {
+    color: var(--text);
+    border-color: rgba(255,255,255,0.28);
+    background: rgba(255,255,255,0.05);
+  }
+
+  #page-personaliser .personaliser-random-label {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    line-height: 1;
+    text-align: center;
+  }
+
+  #page-personaliser .personaliser-random-shimmer {
+    position: absolute;
+    inset: -45%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-95%);
+    background: linear-gradient(
+      110deg,
+      transparent 35%,
+      rgba(255,255,255,0.42) 48%,
+      transparent 60%
+    );
+  }
+
+  #page-personaliser .hero-action-muted.shimmer-once .personaliser-random-shimmer {
+    animation: landingSurpriseShimmer 1050ms ease-in-out both;
+  }
+
+  body.light #page-personaliser .hero-action {
+    background: #ffffff;
+    border-color: rgba(0,0,0,0.14);
+    color: #000;
+  }
+
+  body.light #page-personaliser .hero-action-muted {
+    background: rgba(0,0,0,0.02);
+    color: rgba(0,0,0,0.68);
+    border-color: rgba(0,0,0,0.12);
+  }
+
+  body.light #page-personaliser .personaliser-random-shimmer {
+    background: linear-gradient(
+      110deg,
+      transparent 35%,
+      rgba(0,214,57,0.18) 48%,
+      transparent 60%
+    );
+  }
+
+  body.light #page-personaliser .hero-action-muted:hover {
+    color: #000;
+    border-color: rgba(0,0,0,0.28);
+  }
+
+  #page-personaliser .wrapper {
+    width: min(100% - 48px, 1328px);
+    max-width: none;
+    margin: 0 auto;
+    padding: 50px 0 80px;
+  }
+
+  #page-personaliser .workspace-topline {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 18px;
+  }
+
+  #page-personaliser .workspace-kicker {
+    font-family: var(--sage-ui);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  #page-personaliser .workspace-topline h2 {
+    font-family: var(--sage-headline);
+    font-size: clamp(34px, 3.4vw, 48px);
+    line-height: 1;
+    letter-spacing: -0.06em;
+    margin: 0;
+  }
+
+  #page-personaliser .workspace-count {
+    font-family: var(--sage-ui);
+    font-size: 13px;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  #page-personaliser .personaliser-layout {
+    display: grid;
+    grid-template-columns: minmax(300px, 390px) minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+  }
+
+  #page-personaliser .selector-shell {
+    position: sticky;
+    top: 72px;
+  }
+
+  #page-personaliser .selector-shell,
+  #page-personaliser .panel-card {
+    border: 1px solid var(--soft-line);
+    border-radius: var(--radius-xl);
+    background: rgba(255,255,255,0.045);
+    overflow: hidden;
+  }
+
+  body.light #page-personaliser .selector-shell,
+  body.light #page-personaliser .panel-card { background: rgba(255,255,255,0.72); }
+
+  #page-personaliser .selector-header {
+    padding: 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  #page-personaliser .selector-title {
+    font-family: var(--sage-headline);
+    font-size: 27px;
+    line-height: 1;
+    letter-spacing: -0.055em;
+    margin-bottom: 12px;
+  }
+
+  #page-personaliser .selector-search { position: relative; }
+
+  #page-personaliser .selector-search span {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dim);
+    font-size: 17px;
+    pointer-events: none;
+  }
+
+  #page-personaliser .selector-search input,
+  #page-personaliser .var-input {
+    width: 100%;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 13px 17px;
+    font-family: var(--sage-ui);
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+
+  #page-personaliser .selector-search input { padding-left: 43px; }
+
+  body.light #page-personaliser .selector-search input,
+  body.light #page-personaliser .var-input { background: rgba(255,255,255,0.78); }
+
+  #page-personaliser .selector-search input:focus,
+  #page-personaliser .var-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+  }
+
+  #page-personaliser .selector-search input::placeholder,
+  #page-personaliser .var-input::placeholder { color: var(--text-dim); }
+
+  #page-personaliser .prompt-selector {
+    max-height: 620px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  #page-personaliser .prompt-selector::-webkit-scrollbar { width: 5px; }
+  #page-personaliser .prompt-selector::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 999px;
+  }
+
+  #page-personaliser .selector-group-label {
+    font-family: var(--sage-ui);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: 18px 18px 9px;
+    border-top: 1px solid var(--border);
+    background: rgba(0,0,0,0.18);
+  }
+
+  #page-personaliser .selector-group-label:first-child { border-top: none; }
+  body.light #page-personaliser .selector-group-label { background: rgba(0,0,0,0.035); }
+
+  #page-personaliser .selector-item {
+    appearance: none;
+    width: 100%;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    padding: 13px 18px;
+    text-align: left;
+    display: block;
+    cursor: pointer;
+    transform: none;
+    border-left: 3px solid transparent;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+
+  #page-personaliser .selector-item:hover {
+    transform: none;
+    background: rgba(255,255,255,0.045);
+  }
+
+  #page-personaliser .selector-item.active {
+    background: var(--accent-dim);
+    border-left-color: var(--accent);
+  }
+
+  #page-personaliser .selector-item-title {
+    display: block;
+    font-family: var(--sage-ui);
+    font-size: 14px;
+    font-weight: 750;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  #page-personaliser .selector-empty {
+    padding: 24px 18px;
+    color: var(--text-dim);
+    font-family: var(--sage-text);
+    line-height: 1.5;
+  }
+
+  #page-personaliser .personaliser-panel {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.82fr) minmax(320px, 1.18fr);
+    gap: 18px;
+    align-items: start;
+    position: sticky;
+    top: 72px;
+  }
+
+  #page-personaliser .panel-card { padding: 22px; }
+
+  #page-personaliser .panel-label {
+    font-family: var(--sage-ui);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  #page-personaliser .current-prompt-label {
+    font-family: var(--sage-text);
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin: -6px 0 16px;
+  }
+
+  #page-personaliser .current-prompt-label span {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  #page-personaliser .vars-container {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  #page-personaliser .var-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 0;
+  }
+
+  #page-personaliser .var-label {
+    font-family: var(--sage-ui);
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  #page-personaliser .var-label span {
+    color: var(--accent);
+    font-weight: 800;
+  }
+
+  #page-personaliser .var-input {
+    border-radius: 16px;
+    padding: 13px 15px;
+  }
+
+  #page-personaliser .preview-card {
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #page-personaliser .preview-text {
+    font-family: var(--sage-text);
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    white-space: pre-wrap;
+    word-break: break-word;
+    min-height: 215px;
+    padding: 18px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: rgba(0,0,0,0.24);
+  }
+
+  body.light #page-personaliser .preview-text { background: rgba(255,255,255,0.74); }
+
+  #page-personaliser .preview-text .filled,
+  #page-personaliser .preview-text .unfilled {
+    color: var(--accent);
+    font-weight: 800;
+  }
+
+  #page-personaliser .empty-hint {
+    color: var(--text-dim);
+    font-family: var(--sage-text);
+    font-size: 14px;
+    line-height: 1.65;
+    padding: 4px 0;
+  }
+
+  #page-personaliser .panel-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+  }
+
+  #page-personaliser .copy-final-btn {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #031107;
+    min-width: 156px;
+    justify-content: center;
+  }
+
+  #page-personaliser .copy-final-btn:hover { opacity: 0.88; }
+  #page-personaliser .copy-final-btn.copied { opacity: 1; }
+
+  #page-personaliser .secondary-action {
+    background: rgba(255,255,255,0.025);
+    color: var(--text-muted);
+    border-color: var(--soft-line);
+  }
+
+  #page-personaliser .secondary-action:hover {
+    color: var(--accent);
+    border-color: var(--accent-border);
+    background: var(--accent-dim);
+  }
+
+  #page-personaliser footer {
+    text-align: center;
+    padding-top: 40px;
+    color: var(--text-dim);
+    font-family: var(--sage-ui);
+    font-size: 12px;
+    border-top: 0;
+    margin-top: 0;
+  }
+
+  @media (max-width: 1120px) {
+    #page-personaliser .personaliser-layout { grid-template-columns: 1fr; }
+    #page-personaliser .personaliser-panel { position: static; }
+    #page-personaliser .selector-shell { position: static; }
+    #page-personaliser .prompt-selector { max-height: 440px; }
+  }
+
+  @media (max-width: 820px) {
+    #page-personaliser .personaliser-hero { padding: 74px 20px 44px; }
+    #page-personaliser .hero-title { font-size: clamp(48px, 13vw, 70px); }
+    #page-personaliser .hero-mini-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      width: min(100%, 420px);
+      margin: 0 auto;
+    }
+    #page-personaliser .hero-mini-actions .button {
+      width: 100%;
+      justify-content: center;
+    }
+    #page-personaliser .wrapper {
+      width: min(100% - 22px, 1328px);
+      padding: 34px 0 48px;
+    }
+    #page-personaliser .workspace-topline {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 10px;
+    }
+    #page-personaliser .workspace-count { white-space: normal; }
+    #page-personaliser .personaliser-panel { grid-template-columns: 1fr; }
+    #page-personaliser .panel-card {
+      padding: 18px;
+      border-radius: 22px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #page-personaliser .hero-action-muted.shimmer-once .personaliser-random-shimmer {
+      animation: none;
+      opacity: 0;
+    }
+  }
+
+
+  /* Feedback redesign: scoped so the standalone layout does not leak into other pages. */
+  #page-feedback {
+    min-height: calc(100vh - 52px);
+    padding: 0;
+  }
+
+  #page-feedback .feedback-page-shell {
+    width: min(100%, 1360px);
+    margin: 0 auto;
+  }
+
+  #page-feedback .feedback-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    padding: 32px 40px;
+    min-height: calc(100vh - 52px);
+  }
+
+  #page-feedback .feedback-hero {
+    text-align: left;
+  }
+
+  #page-feedback .hero-title {
+    font-family: var(--sage-headline);
+    font-size: clamp(50px, 5vw, 72px);
+    font-weight: 900;
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+    margin-bottom: 22px;
+  }
+
+  #page-feedback .hero-title span { color: var(--accent); }
+
+  #page-feedback .rotator {
+    display: block;
+    position: relative;
+    height: 1.05em;
+    overflow: hidden;
+  }
+
+  #page-feedback .rotator-word {
+    display: block;
+    position: absolute;
+    inset: 0;
+    color: var(--accent);
+    opacity: 0;
+    transform: translateY(30%);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+  }
+
+  #page-feedback .rotator-word.active {
+    position: relative;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #page-feedback .rotator-word.exit {
+    opacity: 0;
+    transform: translateY(-30%);
+  }
+
+  #page-feedback .hero-sub {
+    font-family: var(--sage-text);
+    font-size: clamp(16px, 1.3vw, 19px);
+    color: var(--text-muted);
+    max-width: 440px;
+    line-height: 1.55;
+  }
+
+  #page-feedback .feedback-form-col {
+    width: 100%;
+    max-width: 580px;
+  }
+
+  #page-feedback .form-card,
+  #page-feedback .success-card {
+    border: 1px solid var(--soft-line);
+    border-radius: var(--radius-xl);
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255,255,255,0.075), transparent 58%),
+      rgba(255,255,255,0.045);
+    overflow: hidden;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 24px 80px rgba(0,0,0,0.34);
+    padding: clamp(18px, 2.5vw, 24px);
+  }
+
+  body.light #page-feedback .form-card,
+  body.light #page-feedback .success-card {
+    background: rgba(255,255,255,0.78);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 20px 60px rgba(0,0,0,0.08);
+  }
+
+  #page-feedback .form-grid { display: grid; gap: 14px; }
+  #page-feedback .feedback-field { display: grid; gap: 6px; margin-bottom: 0; }
+
+  #page-feedback .feedback-label {
+    font-family: var(--sage-ui);
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 0;
+  }
+
+  #page-feedback .feedback-label span { color: var(--text-dim); font-weight: 500; }
+
+  #page-feedback .feedback-select,
+  #page-feedback .feedback-input,
+  #page-feedback .feedback-textarea {
+    width: 100%;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    font-family: var(--sage-ui);
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    line-height: 1.55;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  body.light #page-feedback .feedback-select,
+  body.light #page-feedback .feedback-input,
+  body.light #page-feedback .feedback-textarea { background: rgba(255,255,255,0.78); }
+
+  #page-feedback .feedback-textarea { min-height: 110px; resize: vertical; }
+  #page-feedback .feedback-input { border-radius: 999px; }
+
+  #page-feedback .feedback-select {
+    border-radius: 999px;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A8A8A' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+  }
+
+  #page-feedback .feedback-select:focus,
+  #page-feedback .feedback-input:focus,
+  #page-feedback .feedback-textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+  }
+
+  #page-feedback .feedback-select::placeholder,
+  #page-feedback .feedback-input::placeholder,
+  #page-feedback .feedback-textarea::placeholder { color: var(--text-dim); }
+
+  #page-feedback .feedback-select option {
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  #page-feedback .error-message {
+    display: none;
+    color: var(--error, #ff7a7a);
+    font-family: var(--sage-ui);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+
+  #page-feedback .error-message.active { display: block; }
+
+  #page-feedback .idea-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    transition: opacity 0.25s ease, max-height 0.3s ease;
+    max-height: 120px;
+    overflow: hidden;
+  }
+
+  #page-feedback .idea-pills.hidden {
+    opacity: 0;
+    max-height: 0;
+    pointer-events: none;
+    margin: 0;
+  }
+
+  #page-feedback .idea-pill {
+    border: 1px solid var(--soft-line);
+    border-radius: 999px;
+    padding: 7px 13px;
+    font-family: var(--sage-ui);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: rgba(255,255,255,0.025);
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+  }
+
+  #page-feedback .idea-pill:hover {
+    color: var(--text);
+    border-color: rgba(255,255,255,0.35);
+    transform: none;
+  }
+
+  #page-feedback .idea-pill.active {
+    background: var(--accent-dim);
+    border-color: var(--accent-border);
+    color: var(--accent);
+  }
+
+  body.light #page-feedback .idea-pill {
+    background: rgba(0,0,0,0.02);
+    border-color: rgba(0,0,0,0.14);
+  }
+
+  body.light #page-feedback .idea-pill:hover { border-color: rgba(0,0,0,0.3); }
+
+  body.light #page-feedback .idea-pill.active {
+    background: var(--accent-dim);
+    border-color: var(--accent-border);
+    color: var(--accent);
+  }
+
+  #page-feedback .actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  #page-feedback button {
+    appearance: none;
+    border: 1px solid var(--soft-line);
+    padding: 13px 20px;
+    border-radius: 999px;
+    font-family: var(--sage-ui);
+    font-size: 15px;
+    font-weight: 750;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease, opacity 180ms ease;
+  }
+
+  #page-feedback button:hover { transform: translateY(-2px); }
+
+  #page-feedback .primary-action {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #031107;
+    min-width: 158px;
+  }
+
+  #page-feedback .primary-action:hover { opacity: 0.88; }
+
+  #page-feedback .secondary-action {
+    background: rgba(255,255,255,0.025);
+    color: var(--text-muted);
+    border-color: var(--soft-line);
+  }
+
+  body.light #page-feedback .secondary-action {
+    background: rgba(0,0,0,0.025);
+    border-color: rgba(0,0,0,0.16);
+    color: rgba(0,0,0,0.68);
+  }
+
+  #page-feedback .secondary-action:hover {
+    color: var(--accent);
+    border-color: var(--accent-border);
+    background: var(--accent-dim);
+  }
+
+  #page-feedback .email-line {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    font-family: var(--sage-text);
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  #page-feedback .success-card {
+    display: none;
+    text-align: center;
+  }
+
+  #page-feedback .success-card.active { display: block; }
+  #page-feedback .form-card.hidden { display: none; }
+
+  #page-feedback .success-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background: var(--accent);
+    color: #031107;
+    font-weight: 900;
+    font-size: 22px;
+    margin: 0 auto 20px;
+  }
+
+  #page-feedback .success-title {
+    font-family: var(--sage-headline);
+    font-size: clamp(30px, 3.5vw, 42px);
+    line-height: 1;
+    letter-spacing: -0.055em;
+    margin-bottom: 14px;
+  }
+
+  #page-feedback .success-copy {
+    font-family: var(--sage-text);
+    color: var(--text-muted);
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 auto 24px;
+  }
+
+  #page-feedback footer {
+    text-align: center;
+    padding: 0 0 38px;
+    color: var(--text-dim);
+    font-family: var(--sage-ui);
+    font-size: 12px;
+    border-top: 0;
+    margin-top: 0;
+  }
+
+  @media (max-width: 920px) {
+    #page-feedback .feedback-layout {
+      grid-template-columns: 1fr;
+      gap: 28px;
+      padding: 40px 22px 48px;
+      align-items: start;
+      min-height: auto;
+    }
+    #page-feedback .feedback-hero { text-align: center; }
+    #page-feedback .hero-tag { justify-content: center; }
+    #page-feedback .hero-sub { margin: 0 auto; }
+    #page-feedback .hero-title { font-size: clamp(48px, 13vw, 70px); }
+    #page-feedback .feedback-form-col { max-width: 100%; }
+    #page-feedback .form-card,
+    #page-feedback .success-card { border-radius: 22px; }
+    #page-feedback .actions { display: grid; grid-template-columns: 1fr; }
+    #page-feedback .actions button { width: 100%; }
+  }
+
 </style>
 </head>
 <body>
-
 <nav>
-  <div class="nav-left">
-    <span class="nav-brand" onclick="showPage('home', null)">MA&amp;A · AI Prompts</span>
-    <div class="nav-tabs">
-      <button class="nav-tab active" onclick="showPage('home', this)">Home</button>
-      <button class="nav-tab" onclick="showPage('library', this)">Library</button>
-      <button class="nav-tab" onclick="showPage('personaliser', this)">Personaliser</button>
-      <button class="nav-tab" onclick="showPage('feedback', this)">Feedback</button>
-    </div>
-  </div>
-  <div class="nav-right">
-    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark" aria-label="Toggle light and dark theme">
-      <span class="theme-toggle-label">Dark mode</span>
-      <span class="theme-toggle-icon" aria-hidden="true">&#9728;</span>
-    </button>
-  </div>
-</nav>
-
-<!-- Home -->
-<div class="page active" id="page-home">
-  <div class="hero">
-    <div class="hero-tag"><span class="hero-dot"></span>From the MA&amp;A Team</div>
-    <h1 class="hero-title">Prompts our team<br><span>actually uses.</span></h1>
-    <p class="hero-sub">Copy, paste, and go. A practical library of AI prompts built by MA&amp;A.</p>
-    <div class="hero-btns">
-      <button class="btn-primary" onclick="showPage('library', document.querySelectorAll('.nav-tab')[1])">Browse prompts →</button>
-      <button class="btn-secondary" onclick="showPage('personaliser', document.querySelectorAll('.nav-tab')[2])">Personalise for me</button>
-      <button class="btn-surprise" onclick="surpriseMe()">🎲 Surprise me</button>
-    </div>
-  </div>
-  <div class="wrapper">
-    <div class="explore-label">Explore by category</div>
-    <div class="home-grid" id="home-grid"></div>
-    <footer>From the MA&amp;A Team — Sage</footer>
-  </div>
-</div>
-
-<!-- Library -->
-<div class="page" id="page-library">
-  <div class="wrapper">
-    <header>
-      <div class="header-tag">From the MA&amp;A Team</div>
-      <h1>Copy.<br><span>Paste.</span> Go.</h1>
-      <p class="subtitle">Prompts tried, tested and shared by the MA&amp;A team. Find what you need, copy it, and make it yours.</p>
-    </header>
-    <div class="search-row">
-      <div class="search-bar">
-        <span class="search-icon">⌕</span>
-        <input type="text" id="search" placeholder="Search prompts..." oninput="filterCards()" autocomplete="off">
+    <div class="nav-left">
+      <a class="nav-brand" href="#home" data-page="home">MA&amp;A · AI Prompts</a>
+      <div class="nav-tabs" aria-label="Main navigation">
+        <a class="nav-tab active" href="#home" data-page="home">Home</a>
+        <a class="nav-tab" href="#library" data-page="library">Library</a>
+        <a class="nav-tab" href="#personaliser" data-page="personaliser">Personaliser</a>
+        <a class="nav-tab" href="#feedback" data-page="feedback">Feedback</a>
       </div>
-      <div class="view-toggle" role="group" aria-label="Library view">
-        <button class="view-toggle-btn active" id="grid-view-btn" type="button" aria-pressed="true" onclick="setLibraryView('grid')">Grid</button>
-        <button class="view-toggle-btn" id="list-view-btn" type="button" aria-pressed="false" onclick="setLibraryView('list')">List</button>
-      </div>
-      <button class="btn-surprise" onclick="surpriseMe()">🎲 Surprise me</button>
     </div>
-    <div id="library"></div>
-    <div class="no-results" id="no-results">No prompts match your search.</div>
-    <footer>From the MA&amp;A Team — Sage</footer>
-  </div>
-</div>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark">☀</button>
+  </nav>
 
-<!-- Personaliser -->
+  <main class="page-shell view active" id="home-view">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-tag"><span class="hero-dot"></span>From the MA&amp;A Team</div>
+      <h1 class="hero-title" id="hero-title"><span class="headline-line">Prompts our teams</span><br><span class="headline-line headline-nowrap">have <span class="rotator" id="rotator">tried</span><span class="rotator-period">.</span></span></h1>
+      <p class="hero-sub">Copy, paste, and go. A practical library of 50+ AI prompts built by MA&amp;A.</p>
+      <div class="hero-btns">
+        <a class="button hero-action" href="#library" data-page="library">Browse prompts →</a>
+        <a class="button hero-action-muted" href="#personaliser" data-page="personaliser">Personalise for me</a>
+        <button class="surprise-trace landing-surprise-button" id="surpriseBtn" onclick="surpriseMe()">
+          <span class="landing-surprise-shimmer" aria-hidden="true"></span>
+          <span class="landing-surprise-label">Surprise me ✦</span>
+        </button>
+      </div>
+      <a class="scroll-cue" href="#how-it-works">See how it works ↓</a>
+    </section>
+
+    <div class="wrapper">
+      <section class="how-it-works" id="how-it-works" aria-labelledby="how-title">
+        <div class="how-header">
+          <h2 id="how-title">How it works</h2>
+        </div>
+        <div class="steps">
+          <article class="step">
+            <div class="step-number">1</div>
+            <strong>Explore</strong>
+            <span>Browse the library, find a prompt or just get inspired.</span>
+          </article>
+          <article class="step">
+            <div class="step-number">2</div>
+            <strong>Personalise</strong>
+            <span>Add your own details and make it yours.</span>
+          </article>
+          <article class="step">
+            <div class="step-number">3</div>
+            <strong>Copy and go</strong>
+            <span>Paste into Copilot, Claude, ChatGPT or wherever you're working.</span>
+          </article>
+        </div>
+      </section>
+
+      <footer data-shared-footer></footer>
+    </div>
+  </main>
+
+  <section class="view" id="library-view" aria-label="Prompt library">
+    <div class="library-root">
+      <div class="lib-header-wrap">
+        <div class="lib-header">
+          <div class="lib-kicker"><span class="lib-kicker-dot"></span><span>From the MA&amp;A Team</span></div>
+          <h1 class="lib-title">Copy.<br><span>Paste.</span> Go.</h1>
+          <p class="lib-subtitle">Prompts tried, tested and shared by the MA&amp;A team. Find what you need, copy it, and make it yours.</p>
+        </div>
+      </div>
+
+      <div class="lib-controls-wrap">
+        <div class="lib-pills" id="lib-pills"></div>
+        <div class="lib-search-row">
+          <div class="lib-search-box">
+            <svg class="lib-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7.5"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+            <input id="lib-search" type="text" placeholder="Search prompts..." autocomplete="off">
+          </div>
+          <button id="libSurpriseBtn" class="lib-surprise-btn" onclick="surpriseMe()" type="button" aria-label="Surprise me — library">
+            <span class="lib-surprise-shimmer" aria-hidden="true"></span>
+            <span class="lib-surprise-label">Surprise me ✦</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="lib-grid-wrap">
+        <div class="lib-grid-3" id="lib-grid"></div>
+        <div class="lib-no-results" id="lib-no-results" hidden>No prompts match your search.</div>
+      </div>
+
+      <div class="lib-footer" data-shared-footer></div>
+    </div>
+
+    <div class="lib-overlay" id="lib-modal-overlay" hidden>
+      <div class="lib-modal" role="dialog" aria-modal="true" aria-labelledby="lib-modal-title">
+        <div class="lib-modal-close-row">
+          <button class="lib-modal-close" id="lib-modal-close" aria-label="Close">✕</button>
+        </div>
+        <div class="lib-modal-category" id="lib-modal-category"></div>
+        <div class="lib-modal-title" id="lib-modal-title"></div>
+        <div class="lib-modal-prompt" id="lib-modal-prompt"></div>
+        <div class="lib-modal-actions">
+          <button class="lib-modal-personalise trace-btn" id="lib-modal-personalise">
+            <svg class="trace-svg" viewBox="0 0 260 44" preserveAspectRatio="none"><rect class="trace-rect" x="1.5" y="1.5" width="257" height="41" rx="21" pathLength="1" fill="none" stroke="#00D639" stroke-width="2.2" vector-effect="non-scaling-stroke" opacity="0" stroke-linecap="round" stroke-dasharray="0.22 0.78" stroke-dashoffset="1"></rect></svg>
+            <span>Personalise</span>
+          </button>
+          <button class="lib-modal-copy" id="lib-modal-copy">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="lib-overlay" id="lib-personaliser-overlay" hidden>
+      <div class="lib-personaliser" role="dialog" aria-modal="true" aria-labelledby="lib-personaliser-title">
+        <div class="lib-personaliser-head">
+          <div class="lib-personaliser-kicker">Personalise prompt</div>
+          <button class="lib-modal-close" id="lib-personaliser-close" aria-label="Close">✕</button>
+        </div>
+        <div class="lib-personaliser-title" id="lib-personaliser-title"></div>
+        <div id="lib-variable-inputs"></div>
+        <div class="lib-live-preview-label">Live preview</div>
+        <div class="lib-live-preview" id="lib-live-preview"></div>
+        <button class="lib-copy-final" id="lib-copy-final">Copy prompt</button>
+      </div>
+    </div>
+  </section>
 <div class="page" id="page-personaliser">
-  <div class="wrapper">
-    <header>
-      <div class="header-tag">From the MA&amp;A Team</div>
-      <h1>Make it<br><span>yours.</span></h1>
-      <p class="subtitle">Pick a prompt, fill in the blanks, and copy your personalised version ready to paste.</p>
-    </header>
-    <div class="personaliser-layout">
-      <div class="prompt-selector" id="prompt-selector"></div>
-      <div class="personaliser-panel">
-        <div class="panel-card">
-          <div class="panel-label">Fill in the blanks</div>
-          <div id="vars-container"><div class="empty-hint">← Pick a prompt to get started</div></div>
-        </div>
-        <div class="panel-card">
-          <div class="panel-label">Live preview</div>
-          <div class="preview-text" id="preview-text"><span style="color:var(--text-dim)">Your prompt will appear here as you type.</span></div>
-        </div>
-        <button class="copy-final-btn" id="copy-final-btn" onclick="copyFinal()">Copy prompt</button>
+  <main class="personaliser-page-shell" id="personaliser">
+    <section class="personaliser-hero" aria-labelledby="personaliser-title">
+      <div class="hero-tag"><span class="hero-dot"></span>From the MA&amp;A Team</div>
+      <h1 class="hero-title" id="personaliser-title">Make it<br><span>yours.</span></h1>
+      <p class="hero-sub">Pick a prompt, fill in the blanks, and copy your personalised version ready to paste into the tool you are using.</p>
+      <div class="hero-mini-actions">
+        <a class="button hero-action" href="#workspace" onclick="scrollToPersonaliserWorkspace(event)">Start personalising ↓</a>
+        <button class="button hero-action-muted personaliser-random-btn" id="personaliser-random-btn" type="button" onclick="selectRandomPrompt()">
+          <span class="personaliser-random-shimmer" aria-hidden="true"></span>
+          <span class="personaliser-random-label">Pick one for me <span aria-hidden="true">✦</span></span>
+        </button>
       </div>
-    </div>
-    <footer>From the MA&amp;A Team — Sage</footer>
-  </div>
-</div>
+    </section>
 
+    <div class="wrapper" id="workspace">
+      <div class="workspace-topline">
+        <div>
+          <div class="workspace-kicker">Personaliser</div>
+          <h2>Choose a prompt</h2>
+        </div>
+        <div class="workspace-count" id="prompt-count">Loading prompts...</div>
+      </div>
+
+      <section class="personaliser-layout" aria-label="Prompt personaliser">
+        <aside class="selector-shell" aria-label="Prompt selector">
+          <div class="selector-header">
+            <div class="selector-title">Prompt list</div>
+            <div class="selector-search">
+              <span aria-hidden="true">⌕</span>
+              <input type="search" id="selector-search" placeholder="Search prompts..." autocomplete="off" />
+            </div>
+          </div>
+          <div class="prompt-selector" id="prompt-selector"></div>
+        </aside>
+
+        <section class="personaliser-panel" aria-label="Edit and preview selected prompt">
+          <div class="panel-card">
+            <div class="panel-label">Fill in the blanks</div>
+            <div id="vars-container" class="vars-container">
+              <div class="empty-hint">Choose a prompt from the list to start personalising it.</div>
+            </div>
+          </div>
+
+          <div class="panel-card preview-card">
+            <div class="panel-label">Live preview</div>
+            <div class="current-prompt-label">Currently editing: <span id="current-prompt-title">None selected</span></div>
+            <div class="preview-text" id="preview-text"><span style="color:var(--text-dim)">Your prompt will appear here as you type.</span></div>
+            <div class="panel-actions">
+              <button class="copy-final-btn" id="copy-final-btn" type="button" onclick="copyFinal()">Copy prompt</button>
+              <button class="secondary-action" type="button" onclick="resetCurrentPrompt()">Clear blanks</button>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <footer data-shared-footer></footer>
+    </div>
+  </main>
+</div>
 <!-- Feedback -->
 <div class="page" id="page-feedback">
-  <div class="wrapper">
-    <header>
-      <div class="header-tag">From the MA&amp;A Team</div>
-      <h1>Help make<br>this <span>better.</span></h1>
-      <p class="subtitle">What's working? What's missing? Your feedback shapes the next version.</p>
-    </header>
-    <div class="feedback-wrap">
-      <div id="feedback-form">
-        <div class="feedback-field">
-          <div class="feedback-label">Which prompts have you found most useful?</div>
-          <textarea class="feedback-textarea" id="fb-useful" rows="3" placeholder="e.g. the So what? one, the meeting prep..."></textarea>
-        </div>
-        <div class="feedback-field">
-          <div class="feedback-label">What's missing or not working for you?</div>
-          <textarea class="feedback-textarea" id="fb-missing" rows="3" placeholder="Anything that doesn't fit your workflow..."></textarea>
-        </div>
-        <div class="feedback-field">
-          <div class="feedback-label">Got a prompt to add? Share it.</div>
-          <textarea class="feedback-textarea" id="fb-prompt" rows="3" placeholder="Share a prompt that works well for you — we'll test it and add the best ones..."></textarea>
-        </div>
-        <div class="feedback-field">
-          <div class="feedback-label">Your name <span style="font-weight:400; color:var(--text-dim)">(optional)</span></div>
-          <input class="feedback-input" id="fb-name" type="text" placeholder="Leave blank to stay anonymous">
-        </div>
-        <div class="feedback-actions">
-          <button class="feedback-submit" onclick="submitFeedback()">Submit feedback</button>
-          <span class="feedback-direct">or reach out directly:</span>
-          <a href="mailto:victor.egunlae@sage.com" class="feedback-email-link">Email →</a>
-        </div>
-      </div>
-      <div id="feedback-success" style="display:none;">
-        <div class="success-state">
-          <div class="success-icon">🙌</div>
-          <div class="success-title">Thank you</div>
-          <div class="success-sub">That genuinely helps. If you want to follow up directly, drop a line at<br><a href="mailto:victor.egunlae@sage.com" style="color:var(--accent); text-decoration:none; font-weight:600;">victor.egunlae@sage.com</a></div>
-          <button class="reset-btn" onclick="resetFeedback()">Leave another response</button>
-        </div>
-      </div>
-    </div>
-    <footer>From the MA&amp;A Team — Sage</footer>
-  </div>
-</div>
+  <main class="feedback-page-shell">
+    <div class="feedback-layout">
+      <section class="feedback-hero" aria-labelledby="feedback-title">
+        <div class="hero-tag"><span class="hero-dot"></span>From the MA&amp;A Team</div>
+        <h1 class="hero-title" id="feedback-title">
+          Share your<br>
+          <span class="rotator">
+            <span class="rotator-word active">feedback.</span>
+            <span class="rotator-word">ideas.</span>
+            <span class="rotator-word">prompts.</span>
+          </span>
+        </h1>
+        <p class="hero-sub">Good, bad, or anything you'd like to see. Your feedback helps shape v2.</p>
+      </section>
 
-<!-- Surprise Me Modal -->
-<div class="surprise-overlay" id="surprise-overlay" onclick="handleOverlayClick(event)">
-  <div class="surprise-card" id="surprise-card">
-    <div class="surprise-header">
+      <div class="feedback-form-col">
+        <div class="form-card" id="feedback-form-card">
+          <form class="form-grid" id="feedback-form" onsubmit="submitFeedback(event)">
+          <div class="feedback-field">
+            <label class="feedback-label" for="fb-type">What's this about?</label>
+            <select class="feedback-select" id="fb-type" onchange="updateForm()">
+              <option value="suggestion">Suggest an improvement</option>
+              <option value="prompt">Share a prompt</option>
+              <option value="issue">Report an issue</option>
+              <option value="general">General feedback</option>
+            </select>
+          </div>
+
+          <div class="idea-pills" id="idea-pills">
+            <button type="button" class="idea-pill" onclick="togglePill(this)">New feature</button>
+            <button type="button" class="idea-pill" onclick="togglePill(this)">New page</button>
+            <button type="button" class="idea-pill" onclick="togglePill(this)">Layout</button>
+            <button type="button" class="idea-pill" onclick="togglePill(this)">Button</button>
+            <button type="button" class="idea-pill" onclick="togglePill(this)">Filter</button>
+            <button type="button" class="idea-pill" onclick="togglePill(this)">Remove</button>
+            <button type="button" class="idea-pill" onclick="togglePill(this)">Something else</button>
+          </div>
+
+          <div class="feedback-field" id="single-field">
+            <label class="feedback-label" for="fb-message">Tell us more</label>
+            <textarea class="feedback-textarea" id="fb-message" rows="4" placeholder="No idea too big or small. What would make this more useful for you?"></textarea>
+          </div>
+
+          <div class="feedback-field" id="prompt-field-1" style="display:none;">
+            <label class="feedback-label" for="fb-prompt-text">Paste your prompt</label>
+            <textarea class="feedback-textarea" id="fb-prompt-text" rows="4" placeholder="Paste a prompt you've used or found useful."></textarea>
+          </div>
+
+          <div class="feedback-field" id="prompt-field-2" style="display:none;">
+            <label class="feedback-label" for="fb-prompt-context">What does it help with? <span>(optional)</span></label>
+            <input class="feedback-input" id="fb-prompt-context" type="text" placeholder="Add a short line on what it helped you do." />
+          </div>
+
+          <div class="feedback-field">
+            <label class="feedback-label" for="fb-name">Your name or team <span>(optional)</span></label>
+            <input class="feedback-input" id="fb-name" type="text" placeholder="Optional" autocomplete="name" />
+          </div>
+
+          <div class="error-message" id="feedback-error">Write something before sending.</div>
+
+          <div class="actions">
+            <button class="primary-action" type="submit">Send feedback</button>
+            <button class="secondary-action" type="button" onclick="copyFeedbackText(this)">Copy text</button>
+          </div>
+        </form>
+
+        <div class="email-line">
+          Clicking send opens a pre-filled email in your mail app. Use Copy text if it doesn't open.
+        </div>
+      </div>
+
+      <div class="success-card" id="feedback-success" aria-live="polite">
+        <div class="success-icon">✓</div>
+        <div class="success-title">Sent, thank you</div>
+        <p class="success-copy">Your email app should have the message ready to go. Hit send on that and we'll take it from there.</p>
+        <button class="secondary-action" type="button" onclick="resetFeedback()">Send another</button>
+      </div>
+      </div>
+    </div>
+
+    <footer data-shared-footer></footer>
+  </main>
+</div>
+  <!-- Shared Surprise Me Modal -->
+  <div class="surprise-overlay" id="surprise-overlay" onclick="handleOverlayClick(event)" aria-hidden="true">
+    <div class="surprise-card" id="surprise-card" role="dialog" aria-modal="true" aria-labelledby="surprise-title">
+      <div class="surprise-topline">
+        <div class="surprise-meta">
+          <div class="surprise-category" id="surprise-category"></div>
+          <div class="surprise-goodfor" id="surprise-goodfor"></div>
+        </div>
+        <button class="surprise-close" onclick="closeSurprise()" title="Close" aria-label="Close surprise prompt">✕</button>
+      </div>
       <div class="surprise-title" id="surprise-title"></div>
-      <button class="surprise-close" onclick="closeSurprise()" title="Close">✕</button>
-    </div>
-    <div class="surprise-meta">
-      <div class="surprise-category" id="surprise-category"></div>
-      <div class="surprise-tool" id="surprise-tool"></div>
-      <div class="surprise-goodfor" id="surprise-goodfor"></div>
-    </div>
-    <div class="surprise-divider"></div>
-    <div class="surprise-prompt" id="surprise-prompt"></div>
-    <div class="surprise-actions">
-      <button class="surprise-copy-btn" id="surprise-copy-btn" onclick="copySurprisePrompt()">Copy prompt</button>
-      <button class="surprise-roll-btn" onclick="personaliseThis()">Personalise this</button>
-      <button class="surprise-roll-btn" onclick="rollAgain()">🎲 Roll again</button>
+      <div class="surprise-divider"></div>
+      <div class="surprise-prompt" id="surprise-prompt"></div>
+      <div class="surprise-actions">
+        <button class="surprise-personalise-btn" id="surprise-personalise-btn" onclick="personaliseSurprisePrompt()">Personalise</button>
+        <button class="surprise-copy-btn" id="surprise-copy-btn" onclick="copySurprisePrompt()">Copy</button>
+        <button class="surprise-roll-btn" id="surprise-roll-btn" onclick="rollAgain()">🎲 Roll again</button>
+      </div>
     </div>
   </div>
-</div>
 
 <script>
-const data = [
-  {
-    category: "Getting Started",
-    desc: "New to AI? Begin here.",
-    prompts: [
-      { title: "What can you do?", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "What can you do? Give me practical examples relevant to someone working in []." },
-      { title: "Smallest step today", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "What's the smallest thing I can do today to get started with [topic] using AI?" },
-      { title: "Break down a task into steps", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "How can I break this down into smaller steps? [paste your task here]" },
-      { title: "Help me prioritise tasks", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I have a list of tasks. Help me prioritise them by effort vs impact. [paste your list]" },
-    ]
-  },
-  {
-    category: "Data & Analysis",
-    desc: "Turn numbers into narratives.",
-    prompts: [
-      { title: "Analyse data and surface key insights", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I'm analysing this dataset for [context or goal]. Identify 3–5 key insights I should present. Focus on meaningful trends, patterns, or anomalies. For each insight, explain what's happening, why it matters, and what action it suggests. Present the insights in a clear, clean table. Then suggest a few follow-up questions or areas to explore next. [upload data]" },
-      { title: "Spot the story in data", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Here's some [campaign or report] data. What's the main story I should be telling from this? [paste data or description]" },
-      { title: "Get to the \"so what\"", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Here are my results: [paste results]. Help me get to the \"so what\" — what does this mean and what should we do next?" },
-      { title: "Build hypotheses from data", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I'm seeing [observation] in my data. Help me build 3 hypotheses for why this might be happening." },
-      { title: "Sense check analysis", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Here's my analysis and conclusion: [paste]. Can you sense check my logic and flag anything I might have missed?" },
-      { title: "Analyse churn drivers", tool: "Copilot", source: "Team submission", prompt: "You are a data analyst. Analyse the following customer data and identify the top drivers of churn. Focus on patterns related to complexity score, engagement metrics, and support interactions. Provide a summary of findings and recommend actions to reduce churn. [paste data]" },
-      { title: "Analyse A/B test results", tool: "Claude", source: "Team submission", prompt: "Analyse the results of an A/B test in Power BI using DAX. The test compares two versions of [describe test]. Calculate statistical significance, identify the winning variant, and summarise the key takeaways. [paste data or DAX code]" },
-      { title: "Build a data dashboard", tool: "ChatGPT", source: "Team submission", prompt: "Help me design a Power BI dashboard for [business area or team]. Suggest key metrics to include, how to structure the layout, and which visualisations would work best for the audience. The goal is to make it easy to spot trends and take action." },
-      { title: "Compare organic vs brand search", tool: "Claude", source: "Team submission", prompt: "Analyse the following search data and compare organic vs brand search performance. Identify trends, highlight areas of concern, and suggest actions to improve organic visibility. [paste data]" },
-      { title: "Reconcile email performance data", tool: "Snowflake Cortex", source: "Team submission", prompt: "I have email performance data from two sources that don't match. Help me identify discrepancies between [source A] and [source B]. Highlight rows where metrics differ significantly and suggest reasons for the gaps. [paste data]" },
-      { title: "Analyse email fatigue", tool: "Snowflake Cortex", source: "Team submission", prompt: "Using the following email engagement data, identify signs of audience fatigue. Look for declining open rates, increasing unsubscribes, and drop-off patterns over time. Recommend actions to re-engage the audience. [paste data]" },
-    ]
-  },
-  {
-    category: "Writing & Comms",
-    desc: "Clearer, faster communication.",
-    prompts: [
-      { title: "Improve written content", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Here's a draft I've written. Improve the clarity and cut anything unnecessary while keeping the meaning. [paste draft]" },
-      { title: "Summarise for leadership", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Summarise the following for a senior leadership audience. Start with a single sentence that clearly states the key insight or takeaway (\"the so what\"). Then provide 2–3 short bullet points covering the key impacts or recommended actions. Use clear, direct language and avoid unnecessary detail. [paste content]" },
-      { title: "Write a team update", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Write a short team update about [topic]. Use 3–5 bullet points, clear and direct language, and focus on key updates and actions." },
-      { title: "Translate into plain English", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Rewrite this in plain English for a non-technical stakeholder. [paste text]" },
-      { title: "Generate content angles", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "I'm creating content about [topic] for [audience]. Give me 5 different angles or hooks." },
-      { title: "Improve marketing copy", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Rewrite this copy to be more compelling and specific. Remove generic phrases. [paste copy]" },
-      { title: "Generate subject line options", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Write 5 subject line variants for a campaign about [topic]. Audience: [audience]. Goal: [goal]." },
-      { title: "Tailor message to audience", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "How would you position [message] for [specific audience]? What language would resonate?" },
-      { title: "Review and improve content", tool: "Copilot", source: "Team submission", prompt: "Review and improve the following written content. Make it clearer, more concise, and more engaging while keeping the original meaning. Highlight any changes you make and explain why. [paste content]" },
-      { title: "Generate internal social posts", tool: "Copilot", source: "Team submission", prompt: "Write 3 Viva Engage posts about [topic] for an internal audience. Keep each post under 150 words. The tone should be [professional/conversational/inspiring]. Include a call to action in each post." },
-      { title: "Rewrite email from notes", tool: "Copilot", source: "Team submission", prompt: "I have rough notes from a meeting or conversation. Turn them into a clear, professional email. Keep it concise, lead with the key message, and include a clear next step. [paste notes]" },
-    ]
-  },
-  {
-    category: "Strategy & Planning",
-    desc: "Think bigger, plan smarter.",
-    prompts: [
-      { title: "Challenge ideas with devil's advocate", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Team submission", prompt: "Play devil's advocate on the following idea or plan. Identify the biggest risks, weaknesses, and assumptions. Be specific and constructive — the goal is to stress-test the thinking, not just criticise. [describe idea or paste plan]" },
-      { title: "Research customer journey stages", tool: "ChatGPT", source: "Team submission", prompt: "Research and summarise the typical journey a [type of customer] goes through when [describe decision or process]. Identify the key stages, what they're thinking and feeling at each stage, and what information or support they need. Format this as a clear journey map." },
-    ]
-  },
-  {
-    category: "Learning & Exploration",
-    desc: "Go deeper on anything.",
-    prompts: [
-      { title: "Learn a topic quickly", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Give me a clear, structured overview of [topic]. Include key concepts, a simple example, and when it's used in practice. Keep it concise." },
-      { title: "Compare two concepts", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "What's the difference between [concept A] and [concept B]? Use a real-world example." },
-      { title: "Quiz me on a topic", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Quiz me on [topic] with 5 questions, starting easy and getting harder. After each answer, tell me if I'm right and explain why." },
-      { title: "Recommend next learning step", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I've just learned about [topic]. What should I explore next to go deeper?" },
-      { title: "Explain using a simple diagram", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Explain how [concept] works using a simple text-based (ASCII) diagram and include a short explanation alongside it. Make it easy to follow and clearly show the structure or flow." },
-      { title: "Learn a topic quickly (80/20)", tool: "ChatGPT", source: "Team submission", prompt: "I want to learn about [topic]. Use the 80/20 rule to focus on the 20% of concepts that will give me 80% of the understanding. Give me a structured overview with the most important ideas first, practical examples, and what to focus on to get up to speed quickly." },
-      { title: "Break down complex ideas", tool: "Claude", source: "Team submission", prompt: "Take the following complex concept and break it down so that someone new to the topic can understand it. Use simple language, avoid jargon, and include a real-world analogy to make it stick. [paste concept or topic]" },
-    ]
-  },
-  {
-    category: "Go Deeper",
-    desc: "Push beyond the surface.",
-    prompts: [
-      { title: "Break down a topic from first principles", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Break [topic] down using first principles thinking. Start by identifying the common assumptions people make about this topic. Then strip those assumptions away and focus only on what is fundamentally true. Rebuild the concept step by step from these core truths. Show what changes when you remove inherited thinking." },
-      { title: "Explain a topic simply (no jargon)", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Now explain [topic] as if I'm new to it. Use no jargon, no assumed knowledge, and include two different examples to make it clear. If anything is still unclear, simplify it further until it's genuinely easy to understand." },
-    ]
-  },
-  {
-    category: "Coding",
-    desc: "Write, fix and improve code.",
-    prompts: [
-      { title: "Fix a DAX formula", tool: "Claude", source: "Team submission", prompt: "I have a DAX formula that isn't working as expected. Review the code, identify the issue, and provide a corrected version with an explanation of what was wrong and why the fix works. [paste DAX code]" },
-      { title: "Generate UI code", tool: "Copilot", source: "Team submission", prompt: "Generate an Adaptive Card JSON for [describe the card's purpose and content]. It should include [list key elements e.g. title, body text, action buttons]. Make it clean and functional for use in [Teams / Outlook / Power Automate]." },
-      { title: "Fix bugs step by step", tool: "Claude", source: "Team submission", prompt: "I have a bug in my code that I can't resolve. Walk me through debugging it step by step. Ask me clarifying questions if needed, suggest what to check first, and help me identify the root cause before suggesting a fix. [paste code and describe the issue]" },
-      { title: "Improve application code", tool: "Claude", source: "Team submission", prompt: "Review the following code and suggest improvements. Focus on readability, performance, and best practices. Explain each change you recommend and why it makes the code better. [paste code]" },
-      { title: "Check SQL query", tool: "Snowflake Cortex", source: "Team submission", prompt: "Review the following SQL query and check it for errors, inefficiencies, or logic issues. Suggest improvements and explain your reasoning. If the query can be simplified or optimised, show me how. [paste SQL]" },
-      { title: "Aggregate data using code", tool: "Claude", source: "Team submission", prompt: "Write a script to aggregate data from [describe data source or structure]. The goal is to [describe output e.g. summarise by region, calculate totals by month]. Use [R / Python / SQL] and include comments explaining each step. [paste data sample if available]" },
-      { title: "Aggregate CSV data", tool: "Claude", source: "Team submission", prompt: "I have a CSV file with the following structure: [describe columns and data]. Write an R script to load the file, aggregate the data by [field], and output a summary table showing [desired metrics]. Include error handling and comments." },
-      { title: "Convert date format", tool: "Copilot", source: "Team submission", prompt: "I have a column in Excel with dates in [current format e.g. DD/MM/YYYY]. Write a formula to convert them to [target format e.g. YYYY-MM-DD]. Explain how the formula works and how to apply it to the full column." },
-      { title: "Improve data model", tool: "Claude", source: "Team submission", prompt: "Review the following data model or notebook and suggest improvements. Focus on structure, clarity, and performance. Highlight any issues with the current approach and recommend a better way to organise or write the code. [paste code or describe model]" },
-      { title: "Build a Workfront calculated field", tool: "Copilot", source: "Team submission", prompt: "Help me build a calculated field in Workfront for [describe the purpose]. The field should [describe logic or output]. Walk me through the formula syntax and how to set it up correctly in Workfront." },
-    ]
-  },
-  {
-    category: "Tools & Workflows",
-    desc: "Get more from your tools.",
-    prompts: [
-      { title: "Automate QA tasks", tool: "Copilot", source: "Team submission", prompt: "Help me automate the following quality assurance task in [tool or system]: [describe task]. Suggest a workflow or process that reduces manual effort, catches errors early, and can be repeated consistently. Include any formulas, scripts, or steps needed." },
-      { title: "Apply brand styling to app", tool: "Claude", source: "Team submission", prompt: "I have a Streamlit app and want to apply our brand colours and styling. Our primary colour is [hex code], secondary is [hex code], and font is [font name]. Update the app's CSS and layout to match these brand guidelines while keeping the functionality intact. [paste current code]" },
-    ]
-  },
-  {
-    category: "Design & Imagery",
-    desc: "Create and adapt visuals.",
-    prompts: [
-      { title: "Localise image for market", tool: "Adobe", source: "Team submission", prompt: "I need to localise the following image for the [market/region] market. Adapt any text, imagery, or cultural references to be appropriate and relevant for that audience. Highlight what changes you would make and why. [describe or attach image]" },
-      { title: "Localise video for market", tool: "Adobe", source: "Team submission", prompt: "I need to localise this video for the [market/region] market. Suggest changes to voiceover, on-screen text, visuals, and cultural references to make it suitable for the local audience. Provide a list of recommended adaptations. [describe video content]" },
-    ]
-  },
-];
+const words = ['tried', 'tested', 'refined', 'used'];
+    let wordIndex = 0;
 
-function toggleTheme() {
-  document.body.classList.toggle('light');
-  const btn = document.querySelector('.theme-toggle');
-  const label = btn.querySelector('.theme-toggle-label');
-  const icon = btn.querySelector('.theme-toggle-icon');
-  const isLight = document.body.classList.contains('light');
-  label.textContent = isLight ? 'Light mode' : 'Dark mode';
-  icon.innerHTML = isLight ? '&#9790;' : '&#9728;';
-}
+    function animateWords() {
+      const rotator = document.getElementById('rotator');
+      if (!rotator) return;
 
-function showPage(id, tab) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
-  if (tab) tab.classList.add('active');
-  else document.querySelectorAll('.nav-tab')[0].classList.add('active');
-  window.scrollTo({ top: 0 });
-}
+      wordIndex = (wordIndex + 1) % words.length;
+      rotator.classList.remove('flip');
+      void rotator.offsetWidth;
+      rotator.textContent = words[wordIndex];
+      rotator.classList.add('flip');
 
-function buildHome() {
-  const grid = document.getElementById('home-grid');
-  data.forEach((section, i) => {
-    const card = document.createElement('div');
-    card.className = 'home-card';
-    card.style.animationDelay = `${i * 0.06}s`;
-    card.innerHTML = `
-      <div class="home-card-header">
-        <div class="home-card-title">${section.category}</div>
-        <div class="home-card-count">${section.prompts.length} prompt${section.prompts.length !== 1 ? 's' : ''}</div>
-      </div>
-      <div class="home-card-desc">${section.desc}</div>`;
-    card.onclick = () => {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-      document.getElementById('page-library').classList.add('active');
-      document.querySelectorAll('.nav-tab')[1].classList.add('active');
-      window.scrollTo({ top: 0 });
-      setTimeout(() => {
-        const target = document.getElementById('section-' + i);
-        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 80);
+      const delay = words[wordIndex] === 'used' ? 2600 : 900;
+      window.setTimeout(animateWords, delay);
+    }
+
+    window.setTimeout(animateWords, 900);
+
+    function toggleTheme() {
+      document.body.classList.toggle('light');
+      const toggle = document.querySelector('.theme-toggle');
+      toggle.textContent = document.body.classList.contains('light') ? '☾' : '☀';
+    }
+
+    function startLandingSurpriseButton() {
+      const button = document.getElementById('surpriseBtn');
+      if (!button) return;
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) return;
+
+      window.setTimeout(() => {
+        button.classList.add('shimmer-once');
+      }, 1600);
+
+      window.setTimeout(() => {
+        button.classList.remove('shimmer-once');
+        button.classList.add('is-tracing');
+      }, 2850);
+    }
+
+    const surpriseData = [
+      {
+        category: "Getting Started",
+        desc: "New to AI? Begin here.",
+        prompts: [
+          { title: "What can you do?", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "What can you do? Give me practical examples relevant to someone working in []." },
+          { title: "Smallest step today", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "What's the smallest thing I can do today to get started with [topic] using AI?" },
+          { title: "Break down a task into steps", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "How can I break this down into smaller steps? [paste your task here]" },
+          { title: "Help me prioritise tasks", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I have a list of tasks. Help me prioritise them by effort vs impact. [paste your list]" },
+        ]
+      },
+      {
+        category: "Data & Analysis",
+        desc: "Turn numbers into narratives.",
+        prompts: [
+          { title: "Analyse data and surface key insights", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I'm analysing this dataset for [context or goal]. Identify 3–5 key insights I should present. Focus on meaningful trends, patterns, or anomalies. For each insight, explain what's happening, why it matters, and what action it suggests. Present the insights in a clear, clean table. Then suggest a few follow-up questions or areas to explore next. [upload data]" },
+          { title: "Spot the story in data", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Here's some [campaign or report] data. What's the main story I should be telling from this? [paste data or description]" },
+          { title: "Get to the \"so what\"", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Here are my results: [paste results]. Help me get to the \"so what\" — what does this mean and what should we do next?" },
+          { title: "Build hypotheses from data", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I'm seeing [observation] in my data. Help me build 3 hypotheses for why this might be happening." },
+          { title: "Sense check analysis", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Here's my analysis and conclusion: [paste]. Can you sense check my logic and flag anything I might have missed?" },
+          { title: "Analyse churn drivers", tool: "Copilot", source: "Team submission", prompt: "You are a data analyst. Analyse the following customer data and identify the top drivers of churn. Focus on patterns related to complexity score, engagement metrics, and support interactions. Provide a summary of findings and recommend actions to reduce churn. [paste data]" },
+          { title: "Analyse A/B test results", tool: "Claude", source: "Team submission", prompt: "Analyse the results of an A/B test in Power BI using DAX. The test compares two versions of [describe test]. Calculate statistical significance, identify the winning variant, and summarise the key takeaways. [paste data or DAX code]" },
+          { title: "Build a data dashboard", tool: "ChatGPT", source: "Team submission", prompt: "Help me design a Power BI dashboard for [business area or team]. Suggest key metrics to include, how to structure the layout, and which visualisations would work best for the audience. The goal is to make it easy to spot trends and take action." },
+          { title: "Compare organic vs brand search", tool: "Claude", source: "Team submission", prompt: "Analyse the following search data and compare organic vs brand search performance. Identify trends, highlight areas of concern, and suggest actions to improve organic visibility. [paste data]" },
+          { title: "Reconcile email performance data", tool: "Snowflake Cortex", source: "Team submission", prompt: "I have email performance data from two sources that don't match. Help me identify discrepancies between [source A] and [source B]. Highlight rows where metrics differ significantly and suggest reasons for the gaps. [paste data]" },
+          { title: "Analyse email fatigue", tool: "Snowflake Cortex", source: "Team submission", prompt: "Using the following email engagement data, identify signs of audience fatigue. Look for declining open rates, increasing unsubscribes, and drop-off patterns over time. Recommend actions to re-engage the audience. [paste data]" },
+        ]
+      },
+      {
+        category: "Writing & Comms",
+        desc: "Clearer, faster communication.",
+        prompts: [
+          { title: "Improve written content", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Here's a draft I've written. Improve the clarity and cut anything unnecessary while keeping the meaning. [paste draft]" },
+          { title: "Summarise for leadership", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Summarise the following for a senior leadership audience. Start with a single sentence that clearly states the key insight or takeaway (\"the so what\"). Then provide 2–3 short bullet points covering the key impacts or recommended actions. Use clear, direct language and avoid unnecessary detail. [paste content]" },
+          { title: "Write a team update", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Write a short team update about [topic]. Use 3–5 bullet points, clear and direct language, and focus on key updates and actions." },
+          { title: "Translate into plain English", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Rewrite this in plain English for a non-technical stakeholder. [paste text]" },
+          { title: "Generate content angles", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "I'm creating content about [topic] for [audience]. Give me 5 different angles or hooks." },
+          { title: "Improve marketing copy", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Rewrite this copy to be more compelling and specific. Remove generic phrases. [paste copy]" },
+          { title: "Generate subject line options", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "Write 5 subject line variants for a campaign about [topic]. Audience: [audience]. Goal: [goal]." },
+          { title: "Tailor message to audience", tool: "ChatGPT, Copilot, Claude", source: "Starter prompt", prompt: "How would you position [message] for [specific audience]? What language would resonate?" },
+          { title: "Review and improve content", tool: "Copilot", source: "Team submission", prompt: "Review and improve the following written content. Make it clearer, more concise, and more engaging while keeping the original meaning. Highlight any changes you make and explain why. [paste content]" },
+          { title: "Generate internal social posts", tool: "Copilot", source: "Team submission", prompt: "Write 3 Viva Engage posts about [topic] for an internal audience. Keep each post under 150 words. The tone should be [professional/conversational/inspiring]. Include a call to action in each post." },
+          { title: "Rewrite email from notes", tool: "Copilot", source: "Team submission", prompt: "I have rough notes from a meeting or conversation. Turn them into a clear, professional email. Keep it concise, lead with the key message, and include a clear next step. [paste notes]" },
+        ]
+      },
+      {
+        category: "Strategy & Planning",
+        desc: "Think bigger, plan smarter.",
+        prompts: [
+          { title: "Challenge ideas with devil's advocate", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Team submission", prompt: "Play devil's advocate on the following idea or plan. Identify the biggest risks, weaknesses, and assumptions. Be specific and constructive — the goal is to stress-test the thinking, not just criticise. [describe idea or paste plan]" },
+          { title: "Research customer journey stages", tool: "ChatGPT", source: "Team submission", prompt: "Research and summarise the typical journey a [type of customer] goes through when [describe decision or process]. Identify the key stages, what they're thinking and feeling at each stage, and what information or support they need. Format this as a clear journey map." },
+        ]
+      },
+      {
+        category: "Learning & Exploration",
+        desc: "Go deeper on anything.",
+        prompts: [
+          { title: "Learn a topic quickly", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Give me a clear, structured overview of [topic]. Include key concepts, a simple example, and when it's used in practice. Keep it concise." },
+          { title: "Compare two concepts", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "What's the difference between [concept A] and [concept B]? Use a real-world example." },
+          { title: "Quiz me on a topic", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Quiz me on [topic] with 5 questions, starting easy and getting harder. After each answer, tell me if I'm right and explain why." },
+          { title: "Recommend next learning step", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I've just learned about [topic]. What should I explore next to go deeper?" },
+          { title: "Explain using a simple diagram", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Explain how [concept] works using a simple text-based (ASCII) diagram and include a short explanation alongside it. Make it easy to follow and clearly show the structure or flow." },
+          { title: "Learn a topic quickly (80/20)", tool: "ChatGPT", source: "Team submission", prompt: "I want to learn about [topic]. Use the 80/20 rule to focus on the 20% of concepts that will give me 80% of the understanding. Give me a structured overview with the most important ideas first, practical examples, and what to focus on to get up to speed quickly." },
+          { title: "Break down complex ideas", tool: "Claude", source: "Team submission", prompt: "Take the following complex concept and break it down so that someone new to the topic can understand it. Use simple language, avoid jargon, and include a real-world analogy to make it stick. [paste concept or topic]" },
+        ]
+      },
+      {
+        category: "Go Deeper",
+        desc: "Push beyond the surface.",
+        prompts: [
+          { title: "Break down a topic from first principles", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Break [topic] down using first principles thinking. Start by identifying the common assumptions people make about this topic. Then strip those assumptions away and focus only on what is fundamentally true. Rebuild the concept step by step from these core truths. Show what changes when you remove inherited thinking." },
+          { title: "Explain a topic simply (no jargon)", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Now explain [topic] as if I'm new to it. Use no jargon, no assumed knowledge, and include two different examples to make it clear. If anything is still unclear, simplify it further until it's genuinely easy to understand." },
+        ]
+      },
+      {
+        category: "Coding",
+        desc: "Write, fix and improve code.",
+        prompts: [
+          { title: "Fix a DAX formula", tool: "Claude", source: "Team submission", prompt: "I have a DAX formula that isn't working as expected. Review the code, identify the issue, and provide a corrected version with an explanation of what was wrong and why the fix works. [paste DAX code]" },
+          { title: "Generate UI code", tool: "Copilot", source: "Team submission", prompt: "Generate an Adaptive Card JSON for [describe the card's purpose and content]. It should include [list key elements e.g. title, body text, action buttons]. Make it clean and functional for use in [Teams / Outlook / Power Automate]." },
+          { title: "Fix bugs step by step", tool: "Claude", source: "Team submission", prompt: "I have a bug in my code that I can't resolve. Walk me through debugging it step by step. Ask me clarifying questions if needed, suggest what to check first, and help me identify the root cause before suggesting a fix. [paste code and describe the issue]" },
+          { title: "Improve application code", tool: "Claude", source: "Team submission", prompt: "Review the following code and suggest improvements. Focus on readability, performance, and best practices. Explain each change you recommend and why it makes the code better. [paste code]" },
+          { title: "Check SQL query", tool: "Snowflake Cortex", source: "Team submission", prompt: "Review the following SQL query and check it for errors, inefficiencies, or logic issues. Suggest improvements and explain your reasoning. If the query can be simplified or optimised, show me how. [paste SQL]" },
+          { title: "Aggregate data using code", tool: "Claude", source: "Team submission", prompt: "Write a script to aggregate data from [describe data source or structure]. The goal is to [describe output e.g. summarise by region, calculate totals by month]. Use [R / Python / SQL] and include comments explaining each step. [paste data sample if available]" },
+          { title: "Aggregate CSV data", tool: "Claude", source: "Team submission", prompt: "I have a CSV file with the following structure: [describe columns and data]. Write an R script to load the file, aggregate the data by [field], and output a summary table showing [desired metrics]. Include error handling and comments." },
+          { title: "Convert date format", tool: "Copilot", source: "Team submission", prompt: "I have a column in Excel with dates in [current format e.g. DD/MM/YYYY]. Write a formula to convert them to [target format e.g. YYYY-MM-DD]. Explain how the formula works and how to apply it to the full column." },
+          { title: "Improve data model", tool: "Claude", source: "Team submission", prompt: "Review the following data model or notebook and suggest improvements. Focus on structure, clarity, and performance. Highlight any issues with the current approach and recommend a better way to organise or write the code. [paste code or describe model]" },
+          { title: "Build a Workfront calculated field", tool: "Copilot", source: "Team submission", prompt: "Help me build a calculated field in Workfront for [describe the purpose]. The field should [describe logic or output]. Walk me through the formula syntax and how to set it up correctly in Workfront." },
+        ]
+      },
+      {
+        category: "Tools & Workflows",
+        desc: "Get more from your tools.",
+        prompts: [
+          { title: "Automate QA tasks", tool: "Copilot", source: "Team submission", prompt: "Help me automate the following quality assurance task in [tool or system]: [describe task]. Suggest a workflow or process that reduces manual effort, catches errors early, and can be repeated consistently. Include any formulas, scripts, or steps needed." },
+          { title: "Apply brand styling to app", tool: "Claude", source: "Team submission", prompt: "I have a Streamlit app and want to apply our brand colours and styling. Our primary colour is [hex code], secondary is [hex code], and font is [font name]. Update the app's CSS and layout to match these brand guidelines while keeping the functionality intact. [paste current code]" },
+        ]
+      },
+      {
+        category: "Design & Imagery",
+        desc: "Create and adapt visuals.",
+        prompts: [
+          { title: "Localise image for market", tool: "Adobe", source: "Team submission", prompt: "I need to localise the following image for the [market/region] market. Adapt any text, imagery, or cultural references to be appropriate and relevant for that audience. Highlight what changes you would make and why. [describe or attach image]" },
+          { title: "Localise video for market", tool: "Adobe", source: "Team submission", prompt: "I need to localise this video for the [market/region] market. Suggest changes to voiceover, on-screen text, visuals, and cultural references to make it suitable for the local audience. Provide a list of recommended adaptations. [describe video content]" },
+        ]
+      },
+    ];
+
+    const goodForMap = {
+      "Getting Started": "Getting a feel for what AI can do",
+      "Data & Analysis": "Making sense of data and numbers",
+      "Writing & Comms": "Faster, clearer communication",
+      "Strategy & Planning": "Big-picture thinking and planning",
+      "Learning & Exploration": "Going deeper on any topic",
+      "Go Deeper": "First-principles and advanced thinking",
+      "Coding": "Writing, fixing, or reviewing code",
+      "Tools & Workflows": "Getting more from your tools",
+      "Design & Imagery": "Creating and adapting visual content"
     };
-    grid.appendChild(card);
-  });
-}
 
-function renderLibrary(filter = '') {
-  const container = document.getElementById('library');
-  const noResults = document.getElementById('no-results');
-  container.innerHTML = '';
-  let total = 0;
+    let lastSurpriseIndex = -1;
+    let currentSurprisePrompt = null;
+    let surpriseTimers = [];
+    let surpriseRolling = false;
 
-  data.forEach((section, si) => {
-    const filtered = filter
-      ? section.prompts.filter(p =>
-          p.title.toLowerCase().includes(filter) ||
-          p.prompt.toLowerCase().includes(filter) ||
-          section.category.toLowerCase().includes(filter) ||
-          (p.tool && p.tool.toLowerCase().includes(filter)))
-      : section.prompts;
+    function getAllPrompts() {
+      const all = [];
+      surpriseData.forEach((section) => {
+        section.prompts.forEach((prompt) => all.push({ ...prompt, category: section.category }));
+      });
+      return all;
+    }
 
-    if (!filtered.length) return;
-    total += filtered.length;
+    function resetSurpriseButtons() {
+      const copyBtn = document.getElementById('surprise-copy-btn');
+      const rollBtn = document.getElementById('surprise-roll-btn');
+      const personaliseBtn = document.getElementById('surprise-personalise-btn');
+      if (copyBtn) {
+        copyBtn.textContent = 'Copy';
+        copyBtn.classList.remove('copied');
+      }
+      if (rollBtn) rollBtn.textContent = '🎲 Roll again';
+      if (personaliseBtn) personaliseBtn.textContent = 'Personalise';
+    }
 
-    const cat = document.createElement('div');
-    cat.className = 'category';
-    cat.id = 'section-' + si;
-    cat.style.animationDelay = `${si * 0.04}s`;
-    cat.innerHTML = `
-      <div class="category-header">
-        <span class="category-label">${section.category}</span>
-        <div class="category-line"></div>
-        <span class="category-count">${filtered.length}</span>
-      </div>
-      <div class="cards-grid" id="grid-${si}"></div>`;
-    container.appendChild(cat);
+    function pickSurprisePrompt(all) {
+      let idx;
+      do {
+        idx = Math.floor(Math.random() * all.length);
+      } while (idx === lastSurpriseIndex && all.length > 1);
 
-    const grid = cat.querySelector(`#grid-${si}`);
-    filtered.forEach(p => {
-      const sourceClass = p.source === 'Team submission' ? 'source-team' : 'source-starter';
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <div class="card-body">
-          <div class="card-title">${p.title}<span class="source-badge ${sourceClass}">${p.source}</span></div>
-          <div class="card-meta">${p.tool ? p.tool.split(', ').join(' · ') : ''}</div>
-          <div class="card-prompt">${formatBracketVars(p.prompt)}</div>
+      lastSurpriseIndex = idx;
+      return all[idx];
+    }
+
+    function surpriseMe() {
+      const overlay = document.getElementById('surprise-overlay');
+      if (!overlay) return;
+      overlay.classList.add('active');
+      overlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      rollSurpriseSequence();
+    }
+
+    function rollSurpriseSequence() {
+      if (surpriseRolling) return;
+
+      const all = getAllPrompts();
+      if (!all.length) return;
+
+      const card = document.getElementById('surprise-card');
+      const rollBtn = document.getElementById('surprise-roll-btn');
+      const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+      const steps = reduce ? 1 : 7;
+
+      surpriseTimers.forEach(clearTimeout);
+      surpriseTimers = [];
+      surpriseRolling = true;
+      resetSurpriseButtons();
+      if (card) card.classList.add('rolling');
+      if (rollBtn) rollBtn.textContent = 'Rolling...';
+
+      for (let i = 0; i < steps; i++) {
+        surpriseTimers.push(setTimeout(() => {
+          renderSurpriseCard(pickSurprisePrompt(all));
+
+          if (i === steps - 1) {
+            surpriseRolling = false;
+            if (card) card.classList.remove('rolling');
+            resetSurpriseButtons();
+          }
+        }, reduce ? 0 : 70 * i * (1 + i * 0.18)));
+      }
+    }
+
+    function rollAgain() {
+      rollSurpriseSequence();
+    }
+
+    function escSurpriseHtml(value) {
+      return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function formatSurprisePrompt(prompt) {
+      return escSurpriseHtml(prompt).replace(/\[([^\]]*)\]/g, (match) => {
+        return '<span class="prompt-var-bracketed">' + match + '</span>';
+      });
+    }
+
+    function renderSurpriseCard(prompt) {
+      currentSurprisePrompt = prompt;
+      document.getElementById('surprise-title').textContent = prompt.title;
+      document.getElementById('surprise-category').textContent = prompt.category;
+      document.getElementById('surprise-goodfor').textContent = 'Good for: ' + (goodForMap[prompt.category] || prompt.category);
+      document.getElementById('surprise-prompt').innerHTML = formatSurprisePrompt(prompt.prompt);
+    }
+
+    function closeSurprise() {
+      surpriseTimers.forEach(clearTimeout);
+      surpriseTimers = [];
+      surpriseRolling = false;
+      const card = document.getElementById('surprise-card');
+      const overlay = document.getElementById('surprise-overlay');
+      if (card) card.classList.remove('rolling');
+      resetSurpriseButtons();
+      if (overlay) {
+        overlay.classList.remove('active');
+        overlay.setAttribute('aria-hidden', 'true');
+      }
+      document.body.style.overflow = '';
+    }
+
+    function handleOverlayClick(event) {
+      if (event.target === document.getElementById('surprise-overlay')) closeSurprise();
+    }
+
+    function personaliseSurprisePrompt() {
+      if (!currentSurprisePrompt) return;
+      closeSurprise();
+      openDedicatedPersonaliser(currentSurprisePrompt);
+    }
+
+    function copySurprisePrompt() {
+      const btn = document.getElementById('surprise-copy-btn');
+      if (!currentSurprisePrompt || !btn) return;
+      navigator.clipboard.writeText(currentSurprisePrompt.prompt).then(() => {
+        btn.textContent = '✓ Copied';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 1800);
+      });
+    }
+
+
+
+    const libraryState = {
+      search: '',
+      activeCategory: -1,
+      modalPrompt: null,
+      persPrompt: null,
+      varValues: {},
+      copyLabels: {},
+      finalCopyLabel: 'Copy prompt'
+    };
+
+    const pillIcons = {
+      'All': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6 6.1 18.2l1.9-5.8L3 8.8h6.1z"/></svg>',
+      'Getting Started': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>',
+      'Data & Analysis': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>',
+      'Writing & Comms': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+      'Strategy & Planning': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+      'Learning & Exploration': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 1 4 12.7V17H8v-2.3A7 7 0 0 1 12 2z"/></svg>',
+      'Go Deeper': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>',
+      'Coding': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>',
+      'Tools & Workflows': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
+      'Design & Imagery': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></svg>'
+    };
+
+    function copyText(text) {
+      if (navigator.clipboard?.writeText) return navigator.clipboard.writeText(text);
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      const ok = document.execCommand('copy');
+      textarea.remove();
+      return ok ? Promise.resolve() : Promise.reject(new Error('Copy failed'));
+    }
+
+    function getLibraryPrompts() {
+      const search = libraryState.search.toLowerCase().trim();
+      const all = [];
+      surpriseData.forEach((section, sectionIndex) => {
+        if (libraryState.activeCategory !== -1 && sectionIndex !== libraryState.activeCategory) return;
+        section.prompts.forEach((prompt, promptIndex) => {
+          all.push({ ...prompt, category: section.category, sectionIndex, promptIndex, key: sectionIndex + '-' + promptIndex });
+        });
+      });
+      if (!search) return all;
+      return all.filter((p) =>
+        p.title.toLowerCase().includes(search) ||
+        p.prompt.toLowerCase().includes(search) ||
+        p.category.toLowerCase().includes(search) ||
+        String(p.tool || '').toLowerCase().includes(search)
+      );
+    }
+
+    function findPromptByKey(key) {
+      const [sectionIndex, promptIndex] = String(key).split('-').map(Number);
+      const section = surpriseData[sectionIndex];
+      const prompt = section?.prompts?.[promptIndex];
+      return prompt ? { ...prompt, category: section.category, sectionIndex, promptIndex, key } : null;
+    }
+
+    function escLibraryHtml(value) {
+      return String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function highlightLibraryVars(text) {
+      return escLibraryHtml(text).replace(/\[([^\]]*)\]/g, (match) => '<span class="lib-var">' + match + '</span>');
+    }
+
+    function extractLibraryVars(prompt) {
+      const vars = [];
+      const seen = new Set();
+      String(prompt || '').replace(/\[([^\]]*)\]/g, (match, key) => {
+        if (!seen.has(key)) {
+          seen.add(key);
+          vars.push(key);
+        }
+        return match;
+      });
+      return vars;
+    }
+
+    function renderLibraryPills() {
+      const holder = document.getElementById('lib-pills');
+      if (!holder) return;
+      const categories = ['All', ...surpriseData.map((section) => section.category)];
+      holder.innerHTML = categories.map((category, i) => {
+        const idx = i - 1;
+        const active = libraryState.activeCategory === idx;
+        return '<button class="lib-pill' + (active ? ' active' : '') + '" data-category-index="' + idx + '">' + (pillIcons[category] || '') + '<span>' + escLibraryHtml(category) + '</span></button>';
+      }).join('');
+    }
+
+    function renderLibraryCards() {
+      const grid = document.getElementById('lib-grid');
+      const noResults = document.getElementById('lib-no-results');
+      if (!grid || !noResults) return;
+      const cards = getLibraryPrompts();
+      noResults.hidden = cards.length !== 0;
+      grid.innerHTML = cards.map((p) => {
+        const copyLabel = libraryState.copyLabels[p.key] ? '✓ Copied' : 'Copy';
+        return `
+          <article class="lib-card" data-prompt-key="${p.key}">
+            <div>
+              <div class="lib-card-category">${escLibraryHtml(p.category)}</div>
+              <div class="lib-card-title">${escLibraryHtml(p.title)}</div>
+              <div class="lib-card-prompt">${highlightLibraryVars(p.prompt)}</div>
+            </div>
+            <div class="lib-card-actions">
+              <button class="trace-btn" data-action="personalise" data-prompt-key="${p.key}">
+                <svg class="trace-svg" viewBox="0 0 260 38" preserveAspectRatio="none"><rect class="trace-rect" x="1.5" y="1.5" width="257" height="35" rx="18" pathLength="1" fill="none" stroke="#00D639" stroke-width="2.2" vector-effect="non-scaling-stroke" opacity="0" stroke-linecap="round" stroke-dasharray="0.22 0.78" stroke-dashoffset="1"></rect></svg>
+                <span>Personalise</span>
+              </button>
+              <button class="lib-card-btn" data-action="copy" data-prompt-key="${p.key}">${copyLabel}</button>
+            </div>
+            <svg class="expand-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"></path><path d="M21 3l-7 7"></path><path d="M8 21H3v-5"></path><path d="M3 21l7-7"></path></svg>
+          </article>`;
+      }).join('');
+    }
+
+    function renderLibrary() {
+      renderLibraryPills();
+      renderLibraryCards();
+    }
+
+    function openLibraryModal(prompt) {
+      libraryState.modalPrompt = prompt;
+      document.getElementById('lib-modal-category').textContent = prompt.category;
+      document.getElementById('lib-modal-title').textContent = prompt.title;
+      document.getElementById('lib-modal-prompt').innerHTML = highlightLibraryVars(prompt.prompt);
+      document.getElementById('lib-modal-copy').textContent = 'Copy';
+      document.getElementById('lib-modal-overlay').hidden = false;
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLibraryModal() {
+      libraryState.modalPrompt = null;
+      const overlay = document.getElementById('lib-modal-overlay');
+      if (overlay) overlay.hidden = true;
+      if (!document.getElementById('lib-personaliser-overlay') || document.getElementById('lib-personaliser-overlay').hidden) document.body.style.overflow = '';
+    }
+
+    function renderPersonaliserPreview() {
+      const prompt = libraryState.persPrompt;
+      const preview = document.getElementById('lib-live-preview');
+      if (!prompt || !preview) return;
+      preview.innerHTML = escLibraryHtml(prompt.prompt).replace(/\[([^\]]*)\]/g, (match, key) => {
+        const value = libraryState.varValues[key];
+        if (value && value.trim()) return '<span class="lib-var">' + escLibraryHtml(value.trim()) + '</span>';
+        return '<span class="lib-var">' + escLibraryHtml(match) + '</span>';
+      });
+    }
+
+    function openLibraryPersonaliser(prompt) {
+      libraryState.persPrompt = prompt;
+      libraryState.varValues = {};
+      libraryState.finalCopyLabel = 'Copy prompt';
+      const vars = extractLibraryVars(prompt.prompt);
+      vars.forEach((v) => { libraryState.varValues[v] = ''; });
+      document.getElementById('lib-personaliser-title').textContent = prompt.title;
+      document.getElementById('lib-copy-final').textContent = 'Copy prompt';
+      document.getElementById('lib-variable-inputs').innerHTML = vars.length ? vars.map((v) => `
+        <div class="lib-input-block">
+          <label>Fill in: <span>[${escLibraryHtml(v)}]</span></label>
+          <input type="text" placeholder="${escLibraryHtml(v)}" data-var-name="${escLibraryHtml(v)}">
         </div>
-        <button class="copy-btn" onclick="copyPrompt(this, \`${p.prompt.replace(/`/g,'\\`')}\`)">Copy</button>`;
-      grid.appendChild(card);
+      `).join('') : '<div class="lib-input-block"><label>No bracketed fields found. You can still copy the prompt below.</label></div>';
+      renderPersonaliserPreview();
+      closeLibraryModal();
+      document.getElementById('lib-personaliser-overlay').hidden = false;
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLibraryPersonaliser() {
+      libraryState.persPrompt = null;
+      libraryState.varValues = {};
+      const overlay = document.getElementById('lib-personaliser-overlay');
+      if (overlay) overlay.hidden = true;
+      document.body.style.overflow = '';
+    }
+
+    function finalPersonalisedPrompt() {
+      const prompt = libraryState.persPrompt;
+      if (!prompt) return '';
+      return prompt.prompt.replace(/\[([^\]]*)\]/g, (match, key) => {
+        const value = libraryState.varValues[key];
+        return value && value.trim() ? value.trim() : match;
+      });
+    }
+
+    function startLibrarySurpriseAnimation() {
+      const btn = document.getElementById('libSurpriseBtn');
+      if (!btn || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const sequence = [
+        { className: 'is-shimmering', duration: 1200 },
+        { className: 'is-pulsing', duration: 1050 },
+        { className: 'is-bouncing', duration: 1000 },
+        { className: 'is-wiggling', duration: 1000 }
+      ];
+      const allClasses = sequence.map((s) => s.className);
+      let idx = 0;
+      const run = () => {
+        allClasses.forEach((c) => btn.classList.remove(c));
+        void btn.offsetWidth;
+        btn.classList.add(sequence[idx].className);
+        window.setTimeout(() => {
+          btn.classList.remove(sequence[idx].className);
+          idx = (idx + 1) % sequence.length;
+          window.setTimeout(run, idx === 0 ? 5000 : 850);
+        }, sequence[idx].duration);
+      };
+      window.setTimeout(run, 5000);
+    }
+
+    function initLibraryInteractions() {
+      renderLibrary();
+      startLibrarySurpriseAnimation();
+
+      const search = document.getElementById('lib-search');
+      if (search) search.addEventListener('input', (event) => {
+        libraryState.search = event.target.value;
+        renderLibraryCards();
+      });
+
+      document.getElementById('lib-pills')?.addEventListener('click', (event) => {
+        const pill = event.target.closest('.lib-pill');
+        if (!pill) return;
+        libraryState.activeCategory = Number(pill.dataset.categoryIndex);
+        renderLibrary();
+      });
+
+      document.getElementById('lib-grid')?.addEventListener('click', (event) => {
+        const actionButton = event.target.closest('[data-action]');
+        if (actionButton) {
+          event.preventDefault();
+          event.stopPropagation();
+          const prompt = findPromptByKey(actionButton.dataset.promptKey);
+          if (!prompt) return;
+          if (actionButton.dataset.action === 'copy') {
+            copyText(prompt.prompt).then(() => {
+              libraryState.copyLabels[prompt.key] = true;
+              renderLibraryCards();
+              setTimeout(() => {
+                delete libraryState.copyLabels[prompt.key];
+                renderLibraryCards();
+              }, 1800);
+            });
+          }
+          if (actionButton.dataset.action === 'personalise') openDedicatedPersonaliser(prompt);
+          return;
+        }
+        const card = event.target.closest('.lib-card');
+        if (card) {
+          const prompt = findPromptByKey(card.dataset.promptKey);
+          if (prompt) openLibraryModal(prompt);
+        }
+      });
+
+      document.getElementById('lib-modal-close')?.addEventListener('click', closeLibraryModal);
+      document.getElementById('lib-modal-overlay')?.addEventListener('click', (event) => {
+        if (event.target.id === 'lib-modal-overlay') closeLibraryModal();
+      });
+      document.getElementById('lib-modal-copy')?.addEventListener('click', () => {
+        if (!libraryState.modalPrompt) return;
+        copyText(libraryState.modalPrompt.prompt).then(() => {
+          const btn = document.getElementById('lib-modal-copy');
+          btn.textContent = '✓ Copied';
+          setTimeout(() => { btn.textContent = 'Copy'; }, 1800);
+        });
+      });
+      document.getElementById('lib-modal-personalise')?.addEventListener('click', () => {
+        if (libraryState.modalPrompt) openDedicatedPersonaliser(libraryState.modalPrompt);
+      });
+
+      document.getElementById('lib-personaliser-close')?.addEventListener('click', closeLibraryPersonaliser);
+      document.getElementById('lib-personaliser-overlay')?.addEventListener('click', (event) => {
+        if (event.target.id === 'lib-personaliser-overlay') closeLibraryPersonaliser();
+      });
+      document.getElementById('lib-variable-inputs')?.addEventListener('input', (event) => {
+        const input = event.target.closest('[data-var-name]');
+        if (!input) return;
+        libraryState.varValues[input.dataset.varName] = input.value;
+        renderPersonaliserPreview();
+      });
+      document.getElementById('lib-copy-final')?.addEventListener('click', () => {
+        copyText(finalPersonalisedPrompt()).then(() => {
+          const btn = document.getElementById('lib-copy-final');
+          btn.textContent = '✓ Copied!';
+          setTimeout(() => { btn.textContent = 'Copy prompt'; }, 1800);
+        });
+      });
+    }
+
+    document.addEventListener('keydown', (event) => {
+      const overlay = document.getElementById('surprise-overlay');
+      if (event.key === 'Escape' && overlay?.classList.contains('active')) closeSurprise();
     });
-  });
 
-  noResults.style.display = total === 0 ? 'block' : 'none';
-}
+    window.addEventListener('DOMContentLoaded', () => {
+      startLandingSurpriseButton();
+      initLibraryInteractions();
+    });
 
-function filterCards() {
-  renderLibrary(document.getElementById('search').value.toLowerCase().trim());
-}
+    const data = surpriseData;
+    const sharedFooterText = 'From the MA&A Team - Sage';
 
-function setLibraryView(view, save = true) {
-  const selectedView = view === 'list' ? 'list' : 'grid';
-  const library = document.getElementById('library');
-  library.classList.remove('view-grid', 'view-list');
-  library.classList.add('view-' + selectedView);
-
-  ['grid', 'list'].forEach(option => {
-    const button = document.getElementById(option + '-view-btn');
-    const active = option === selectedView;
-    button.classList.toggle('active', active);
-    button.setAttribute('aria-pressed', String(active));
-  });
-
-  if (save) {
-    try { localStorage.setItem('libraryView', selectedView); } catch (e) {}
-  }
-}
-
-function restoreLibraryView() {
-  let savedView = null;
-  try { savedView = localStorage.getItem('libraryView'); } catch (e) {}
-  setLibraryView(savedView === 'list' ? 'list' : 'grid', false);
-}
-
-function formatBracketVars(prompt) {
-  return escHtml(prompt).replace(/\[([^\]]*)\]/g, match => {
-    return `<span class="prompt-var-bracketed">${match}</span>`;
-  });
-}
-
-function copyPrompt(btn, text) {
-  navigator.clipboard.writeText(text).then(() => {
-    btn.textContent = '✓ Copied';
-    btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
+function renderSharedFooters() {
+  document.querySelectorAll('[data-shared-footer]').forEach((footer) => {
+    footer.textContent = sharedFooterText;
   });
 }
 
 let activePrompt = null;
+let activePromptKey = null;
 let varValues = {};
+let personaliserInitialised = false;
+
+function getAllPersonaliserPrompts() {
+  const all = [];
+  data.forEach((section, sectionIndex) => {
+    section.prompts.forEach((prompt, promptIndex) => {
+      all.push({
+        ...prompt,
+        category: section.category,
+        categoryDesc: section.desc,
+        key: sectionIndex + '-' + promptIndex
+      });
+    });
+  });
+  return all;
+}
+
+function escHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
 
 function extractVars(prompt) {
   const matches = [...prompt.matchAll(/\[([^\]]*)\]/g)];
   const seen = new Set();
-  return matches.filter(m => {
-    if (seen.has(m[1])) return false;
-    seen.add(m[1]);
-    return true;
-  }).map(m => m[1]);
+  return matches
+    .filter(match => {
+      if (seen.has(match[1])) return false;
+      seen.add(match[1]);
+      return true;
+    })
+    .map(match => match[1]);
 }
 
-function buildSelector() {
+function renderPromptWithVars(prompt) {
+  let html = '';
+  let lastIndex = 0;
+  const regex = /\[([^\]]*)\]/g;
+  let match;
+
+  while ((match = regex.exec(prompt)) !== null) {
+    html += escHtml(prompt.slice(lastIndex, match.index));
+    const key = match[1];
+    const value = varValues[key];
+    if (value && value.trim()) {
+      html += `<span class="filled">${escHtml(value.trim())}</span>`;
+    } else {
+      html += `<span class="unfilled">[${escHtml(key || 'your text')}]</span>`;
+    }
+    lastIndex = regex.lastIndex;
+  }
+
+  html += escHtml(prompt.slice(lastIndex));
+  return html;
+}
+
+function buildSelector(filter = '') {
   const container = document.getElementById('prompt-selector');
-  data.forEach(section => {
-    const label = document.createElement('div');
-    label.className = 'selector-group-label';
-    label.textContent = section.category;
-    container.appendChild(label);
-    section.prompts.forEach(p => {
-      const item = document.createElement('div');
+  if (!container) return;
+
+  const normalisedFilter = filter.toLowerCase().trim();
+  container.innerHTML = '';
+  let visibleCount = 0;
+
+  data.forEach((section, sectionIndex) => {
+    const matches = section.prompts
+      .map((prompt, promptIndex) => ({
+        ...prompt,
+        category: section.category,
+        key: sectionIndex + '-' + promptIndex
+      }))
+      .filter(prompt => {
+        if (!normalisedFilter) return true;
+        return [prompt.title, prompt.prompt, prompt.tool, prompt.source, prompt.category]
+          .some(value => String(value || '').toLowerCase().includes(normalisedFilter));
+      });
+
+    if (!matches.length) return;
+
+    const group = document.createElement('div');
+    group.className = 'selector-group-label';
+    group.textContent = section.category;
+    container.appendChild(group);
+
+    matches.forEach(prompt => {
+      visibleCount++;
+      const item = document.createElement('button');
+      item.type = 'button';
       item.className = 'selector-item';
-      item.textContent = p.title;
-      item.onclick = () => selectPrompt(p, item);
+      item.dataset.key = prompt.key;
+      item.innerHTML = `<span class="selector-item-title">${escHtml(prompt.title)}</span>`;
+      if (prompt.key === activePromptKey) item.classList.add('active');
+      item.addEventListener('click', () => selectPrompt(prompt));
       container.appendChild(item);
     });
   });
+
+  if (!visibleCount) {
+    container.innerHTML = '<div class="selector-empty">No prompts match your search.</div>';
+  }
 }
 
-function selectPrompt(p, el) {
-  document.querySelectorAll('.selector-item').forEach(i => i.classList.remove('active'));
-  el.classList.add('active');
-  activePrompt = p;
+function getPromptKey(prompt) {
+  if (prompt?.key) return prompt.key;
+  for (let sectionIndex = 0; sectionIndex < data.length; sectionIndex += 1) {
+    const promptIndex = data[sectionIndex].prompts.findIndex((p) =>
+      p.title === prompt?.title && p.prompt === prompt?.prompt
+    );
+    if (promptIndex !== -1) return sectionIndex + '-' + promptIndex;
+  }
+  return '';
+}
+
+function initialisePersonaliser() {
+  if (personaliserInitialised) return;
+  const prompts = getAllPersonaliserPrompts();
+  const count = document.getElementById('prompt-count');
+  if (count) count.textContent = prompts.length + ' prompts available';
+
+  buildSelector('');
+
+  const search = document.getElementById('selector-search');
+  if (search) search.addEventListener('input', event => buildSelector(event.target.value));
+
+  if (prompts.length) selectPrompt(prompts[0]);
+  personaliserInitialised = true;
+}
+
+function openDedicatedPersonaliser(prompt) {
+  initialisePersonaliser();
+  showPage('personaliser');
+  if (!prompt) return;
+
+  const key = getPromptKey(prompt);
+  const [sectionIndex, promptIndex] = key.split('-').map(Number);
+  const matchedPrompt = data[sectionIndex]?.prompts?.[promptIndex]
+    ? { ...data[sectionIndex].prompts[promptIndex], category: data[sectionIndex].category, key }
+    : prompt;
+
+  selectPrompt(matchedPrompt);
+  const item = key ? document.querySelector(`.selector-item[data-key="${key}"]`) : null;
+  if (item) item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function selectPrompt(prompt) {
+  activePrompt = prompt;
+  activePromptKey = prompt.key || getPromptKey(prompt);
   varValues = {};
-  renderVars(p);
+
+  document.querySelectorAll('.selector-item').forEach(item => {
+    item.classList.toggle('active', item.dataset.key === activePromptKey);
+  });
+
+  const title = document.getElementById('current-prompt-title');
+  if (title) title.textContent = prompt.title;
+
+  renderVars(prompt);
   updatePreview();
 }
 
-function renderVars(p) {
+function renderVars(prompt) {
   const container = document.getElementById('vars-container');
-  const vars = extractVars(p.prompt);
+  if (!container) return;
+  const vars = extractVars(prompt.prompt);
+
   if (!vars.length) {
-    container.innerHTML = `<div class="empty-hint">No blanks to fill — copy this one straight from the Library.</div>`;
-    updatePreview();
+    container.innerHTML = '<div class="empty-hint">No blanks to fill. You can copy this prompt as it is.</div>';
     return;
   }
+
   container.innerHTML = '';
-  vars.forEach(v => {
-    varValues[v] = '';
-    const row = document.createElement('div');
+  vars.forEach((variable, index) => {
+    varValues[variable] = '';
+    const row = document.createElement('label');
     row.className = 'var-row';
-    const safeKey = v.replace(/'/g,"\\'");
     row.innerHTML = `
-      <div class="var-label">Fill in: <span>[${v || 'your text'}]</span></div>
-      <input class="var-input" type="text" placeholder="${v || 'type here'}..." oninput="varValues['${safeKey}'] = this.value; updatePreview()">`;
+      <span class="var-label">Fill in: <span>[${escHtml(variable || 'your text')}]</span></span>
+      <input class="var-input" type="text" placeholder="Type here..." autocomplete="off" />
+    `;
+    const input = row.querySelector('input');
+    input.addEventListener('input', event => {
+      varValues[variable] = event.target.value;
+      updatePreview();
+    });
     container.appendChild(row);
+    if (index === 0) window.setTimeout(() => input.focus(), 50);
   });
 }
 
 function updatePreview() {
   const preview = document.getElementById('preview-text');
-  if (!activePrompt) return;
-  const html = activePrompt.prompt.replace(/\[([^\]]*)\]/g, (match, key) => {
-    const val = varValues[key];
-    if (val && val.trim()) return `<span class="filled">${escHtml(val.trim())}</span>`;
-    return `<span class="unfilled">[${escHtml(key || 'your text')}]</span>`;
-  });
-  preview.innerHTML = html;
-}
-
-function escHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  if (!preview) return;
+  if (!activePrompt) {
+    preview.innerHTML = '<span style="color:var(--text-dim)">Your prompt will appear here as you type.</span>';
+    return;
+  }
+  preview.innerHTML = renderPromptWithVars(activePrompt.prompt);
 }
 
 function copyFinal() {
   if (!activePrompt) return;
   const text = activePrompt.prompt.replace(/\[([^\]]*)\]/g, (match, key) => {
-    const val = varValues[key];
-    return (val && val.trim()) ? val.trim() : match;
+    const value = varValues[key];
+    return value && value.trim() ? value.trim() : match;
   });
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById('copy-final-btn');
-    btn.textContent = '✓ Copied!';
-    btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = 'Copy prompt'; btn.classList.remove('copied'); }, 1800);
+
+  copyText(text).then(() => {
+    const button = document.getElementById('copy-final-btn');
+    button.textContent = '✓ Copied';
+    button.classList.add('copied');
+    window.setTimeout(() => {
+      button.textContent = 'Copy prompt';
+      button.classList.remove('copied');
+    }, 1800);
   });
 }
 
-function submitFeedback() {
-  const useful = document.getElementById('fb-useful').value.trim();
-  const missing = document.getElementById('fb-missing').value.trim();
-  const prompt = document.getElementById('fb-prompt').value.trim();
-  const name = document.getElementById('fb-name').value.trim();
-  if (!useful && !missing && !prompt) return;
-  const subject = encodeURIComponent('MA&A Prompt Library — Feedback');
-  const body = encodeURIComponent(
-    `From: ${name || 'Anonymous'}\n\n` +
-    `Most useful prompts:\n${useful || '—'}\n\n` +
-    `What's missing / not working:\n${missing || '—'}\n\n` +
-    `Prompt suggestion:\n${prompt || '—'}`
-  );
-  window.location.href = `mailto:victor.egunlae@sage.com?subject=${subject}&body=${body}`;
-  setTimeout(() => {
-    document.getElementById('feedback-form').style.display = 'none';
-    document.getElementById('feedback-success').style.display = 'block';
-  }, 500);
+function resetCurrentPrompt() {
+  if (!activePrompt) return;
+  renderVars(activePrompt);
+  updatePreview();
 }
 
-function resetFeedback() {
-  document.getElementById('fb-useful').value = '';
-  document.getElementById('fb-missing').value = '';
-  document.getElementById('fb-prompt').value = '';
-  document.getElementById('fb-name').value = '';
-  document.getElementById('feedback-form').style.display = 'block';
-  document.getElementById('feedback-success').style.display = 'none';
+function selectRandomPrompt() {
+  initialisePersonaliser();
+  const prompts = getAllPersonaliserPrompts();
+  if (!prompts.length) return;
+  const next = prompts[Math.floor(Math.random() * prompts.length)];
+  const search = document.getElementById('selector-search');
+  if (search) search.value = '';
+  buildSelector('');
+  selectPrompt(next);
+  const active = document.querySelector(`.selector-item[data-key="${next.key}"]`);
+  if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  document.getElementById('workspace')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-const goodForMap = {
-  "Getting Started":        "Getting a feel for what AI can do",
-  "Data & Analysis":        "Making sense of data and numbers",
-  "Writing & Comms":        "Faster, clearer communication",
-  "Strategy & Planning":    "Big-picture thinking and planning",
-  "Learning & Exploration": "Going deeper on any topic",
-  "Go Deeper":              "First-principles and advanced thinking",
-  "Coding":                 "Writing, fixing, or reviewing code",
-  "Tools & Workflows":      "Getting more from your tools",
-  "Design & Imagery":       "Creating and adapting visual content",
+function scrollToPersonaliserWorkspace(event) {
+  event?.preventDefault();
+  initialisePersonaliser();
+  const workspace = document.getElementById('workspace');
+  if (!workspace) return;
+  workspace.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function startPersonaliserRandomButtonShimmer() {
+  const button = document.getElementById('personaliser-random-btn');
+  if (!button || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const shimmer = () => {
+    button.classList.remove('shimmer-once');
+    void button.offsetWidth;
+    button.classList.add('shimmer-once');
+    window.setTimeout(() => button.classList.remove('shimmer-once'), 1200);
+  };
+
+  window.setTimeout(shimmer, 1800);
+  window.setInterval(shimmer, 12000);
+}
+
+const feedbackPlaceholders = {
+  suggestion: 'No idea too big or small. What would make this more useful for you?',
+  issue: 'What did not work as expected? Mention the page, button, prompt, or behaviour if you can.',
+  general: 'What worked, what felt confusing, or anything else you want to share? Big or small, it all helps.'
 };
 
-let lastSurpriseIndex = -1;
-let currentSurprisePrompt = null;
-let surpriseTimers = [];
-let surpriseRolling = false;
+let feedbackPillOrder = [];
+let feedbackRotatorStarted = false;
 
-function getAllPrompts() {
-  const all = [];
-  data.forEach(section => {
-    section.prompts.forEach(p => all.push({ ...p, category: section.category }));
-  });
-  return all;
-}
-
-function surpriseMe() {
-  document.getElementById('surprise-overlay').classList.add('active');
-  document.body.style.overflow = 'hidden';
-  rollSurpriseSequence();
-}
-
-function resetSurpriseButtons() {
-  const copyBtn = document.getElementById('surprise-copy-btn');
-  const rollBtn = document.getElementById('surprise-roll-btn');
-  if (copyBtn) {
-    copyBtn.textContent = 'Copy prompt';
-    copyBtn.classList.remove('copied');
+function togglePill(el) {
+  const label = el.textContent;
+  if (el.classList.contains('active')) {
+    el.classList.remove('active');
+    feedbackPillOrder = feedbackPillOrder.filter(l => l !== label);
+  } else {
+    el.classList.add('active');
+    feedbackPillOrder.push(label);
   }
-  if (rollBtn) rollBtn.textContent = '🎲 Roll again';
+  rebuildPillText();
 }
 
-function pickSurprisePrompt(all) {
-  let idx;
-  do { idx = Math.floor(Math.random() * all.length); }
-  while (idx === lastSurpriseIndex && all.length > 1);
-  lastSurpriseIndex = idx;
-  return all[idx];
-}
+function rebuildPillText() {
+  const textarea = document.getElementById('fb-message');
+  const allPillTexts = new Set(Array.from(document.querySelectorAll('#idea-pills .idea-pill')).map(p => p.textContent));
+  const lines = textarea.value.split('\n');
+  const userLines = [];
 
-function rollSurpriseSequence() {
-  if (surpriseRolling) return;
-  const all = getAllPrompts();
-  const card = document.getElementById('surprise-card');
-  const rollBtn = document.getElementById('surprise-roll-btn');
-  const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
-  const steps = reduce ? 1 : 7;
-
-  surpriseTimers.forEach(clearTimeout);
-  surpriseTimers = [];
-  surpriseRolling = true;
-  resetSurpriseButtons();
-  card.classList.add('rolling');
-  if (rollBtn) rollBtn.textContent = 'Rolling...';
-
-  for (let i = 0; i < steps; i++) {
-    surpriseTimers.push(setTimeout(() => {
-      renderSurpriseCard(pickSurprisePrompt(all));
-
-      if (i === steps - 1) {
-        surpriseRolling = false;
-        card.classList.remove('rolling');
-        resetSurpriseButtons();
-      }
-    }, reduce ? 0 : 70 * i * (1 + i * 0.18)));
-  }
-}
-
-function rollAgain() {
-  rollSurpriseSequence();
-}
-
-function renderSurpriseCard(p) {
-  currentSurprisePrompt = p;
-  document.getElementById('surprise-title').textContent = p.title;
-  document.getElementById('surprise-category').textContent = p.category;
-  document.getElementById('surprise-tool').textContent = p.tool ? 'Works with: ' + p.tool : '';
-  document.getElementById('surprise-goodfor').textContent = 'Good for: ' + (goodForMap[p.category] || p.category);
-  document.getElementById('surprise-prompt').textContent = p.prompt;
-}
-
-function personaliseThis() {
-  if (!currentSurprisePrompt) return;
-  closeSurprise();
-  showPage('personaliser', document.querySelectorAll('.nav-tab')[2]);
-  const items = document.querySelectorAll('.selector-item');
-  for (const item of items) {
-    if (item.textContent.trim() === currentSurprisePrompt.title) {
-      item.click();
-      item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  for (let i = lines.length - 1; i >= 0; i -= 1) {
+    const clean = lines[i].replace(/:$/, '').trim();
+    if (!allPillTexts.has(clean) && lines[i].trim() !== '') {
+      userLines.unshift(lines[i]);
+    } else {
       break;
     }
   }
+
+  const prefix = feedbackPillOrder.length ? feedbackPillOrder.map(l => l + ':').join('\n') + '\n' : '';
+  textarea.value = prefix + userLines.join('\n');
+  textarea.focus();
+  textarea.setSelectionRange(textarea.value.length, textarea.value.length);
 }
 
-function closeSurprise() {
-  surpriseTimers.forEach(clearTimeout);
-  surpriseTimers = [];
-  surpriseRolling = false;
-  document.getElementById('surprise-card').classList.remove('rolling');
-  resetSurpriseButtons();
-  document.getElementById('surprise-overlay').classList.remove('active');
-  document.body.style.overflow = '';
+function updateForm() {
+  const type = document.getElementById('fb-type').value;
+  const singleField = document.getElementById('single-field');
+  const promptField1 = document.getElementById('prompt-field-1');
+  const promptField2 = document.getElementById('prompt-field-2');
+  const pills = document.getElementById('idea-pills');
+
+  document.getElementById('feedback-error').classList.remove('active');
+  document.querySelectorAll('#idea-pills .idea-pill').forEach(p => p.classList.remove('active'));
+  feedbackPillOrder = [];
+
+  if (type === 'prompt') {
+    singleField.style.display = 'none';
+    promptField1.style.display = 'grid';
+    promptField2.style.display = 'grid';
+    pills.classList.add('hidden');
+  } else {
+    singleField.style.display = 'grid';
+    promptField1.style.display = 'none';
+    promptField2.style.display = 'none';
+    document.getElementById('fb-message').placeholder = feedbackPlaceholders[type] || feedbackPlaceholders.suggestion;
+
+    if (type === 'suggestion') pills.classList.remove('hidden');
+    else pills.classList.add('hidden');
+  }
 }
 
-function handleOverlayClick(e) {
-  if (e.target === document.getElementById('surprise-overlay')) closeSurprise();
+function getFeedbackPayload() {
+  const type = document.getElementById('fb-type');
+  const typeValue = type.value;
+  const typeLabel = type.options[type.selectedIndex].text;
+  const name = document.getElementById('fb-name').value.trim();
+
+  if (typeValue === 'prompt') {
+    const promptText = document.getElementById('fb-prompt-text').value.trim();
+    const promptContext = document.getElementById('fb-prompt-context').value.trim();
+    return {
+      typeLabel,
+      message: promptText,
+      name,
+      text:
+        `From: ${name || 'Anonymous'}\n` +
+        `Type: ${typeLabel}\n\n` +
+        `Prompt:\n${promptText || '-'}\n\n` +
+        `What it helps with:\n${promptContext || '-'}`
+    };
+  }
+
+  const message = document.getElementById('fb-message').value.trim();
+  return {
+    typeLabel,
+    message,
+    name,
+    text:
+      `From: ${name || 'Anonymous'}\n` +
+      `Type: ${typeLabel}\n\n` +
+      `${message || '-'}`
+  };
 }
 
-function copySurprisePrompt() {
-  const text = document.getElementById('surprise-prompt').textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById('surprise-copy-btn');
+function validateFeedback(payload) {
+  const error = document.getElementById('feedback-error');
+  const valid = Boolean(payload.message);
+  error.classList.toggle('active', !valid);
+  return valid;
+}
+
+function submitFeedback(event) {
+  if (event) event.preventDefault();
+  const payload = getFeedbackPayload();
+  if (!validateFeedback(payload)) return;
+
+  const subject = encodeURIComponent('MA&A Prompt Library - ' + payload.typeLabel);
+  const body = encodeURIComponent(payload.text);
+  window.location.href = `mailto:victor.egunlae@sage.com?subject=${subject}&body=${body}`;
+
+  window.setTimeout(() => {
+    document.getElementById('feedback-form-card').classList.add('hidden');
+    document.getElementById('feedback-success').classList.add('active');
+  }, 350);
+}
+
+function copyFallback(text) {
+  const temp = document.createElement('textarea');
+  temp.value = text;
+  temp.setAttribute('readonly', '');
+  temp.style.position = 'absolute';
+  temp.style.left = '-9999px';
+  document.body.appendChild(temp);
+  temp.select();
+  document.execCommand('copy');
+  document.body.removeChild(temp);
+}
+
+function copyFeedbackText(btn) {
+  const payload = getFeedbackPayload();
+  if (!validateFeedback(payload)) return;
+
+  const original = btn.textContent;
+  const done = () => {
     btn.textContent = '✓ Copied';
-    btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = 'Copy prompt'; btn.classList.remove('copied'); }, 1800);
+    window.setTimeout(() => { btn.textContent = original; }, 1600);
+  };
+
+  copyText(payload.text).then(done).catch(() => {
+    copyFallback(payload.text);
+    done();
   });
 }
 
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeSurprise();
-});
+function resetFeedback() {
+  document.getElementById('fb-message').value = '';
+  document.getElementById('fb-prompt-text').value = '';
+  document.getElementById('fb-prompt-context').value = '';
+  document.getElementById('fb-name').value = '';
+  document.getElementById('fb-type').selectedIndex = 0;
+  document.querySelectorAll('#idea-pills .idea-pill').forEach(p => p.classList.remove('active'));
+  feedbackPillOrder = [];
+  updateForm();
+  document.getElementById('feedback-error').classList.remove('active');
+  document.getElementById('feedback-form-card').classList.remove('hidden');
+  document.getElementById('feedback-success').classList.remove('active');
+}
 
-buildHome();
-renderLibrary();
-buildSelector();
-restoreLibraryView();
+function startFeedbackRotator() {
+  if (feedbackRotatorStarted) return;
+  const words = document.querySelectorAll('#page-feedback .rotator-word');
+  if (words.length < 2) return;
+  feedbackRotatorStarted = true;
+  let current = 0;
+
+  window.setInterval(() => {
+    words[current].classList.add('exit');
+    words[current].classList.remove('active');
+    const next = (current + 1) % words.length;
+
+    window.setTimeout(() => {
+      words[current].classList.remove('exit');
+      current = next;
+      words[current].classList.add('active');
+    }, 450);
+  }, 2800);
+}
+function setActiveNav(page) {
+      document.querySelectorAll('.nav-tab[data-page]').forEach((tab) => {
+        tab.classList.toggle('active', tab.dataset.page === page);
+      });
+    }
+
+    function showPage(page, pushHash) {
+      const pages = ['home', 'library', 'personaliser', 'feedback'];
+      const nextPage = pages.includes(page) ? page : 'home';
+
+      const views = {
+        home: document.getElementById('home-view'),
+        library: document.getElementById('library-view'),
+        personaliser: document.getElementById('page-personaliser'),
+        feedback: document.getElementById('page-feedback')
+      };
+
+      Object.entries(views).forEach(([key, el]) => {
+        if (el) el.classList.toggle('active', key === nextPage);
+      });
+
+      closeLibraryModal?.();
+      closeLibraryPersonaliser?.();
+      setActiveNav(nextPage);
+      window.scrollTo({ top: 0, behavior: 'auto' });
+
+      if (pushHash !== false) {
+        history.pushState(null, '', '#' + nextPage);
+      }
+    }
+
+    window.showPromptLibraryPage = showPage;
+
+    document.addEventListener('DOMContentLoaded', function () {
+      renderSharedFooters();
+      initialisePersonaliser();
+      updateForm();
+      startFeedbackRotator();
+      startPersonaliserRandomButtonShimmer();
+
+      document.querySelectorAll('[data-page]').forEach((el) => {
+        el.addEventListener('click', function (event) {
+          event.preventDefault();
+          showPage(el.dataset.page);
+        });
+      });
+
+      const initial = location.hash.replace('#', '');
+      showPage(['home', 'library', 'personaliser', 'feedback'].includes(initial) ? initial : 'home', false);
+    });
+
+    window.addEventListener('popstate', function () {
+      const next = location.hash.replace('#', '');
+      showPage(['home', 'library', 'personaliser', 'feedback'].includes(next) ? next : 'home', false);
+    });
 </script>
 </body>
 </html>

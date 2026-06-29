@@ -1,0 +1,110 @@
+<!doctype html><html><head><meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>Animation Playground V4</title>
+<style>
+body{margin:0;background:#000;color:#fff;font-family:Arial;padding:20px}
+:root{--g:#00D639}
+.top{position:sticky;top:0;background:#111;padding:12px;border-radius:20px;display:flex;gap:8px;overflow:auto}
+button{background:#1d1d1d;color:#fff;border:1px solid #333;padding:10px 14px;border-radius:999px}
+.active{background:var(--g);color:#000}
+.page{display:none;padding:30px 0}.show{display:block}
+h1{font-size:clamp(34px,8vw,80px)}
+.green{color:var(--g)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+.card{border:1px solid #333;padding:18px;border-radius:24px;background:#111}
+.small{color:#aaa}
+textarea,input{width:100%;background:#111;color:#fff;border:1px solid #333;border-radius:12px;padding:10px}
+table{width:100%;border-collapse:collapse}
+td,th{border:1px solid #333;padding:10px}
+</style></head><body>
+
+<div class='top'>
+<button class='tab active' data='reel'>Text Explore</button>
+<button class='tab' data='counter'>Counter</button>
+<button class='tab' data='categories'>Categories</button>
+<button class='tab' data='surprise'>Surprise Lab</button>
+<button class='tab' data='prompts'>Browse</button>
+<button class='tab' data='readme'>Read Me</button>
+</div>
+
+<div id='reel' class='page show'>
+<h1>Prompts our teams<br>have <span class='green' id='word'>used</span></h1>
+<p>Change the animated word list:</p>
+<input id='words' value='tried,tested,refined,reused,used'>
+<button onclick='startWords()'>Update Reel</button>
+</div>
+
+<div id='counter' class='page'>
+<h1>Library contains<br><span class='green' id='num'>50</span><span class='green'>+</span><br>prompts</h1>
+<button onclick='count()'>Replay 50+</button>
+</div>
+
+<div id='categories' class='page'>
+<div>
+<button onclick='viewMode("tiles")'>Tiles</button>
+<button onclick='viewMode("list")'>List</button>
+<button onclick='viewMode("dash")'>Dashboard</button>
+</div><br>
+<div id='cat'></div>
+</div>
+
+<div id='surprise' class='page'>
+<h1>Surprise me</h1>
+<div class='card'>
+<div id='prompt'>Turn notes into actions</div><br>
+<button onclick='surprise()'>Roll again</button>
+</div>
+</div>
+
+<div id='prompts' class='page'>
+<h2>Browse prompts</h2>
+<div class='grid'>
+<div class='card'>Summarise meeting notes<br><button onclick='copyText(this)'>Copy</button></div>
+<div class='card'>Show me what you can do<br><button onclick='copyText(this)'>Copy</button></div>
+<div class='card'>Rewrite email professionally<br><button onclick='copyText(this)'>Copy</button></div>
+<div class='card'>Generate ideas on [topic]<br><button onclick='copyText(this)'>Copy</button></div>
+<div class='card'>Create action plan<br><button onclick='copyText(this)'>Copy</button></div>
+<div class='card'>Research starter prompt<br><button onclick='copyText(this)'>Copy</button></div>
+</div>
+</div>
+
+<div id='readme' class='page'>
+<h2>V4 Notes</h2>
+<p class='small'>New pages and interaction patterns added.</p>
+<table>
+<tr><th>Feature</th><th>Why</th></tr>
+<tr><td>Categories toggle</td><td>Compare layouts quickly</td></tr>
+<tr><td>Text Explore</td><td>Edit wording live</td></tr>
+<tr><td>Surprise Lab</td><td>Discover prompts</td></tr>
+<tr><td>Prompt cards + copy</td><td>Real library behaviour</td></tr>
+<tr><td>Read Me</td><td>Track decisions and changes</td></tr>
+</table>
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
+document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+document.querySelectorAll('.page').forEach(x=>x.classList.remove('show'));
+b.classList.add('active');
+document.getElementById(b.getAttribute('data')).classList.add('show');
+});
+let arr=['tried','tested','refined','reused','used'];let i=0;
+function startWords(){arr=document.getElementById('words').value.split(',');clearInterval(window.t);i=0;
+window.t=setInterval(()=>{document.getElementById('word').innerText=arr[i%arr.length];i++},1000)}
+startWords();
+
+function count(){let n=0;let t=setInterval(()=>{n++;num.innerText=n;if(n>=50)clearInterval(t)},20)}
+
+const cats=[['Writing',11],['Research',8],['Design',4],['Coding',3],['Meetings',15],['Productivity',9]];
+function viewMode(m){
+let h='';
+if(m=='tiles')h="<div class='grid'>"+cats.map(c=>"<div class='card'><h3>"+c[0]+"</h3>"+c[1]+" prompts</div>").join('')+"</div>";
+if(m=='list')h=cats.map(c=>"<div class='card'>"+c[0]+" <span style=float:right>"+c[1]+"</span></div>").join('');
+if(m=='dash')h=cats.map(c=>"<div class='card'>"+c[0]+"<br><div style='height:8px;background:#222;border-radius:99px'><div style='width:"+(c[1]*6)+"%;height:8px;background:#00D639;border-radius:99px'></div></div></div>").join('');
+cat.innerHTML=h}
+viewMode('tiles');
+
+const p=['Turn notes into actions','Create a meeting summary','Generate ideas on [topic]','Show me what you can do','Research this topic'];
+function surprise(){prompt.innerText=p[Math.floor(Math.random()*p.length)]}
+function copyText(el){navigator.clipboard.writeText(el.parentNode.innerText.replace('Copy',''));el.innerText='Copied'}
+</script>
+</body></html>

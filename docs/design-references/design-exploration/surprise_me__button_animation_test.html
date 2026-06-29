@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Surprise Me Rotation Timing Test</title>
+  <style>
+    :root {
+      --bg: #050505;
+      --panel: #101010;
+      --border: rgba(255, 255, 255, 0.14);
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, 0.68);
+      --green: #00d639;
+      --green-dark: #00a92d;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #171717 0, var(--bg) 46%);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      padding: 32px;
+    }
+
+    .wrap {
+      width: min(1150px, 100%);
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin: 24px 0 36px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 48px);
+      letter-spacing: -0.04em;
+    }
+
+    .intro {
+      margin: 0 auto;
+      color: var(--muted);
+      max-width: 720px;
+      line-height: 1.5;
+      font-size: 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      min-height: 390px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015));
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 21px;
+      letter-spacing: -0.02em;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+      max-width: 280px;
+    }
+
+    .timeline {
+      margin-top: 18px;
+      padding: 14px;
+      width: 100%;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.045);
+      color: rgba(255,255,255,0.78);
+      font-size: 13px;
+      line-height: 1.7;
+      text-align: left;
+    }
+
+    .button-area {
+      margin-top: auto;
+      height: 120px;
+      display: grid;
+      place-items: center;
+      width: 100%;
+    }
+
+    .surprise {
+      border: 0;
+      cursor: pointer;
+      background: linear-gradient(180deg, var(--green), var(--green-dark));
+      color: #031107;
+      font-weight: 800;
+      font-size: 16px;
+      border-radius: 999px;
+      padding: 16px 26px;
+      min-width: 155px;
+      box-shadow: 0 10px 28px rgba(0, 214, 57, 0.22);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .surprise:focus-visible {
+      outline: 3px solid #ffffff;
+      outline-offset: 4px;
+    }
+
+    .status {
+      min-height: 22px;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .bounce {
+      animation: gentleBounce 900ms ease-in-out both;
+    }
+
+    .pulse {
+      animation: softPulse 950ms ease-in-out both;
+    }
+
+    .wiggle {
+      animation: tinyWiggle 900ms ease-in-out both;
+      transform-origin: 50% 80%;
+    }
+
+    .shimmer::after {
+      content: "";
+      position: absolute;
+      inset: -45%;
+      background: linear-gradient(
+        110deg,
+        transparent 35%,
+        rgba(255,255,255,0.55) 48%,
+        transparent 60%
+      );
+      transform: translateX(-95%);
+      animation: shimmerSweep 1100ms ease-in-out both;
+    }
+
+    @keyframes gentleBounce {
+      0%, 100% { transform: translateY(0); }
+      35% { transform: translateY(-9px); }
+      62% { transform: translateY(0); }
+      82% { transform: translateY(-4px); }
+    }
+
+    @keyframes softPulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 10px 28px rgba(0, 214, 57, 0.22);
+      }
+      50% {
+        transform: scale(1.065);
+        box-shadow: 0 15px 42px rgba(0, 214, 57, 0.45);
+      }
+    }
+
+    @keyframes tinyWiggle {
+      0%, 100% { transform: rotate(0deg); }
+      28% { transform: rotate(-3deg); }
+      54% { transform: rotate(3deg); }
+      78% { transform: rotate(-1.5deg); }
+    }
+
+    @keyframes shimmerSweep {
+      0% { transform: translateX(-95%); }
+      100% { transform: translateX(95%); }
+    }
+
+    @media (max-width: 960px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        min-height: 330px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      body {
+        padding: 20px;
+      }
+
+      .timeline {
+        font-size: 12px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .bounce,
+      .pulse,
+      .wiggle,
+      .shimmer::after {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <h1>Surprise Me Rotation Timing Test</h1>
+      <p class="intro">
+        Three versions of one button rotating through bounce, pulse, wiggle and shimmer.
+        All start after 5 seconds, then use different gaps so you can feel the pacing.
+      </p>
+    </header>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Slower Rotation</h2>
+        <p>Starts after 5 seconds, then changes animation roughly every 22 seconds.</p>
+        <div class="timeline">
+          5s: Gentle bounce<br>
+          27s: Soft pulse<br>
+          49s: Tiny wiggle<br>
+          71s: Shimmer sweep<br>
+          Then repeats
+        </div>
+        <div class="button-area">
+          <button class="surprise" data-pattern="slow">Surprise Me</button>
+        </div>
+        <div class="status" data-status="slow">Waiting...</div>
+      </article>
+
+      <article class="card">
+        <h2>Shorter Gap</h2>
+        <p>Starts after 5 seconds, then does something every 10 seconds.</p>
+        <div class="timeline">
+          5s: Gentle bounce<br>
+          15s: Soft pulse<br>
+          25s: Tiny wiggle<br>
+          35s: Shimmer sweep<br>
+          Then repeats
+        </div>
+        <div class="button-area">
+          <button class="surprise" data-pattern="fast">Surprise Me</button>
+        </div>
+        <div class="status" data-status="fast">Waiting...</div>
+      </article>
+
+      <article class="card">
+        <h2>Staged Version</h2>
+        <p>Starts after 5 seconds, then uses bigger gaps so it feels less needy.</p>
+        <div class="timeline">
+          5s: Gentle bounce<br>
+          35s: Soft pulse<br>
+          65s: Shimmer sweep<br>
+          95s: Tiny wiggle<br>
+          Then repeats
+        </div>
+        <div class="button-area">
+          <button class="surprise" data-pattern="staged">Surprise Me</button>
+        </div>
+        <div class="status" data-status="staged">Waiting...</div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const patterns = {
+      slow: {
+        label: "Slower Rotation",
+        initialDelay: 5000,
+        gap: 22000,
+        sequence: ["bounce", "pulse", "wiggle", "shimmer"]
+      },
+      fast: {
+        label: "Shorter Gap",
+        initialDelay: 5000,
+        gap: 10000,
+        sequence: ["bounce", "pulse", "wiggle", "shimmer"]
+      },
+      staged: {
+        label: "Staged Version",
+        initialDelay: 5000,
+        gap: 30000,
+        sequence: ["bounce", "pulse", "shimmer", "wiggle"]
+      }
+    };
+
+    const friendlyNames = {
+      bounce: "Gentle bounce",
+      pulse: "Soft pulse",
+      wiggle: "Tiny wiggle",
+      shimmer: "Shimmer sweep"
+    };
+
+    function triggerAnimation(button, status, animationName) {
+      button.classList.remove("bounce", "pulse", "wiggle", "shimmer");
+      void button.offsetWidth;
+      button.classList.add(animationName);
+      status.textContent = friendlyNames[animationName];
+
+      window.setTimeout(() => {
+        button.classList.remove(animationName);
+        status.textContent = "Waiting...";
+      }, 1400);
+    }
+
+    function runPattern(key) {
+      const config = patterns[key];
+      const button = document.querySelector(`[data-pattern="${key}"]`);
+      const status = document.querySelector(`[data-status="${key}"]`);
+      let index = 0;
+
+      window.setTimeout(() => {
+        triggerAnimation(button, status, config.sequence[index]);
+        index = (index + 1) % config.sequence.length;
+
+        window.setInterval(() => {
+          triggerAnimation(button, status, config.sequence[index]);
+          index = (index + 1) % config.sequence.length;
+        }, config.gap);
+      }, config.initialDelay);
+    }
+
+    Object.keys(patterns).forEach(runPattern);
+  </script>
+</body>
+</html>
