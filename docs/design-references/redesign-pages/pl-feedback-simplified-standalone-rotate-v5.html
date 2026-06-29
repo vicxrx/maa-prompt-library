@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MA&A AI Prompt Library — Feedback</title>
+
+<style>
+  @font-face { font-family:"Sage Headline"; src:url("fonts/Sage_Headline-Black.woff2") format("woff2"), url("fonts/Sage_Headline-Black.woff") format("woff"); font-weight:900; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage UI"; src:url("fonts/Sage_UI-Regular.woff2") format("woff2"), url("fonts/Sage_UI-Regular.woff") format("woff"); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage UI"; src:url("fonts/Sage_UI-Medium.woff2") format("woff2"), url("fonts/Sage_UI-Medium.woff") format("woff"); font-weight:500; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage UI"; src:url("fonts/Sage_UI-Bold.woff2") format("woff2"), url("fonts/Sage_UI-Bold.woff") format("woff"); font-weight:700; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage Text"; src:url("fonts/Sage_Text-Regular.woff2") format("woff2"), url("fonts/Sage_Text-Regular.woff") format("woff"); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face { font-family:"Sage Text"; src:url("fonts/Sage_Text-Bold.woff2") format("woff2"), url("fonts/Sage_Text-Bold.woff") format("woff"); font-weight:700; font-style:normal; font-display:swap; }
+
+  :root {
+    --sage-headline: "Sage Headline", "Segoe UI", system-ui, sans-serif;
+    --sage-ui: "Sage UI", "Segoe UI", system-ui, sans-serif;
+    --sage-text: "Sage Text", "Segoe UI", system-ui, sans-serif;
+    --bg: #000000;
+    --surface: #141414;
+    --surface2: #1C1C1C;
+    --border: #2A2A2A;
+    --soft-line: rgba(255,255,255,0.22);
+    --accent: #00D639;
+    --accent-dim: rgba(0,214,57,0.10);
+    --accent-border: rgba(0,214,57,0.25);
+    --text: #ffffff;
+    --text-muted: #C8C8C8;
+    --text-dim: #8A8A8A;
+    --error: #ff7a7a;
+    --radius-xl: 28px;
+    --radius-md: 16px;
+  }
+
+  body.light {
+    --bg: #f5f5f5;
+    --surface: #ffffff;
+    --surface2: #eeeeee;
+    --border: #dddddd;
+    --soft-line: rgba(0,0,0,0.18);
+    --accent: #00D639;
+    --accent-dim: rgba(0,214,57,0.10);
+    --accent-border: rgba(0,214,57,0.30);
+    --text: #000000;
+    --text-muted: #555555;
+    --text-dim: #777777;
+    --error: #ba1a1a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sage-ui);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(180deg, #000 0%, #040404 100%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  body.light::before { background: linear-gradient(180deg, #f5f5f5 0%, #ffffff 100%); }
+
+  /* ── Nav ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    height: 52px;
+    transition: background 0.3s, border-color 0.3s;
+  }
+
+  body.light nav { background: rgba(245,245,245,0.95); }
+
+  .nav-left { display: flex; align-items: center; gap: 16px; min-width: 0; }
+
+  .nav-brand {
+    font-family: var(--sage-ui);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .nav-tabs { display: flex; gap: 4px; }
+
+  .nav-tab {
+    position: relative;
+    font-family: var(--sage-ui);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    padding: 14px 16px 13px;
+    border: none;
+    cursor: pointer;
+    color: var(--text-dim);
+    background: none;
+    transition: color 0.2s;
+    text-decoration: none;
+  }
+
+  .nav-tab::after {
+    content: "";
+    position: absolute;
+    left: 18%;
+    right: 18%;
+    bottom: 5px;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 999px;
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 220ms ease, opacity 180ms ease;
+    pointer-events: none;
+  }
+
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab:hover::after,
+  .nav-tab.active::after { opacity: 1; transform: scaleX(1); }
+  .nav-tab.active { color: var(--accent); font-weight: 600; }
+
+  .theme-toggle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--accent-border);
+    background: var(--accent-dim);
+    color: var(--accent);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+    flex-shrink: 0;
+  }
+
+  .theme-toggle:hover { background: var(--accent); color: #000; transform: translateY(-1px); }
+
+  /* ── Page ── */
+  .page-shell { width: min(100%, 1360px); margin: 0 auto; }
+
+  .feedback-hero {
+    text-align: center;
+    padding: clamp(58px, 8vh, 86px) 24px clamp(32px, 5vh, 48px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-tag {
+    font-family: var(--sage-ui);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .hero-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  .hero-title {
+    font-family: var(--sage-headline);
+    font-size: clamp(50px, 6vw, 82px);
+    font-weight: 900;
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+    margin-bottom: 22px;
+  }
+
+  .hero-title span { color: var(--accent); }
+
+  .rotator {
+    display: block;
+    position: relative;
+    height: 1.05em;
+    overflow: hidden;
+  }
+
+  .rotator-word {
+    display: block;
+    position: absolute;
+    inset: 0;
+    color: var(--accent);
+    opacity: 0;
+    transform: translateY(30%);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+  }
+
+  .rotator-word.active {
+    position: relative;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .rotator-word.exit {
+    opacity: 0;
+    transform: translateY(-30%);
+  }
+
+  .hero-sub {
+    font-family: var(--sage-text);
+    font-size: clamp(16px, 1.5vw, 20px);
+    color: var(--text-muted);
+    max-width: 540px;
+    line-height: 1.55;
+    margin: 0 auto;
+  }
+
+  /* ── Form ── */
+  .wrapper {
+    width: min(100% - 48px, 620px);
+    margin: 0 auto;
+    padding: 46px 0 80px;
+  }
+
+  .form-card,
+  .success-card {
+    border: 1px solid var(--soft-line);
+    border-radius: var(--radius-xl);
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255,255,255,0.075), transparent 58%),
+      rgba(255,255,255,0.045);
+    overflow: hidden;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 24px 80px rgba(0,0,0,0.34);
+    padding: clamp(22px, 3vw, 32px);
+  }
+
+  body.light .form-card,
+  body.light .success-card {
+    background: rgba(255,255,255,0.78);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 20px 60px rgba(0,0,0,0.08);
+  }
+
+  .form-grid {
+    display: grid;
+    gap: 18px;
+  }
+
+  .feedback-field { display: grid; gap: 8px; }
+
+  .feedback-label {
+    font-family: var(--sage-ui);
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  .feedback-label span { color: var(--text-dim); font-weight: 500; }
+
+  .feedback-select,
+  .feedback-input,
+  .feedback-textarea {
+    width: 100%;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 14px 15px;
+    font-family: var(--sage-ui);
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    line-height: 1.55;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  body.light .feedback-select,
+  body.light .feedback-input,
+  body.light .feedback-textarea { background: rgba(255,255,255,0.78); }
+
+  .feedback-textarea { min-height: 150px; resize: vertical; }
+  .feedback-input { border-radius: 999px; }
+
+  .feedback-select {
+    border-radius: 999px;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A8A8A' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+  }
+
+  .feedback-select:focus,
+  .feedback-input:focus,
+  .feedback-textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+  }
+
+  .feedback-select::placeholder,
+  .feedback-input::placeholder,
+  .feedback-textarea::placeholder { color: var(--text-dim); }
+
+  .feedback-select option {
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  .error-message {
+    display: none;
+    color: var(--error);
+    font-family: var(--sage-ui);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+
+  .error-message.active { display: block; }
+
+  .idea-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    transition: opacity 0.25s ease, max-height 0.3s ease;
+    max-height: 120px;
+    overflow: hidden;
+  }
+
+  .idea-pills.hidden {
+    opacity: 0;
+    max-height: 0;
+    pointer-events: none;
+    margin: 0;
+  }
+
+  .idea-pill {
+    border: 1px solid var(--soft-line);
+    border-radius: 999px;
+    padding: 7px 13px;
+    font-family: var(--sage-ui);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: rgba(255,255,255,0.025);
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+  }
+
+  .idea-pill:hover {
+    color: var(--text);
+    border-color: rgba(255,255,255,0.35);
+    transform: none;
+  }
+
+  .idea-pill.active {
+    background: var(--accent-dim);
+    border-color: var(--accent-border);
+    color: var(--accent);
+  }
+
+  body.light .idea-pill {
+    background: rgba(0,0,0,0.02);
+    border-color: rgba(0,0,0,0.14);
+  }
+
+  body.light .idea-pill:hover {
+    border-color: rgba(0,0,0,0.3);
+  }
+
+  body.light .idea-pill.active {
+    background: var(--accent-dim);
+    border-color: var(--accent-border);
+    color: var(--accent);
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  button {
+    appearance: none;
+    border: 1px solid var(--soft-line);
+    padding: 13px 20px;
+    border-radius: 999px;
+    font-family: var(--sage-ui);
+    font-size: 15px;
+    font-weight: 750;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease, opacity 180ms ease;
+  }
+
+  button:hover { transform: translateY(-2px); }
+
+  .primary-action {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #031107;
+    min-width: 158px;
+  }
+
+  .primary-action:hover { opacity: 0.88; }
+
+  .secondary-action {
+    background: rgba(255,255,255,0.025);
+    color: var(--text-muted);
+    border-color: var(--soft-line);
+  }
+
+  body.light .secondary-action {
+    background: rgba(0,0,0,0.025);
+    border-color: rgba(0,0,0,0.16);
+    color: rgba(0,0,0,0.68);
+  }
+
+  .secondary-action:hover {
+    color: var(--accent);
+    border-color: var(--accent-border);
+    background: var(--accent-dim);
+  }
+
+  .email-line {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    font-family: var(--sage-text);
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* ── Success ── */
+  .success-card {
+    display: none;
+    text-align: center;
+  }
+
+  .success-card.active { display: block; }
+  .form-card.hidden { display: none; }
+
+  .success-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background: var(--accent);
+    color: #031107;
+    font-weight: 900;
+    font-size: 22px;
+    margin: 0 auto 20px;
+  }
+
+  .success-title {
+    font-family: var(--sage-headline);
+    font-size: clamp(34px, 4.5vw, 48px);
+    line-height: 1;
+    letter-spacing: -0.055em;
+    margin-bottom: 14px;
+  }
+
+  .success-copy {
+    font-family: var(--sage-text);
+    color: var(--text-muted);
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 auto 24px;
+  }
+
+  footer {
+    text-align: center;
+    padding-top: 38px;
+    color: var(--text-dim);
+    font-family: var(--sage-ui);
+    font-size: 12px;
+  }
+
+  @media (max-width: 820px) {
+    nav { padding: 0 14px; }
+    .nav-tabs { display: none; }
+    .feedback-hero { padding: 66px 20px 38px; }
+    .hero-title { font-size: clamp(48px, 13vw, 70px); }
+    .wrapper { width: min(100% - 22px, 620px); padding: 34px 0 48px; }
+    .form-card,
+    .success-card { border-radius: 22px; }
+    .actions { display: grid; grid-template-columns: 1fr; }
+    .actions button { width: 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .hero-dot { animation: none; }
+    button { transition: none; }
+  }
+</style>
+</head>
+
+<body>
+  <nav>
+    <div class="nav-left">
+      <a class="nav-brand" href="#">MA&amp;A · AI Prompts</a>
+      <div class="nav-tabs" aria-label="Main navigation">
+        <a class="nav-tab" href="#">Home</a>
+        <a class="nav-tab" href="#">Library</a>
+        <a class="nav-tab" href="#">Personaliser</a>
+        <a class="nav-tab active" href="#">Feedback</a>
+      </div>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark" aria-label="Toggle theme">☀</button>
+  </nav>
+
+  <main class="page-shell">
+    <section class="feedback-hero" aria-labelledby="feedback-title">
+      <div class="hero-tag"><span class="hero-dot"></span>From the MA&amp;A Team</div>
+      <h1 class="hero-title" id="feedback-title">
+        Share your<br>
+        <span class="rotator">
+          <span class="rotator-word active">feedback.</span>
+          <span class="rotator-word">ideas.</span>
+          <span class="rotator-word">prompts.</span>
+        </span>
+      </h1>
+      <p class="hero-sub">Good, bad, or anything you'd like to see. Your feedback helps shape v2.</p>
+    </section>
+
+    <div class="wrapper">
+      <div class="form-card" id="feedback-form-card">
+        <form class="form-grid" id="feedback-form" onsubmit="submitFeedback(event)">
+          <div class="feedback-field">
+            <label class="feedback-label" for="fb-type">What's this about?</label>
+            <select class="feedback-select" id="fb-type" onchange="updateForm()">
+              <option value="suggestion">Suggest an improvement</option>
+              <option value="prompt">Share a prompt</option>
+              <option value="issue">Report an issue</option>
+              <option value="general">General feedback</option>
+            </select>
+          </div>
+
+          <!-- Pill tags for 'Suggest an improvement' -->
+          <div class="idea-pills" id="idea-pills">
+            <button type="button" class="idea-pill" onclick="togglePill(this)">New feature</button>
+            <button type="button" class="idea-pill" onclick="togglePill(this)">New page</button>
+            <button type="button" class="idea-pill" onclick="togglePill(this)">Layout</button>
+            <button type="button" class="idea-pill" onclick="togglePill(this)">Button</button>
+            <button type="button" class="idea-pill" onclick="togglePill(this)">Filter</button>
+            <button type="button" class="idea-pill" onclick="togglePill(this)">Remove</button>
+            <button type="button" class="idea-pill" onclick="togglePill(this)">Something else</button>
+          </div>
+
+          <!-- Single textarea (default) -->
+          <div class="feedback-field" id="single-field">
+            <label class="feedback-label" for="fb-message">Tell us more</label>
+            <textarea class="feedback-textarea" id="fb-message" rows="6" placeholder="No idea too big or small. What would make this more useful for you?"></textarea>
+          </div>
+
+          <!-- Split fields for 'Share a prompt' -->
+          <div class="feedback-field" id="prompt-field-1" style="display:none;">
+            <label class="feedback-label" for="fb-prompt-text">Paste your prompt</label>
+            <textarea class="feedback-textarea" id="fb-prompt-text" rows="6" placeholder="Paste a prompt you've used or found useful."></textarea>
+          </div>
+
+          <div class="feedback-field" id="prompt-field-2" style="display:none;">
+            <label class="feedback-label" for="fb-prompt-context">What does it help with? <span>(optional)</span></label>
+            <input class="feedback-input" id="fb-prompt-context" type="text" placeholder="Add a short line on what it helped you do." />
+          </div>
+
+          <div class="feedback-field">
+            <label class="feedback-label" for="fb-name">Your name or team <span>(optional)</span></label>
+            <input class="feedback-input" id="fb-name" type="text" placeholder="Optional" autocomplete="name" />
+          </div>
+
+          <div class="error-message" id="feedback-error">Write something before sending.</div>
+
+          <div class="actions">
+            <button class="primary-action" type="submit">Send feedback</button>
+            <button class="secondary-action" type="button" onclick="copyFeedbackText(this)">Copy text</button>
+          </div>
+        </form>
+
+        <div class="email-line">
+          Clicking send opens a pre-filled email in your mail app. Use Copy text if it doesn't open.
+        </div>
+      </div>
+
+      <div class="success-card" id="feedback-success" aria-live="polite">
+        <div class="success-icon">✓</div>
+        <div class="success-title">Sent, thank you</div>
+        <p class="success-copy">Your email app should have the message ready to go. Hit send on that and we'll take it from there.</p>
+        <button class="secondary-action" type="button" onclick="resetFeedback()">Send another</button>
+      </div>
+
+      <footer>From the MA&amp;A Team — Sage</footer>
+    </div>
+  </main>
+
+<script>
+  const placeholders = {
+    suggestion: "No idea too big or small. What would make this more useful for you?",
+    issue: "What did not work as expected? Mention the page, button, prompt, or behaviour if you can.",
+    general: "What worked, what felt confusing, or anything else you want to share? Big or small, it all helps."
+  };
+
+  let pillOrder = [];
+
+  function togglePill(el) {
+    const label = el.textContent;
+    if (el.classList.contains('active')) {
+      el.classList.remove('active');
+      pillOrder = pillOrder.filter(l => l !== label);
+    } else {
+      el.classList.add('active');
+      pillOrder.push(label);
+    }
+    rebuildPillText();
+  }
+
+  function rebuildPillText() {
+    const textarea = document.getElementById('fb-message');
+
+    // Get all pill label texts to identify user content
+    const allPillTexts = new Set(Array.from(document.querySelectorAll('#idea-pills .idea-pill')).map(p => p.textContent));
+
+    // Find any user-typed text at the end (lines that aren't pill labels)
+    const lines = textarea.value.split('\n');
+    let userLines = [];
+    for (let i = lines.length - 1; i >= 0; i--) {
+      const clean = lines[i].replace(/:$/, '').trim();
+      if (!allPillTexts.has(clean) && lines[i].trim() !== '') {
+        userLines.unshift(lines[i]);
+      } else {
+        break;
+      }
+    }
+
+    const prefix = pillOrder.length ? pillOrder.map(l => l + ':').join('\n') + '\n' : '';
+    textarea.value = prefix + userLines.join('\n');
+    textarea.focus();
+    textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+  }
+
+  function updateForm() {
+    const type = document.getElementById('fb-type').value;
+    const singleField = document.getElementById('single-field');
+    const promptField1 = document.getElementById('prompt-field-1');
+    const promptField2 = document.getElementById('prompt-field-2');
+    const pills = document.getElementById('idea-pills');
+
+    // Reset error
+    document.getElementById('feedback-error').classList.remove('active');
+
+    // Clear pill selections
+    document.querySelectorAll('#idea-pills .idea-pill').forEach(p => p.classList.remove('active'));
+    pillOrder = [];
+
+    if (type === 'prompt') {
+      singleField.style.display = 'none';
+      promptField1.style.display = 'grid';
+      promptField2.style.display = 'grid';
+      pills.classList.add('hidden');
+    } else {
+      singleField.style.display = 'grid';
+      promptField1.style.display = 'none';
+      promptField2.style.display = 'none';
+      document.getElementById('fb-message').placeholder = placeholders[type] || placeholders.suggestion;
+
+      if (type === 'suggestion') {
+        pills.classList.remove('hidden');
+      } else {
+        pills.classList.add('hidden');
+      }
+    }
+  }
+
+  function toggleTheme() {
+    document.body.classList.toggle('light');
+    const btn = document.querySelector('.theme-toggle');
+    btn.textContent = document.body.classList.contains('light') ? '☾' : '☀';
+  }
+
+  function getFeedbackPayload() {
+    const type = document.getElementById('fb-type');
+    const typeValue = type.value;
+    const typeLabel = type.options[type.selectedIndex].text;
+    const name = document.getElementById('fb-name').value.trim();
+
+    let message = '';
+
+    if (typeValue === 'prompt') {
+      const promptText = document.getElementById('fb-prompt-text').value.trim();
+      const promptContext = document.getElementById('fb-prompt-context').value.trim();
+      message = promptText;
+      return {
+        typeLabel,
+        message: promptText,
+        name,
+        text:
+          `From: ${name || 'Anonymous'}\n` +
+          `Type: ${typeLabel}\n\n` +
+          `Prompt:\n${promptText || '-'}\n\n` +
+          `What it helps with:\n${promptContext || '-'}`
+      };
+    }
+
+    message = document.getElementById('fb-message').value.trim();
+    return {
+      typeLabel,
+      message,
+      name,
+      text:
+        `From: ${name || 'Anonymous'}\n` +
+        `Type: ${typeLabel}\n\n` +
+        `${message || '-'}`
+    };
+  }
+
+  function validateFeedback(payload) {
+    const error = document.getElementById('feedback-error');
+    const valid = Boolean(payload.message);
+    error.classList.toggle('active', !valid);
+    return valid;
+  }
+
+  function submitFeedback(event) {
+    event.preventDefault();
+    const payload = getFeedbackPayload();
+    if (!validateFeedback(payload)) return;
+
+    const subject = encodeURIComponent('MA&A Prompt Library — ' + payload.typeLabel);
+    const body = encodeURIComponent(payload.text);
+    window.location.href = `mailto:victor.egunlae@sage.com?subject=${subject}&body=${body}`;
+
+    window.setTimeout(() => {
+      document.getElementById('feedback-form-card').classList.add('hidden');
+      document.getElementById('feedback-success').classList.add('active');
+    }, 350);
+  }
+
+  function copyFallback(text) {
+    const temp = document.createElement('textarea');
+    temp.value = text;
+    temp.setAttribute('readonly', '');
+    temp.style.position = 'absolute';
+    temp.style.left = '-9999px';
+    document.body.appendChild(temp);
+    temp.select();
+    document.execCommand('copy');
+    document.body.removeChild(temp);
+  }
+
+  function copyFeedbackText(btn) {
+    const payload = getFeedbackPayload();
+    if (!validateFeedback(payload)) return;
+
+    const original = btn.textContent;
+    const done = () => {
+      btn.textContent = '✓ Copied';
+      window.setTimeout(() => { btn.textContent = original; }, 1600);
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(payload.text).then(done).catch(() => {
+        copyFallback(payload.text);
+        done();
+      });
+    } else {
+      copyFallback(payload.text);
+      done();
+    }
+  }
+
+  function resetFeedback() {
+    document.getElementById('fb-message').value = '';
+    document.getElementById('fb-prompt-text').value = '';
+    document.getElementById('fb-prompt-context').value = '';
+    document.getElementById('fb-name').value = '';
+    document.getElementById('fb-type').selectedIndex = 0;
+    document.querySelectorAll('#idea-pills .idea-pill').forEach(p => p.classList.remove('active'));
+    pillOrder = [];
+    updateForm();
+    document.getElementById('feedback-error').classList.remove('active');
+    document.getElementById('feedback-form-card').classList.remove('hidden');
+    document.getElementById('feedback-success').classList.remove('active');
+  }
+
+  // Word rotator
+  (function() {
+    const words = document.querySelectorAll('.rotator-word');
+    if (words.length < 2) return;
+    let current = 0;
+
+    setInterval(() => {
+      words[current].classList.add('exit');
+      words[current].classList.remove('active');
+
+      const next = (current + 1) % words.length;
+
+      setTimeout(() => {
+        words[current].classList.remove('exit');
+        current = next;
+        words[current].classList.add('active');
+      }, 450);
+    }, 2800);
+  })();
+</script>
+</body>
+</html>

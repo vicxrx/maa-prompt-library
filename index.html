@@ -736,89 +736,6 @@
     line-height: 1.6;
   }
 
-  /* ── Feedback ── */
-  .feedback-wrap { max-width: 560px; }
-  .feedback-field { margin-bottom: 18px; }
-  .feedback-label { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
-
-  .feedback-input, .feedback-textarea {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 13px;
-    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
-    font-size: 13px;
-    color: var(--text);
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    resize: vertical;
-    line-height: 1.6;
-  }
-
-  .feedback-input:focus, .feedback-textarea:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px var(--accent-dim);
-  }
-
-  .feedback-input::placeholder, .feedback-textarea::placeholder {
-    color: var(--text-dim);
-    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
-  }
-
-  .feedback-submit {
-    background: var(--accent);
-    border: none;
-    border-radius: 9px;
-    padding: 12px 28px;
-    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: #000;
-    cursor: pointer;
-    transition: opacity 0.2s, transform 0.18s;
-  }
-
-  .feedback-submit:hover { opacity: 0.88; transform: translateY(-1px); }
-
-  .feedback-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-
-  .feedback-email-link {
-    font-family: "Courier New", monospace;
-    font-size: 12px;
-    color: var(--accent);
-    font-weight: 600;
-    text-decoration: none;
-  }
-
-  .feedback-email-link:hover { text-decoration: underline; }
-
-  .feedback-direct {
-    font-family: "Courier New", monospace;
-    font-size: 11px;
-    color: var(--text-dim);
-  }
-
-  /* ── Success state ── */
-  .success-state { text-align: center; padding: 52px 20px; }
-  .success-icon { font-size: 40px; margin-bottom: 16px; }
-  .success-title { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; color: var(--text); }
-  .success-sub { font-size: 13px; color: var(--text-muted); line-height: 1.7; margin-bottom: 24px; }
-
-  .reset-btn {
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 9px 20px;
-    font-family: "Sage UI", "Segoe UI", system-ui, sans-serif;
-    font-size: 13px;
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: border-color 0.2s, color 0.2s;
-  }
-
-  .reset-btn:hover { border-color: var(--accent); color: var(--accent); }
-
   /* ── Footer ── */
   footer {
     text-align: center;
@@ -3170,6 +3087,342 @@
       opacity: 0;
     }
   }
+
+
+  /* Feedback redesign: scoped so the standalone layout does not leak into other pages. */
+  #page-feedback {
+    min-height: calc(100vh - 52px);
+    padding: 0;
+  }
+
+  #page-feedback .feedback-page-shell {
+    width: min(100%, 1360px);
+    margin: 0 auto;
+  }
+
+  #page-feedback .feedback-hero {
+    text-align: center;
+    padding: clamp(58px, 8vh, 86px) 24px clamp(32px, 5vh, 48px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  #page-feedback .hero-title {
+    font-family: var(--sage-headline);
+    font-size: clamp(50px, 6vw, 82px);
+    font-weight: 900;
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+    margin: 0 auto 22px;
+    max-width: 900px;
+    text-align: center;
+  }
+
+  #page-feedback .hero-title span { color: var(--accent); }
+
+  #page-feedback .feedback-rotator {
+    display: block;
+    position: relative;
+    height: 1.05em;
+    overflow: hidden;
+  }
+
+  #page-feedback .rotator-word {
+    display: block;
+    position: absolute;
+    inset: 0;
+    color: var(--accent);
+    opacity: 0;
+    transform: translateY(30%);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+  }
+
+  #page-feedback .rotator-word.active {
+    position: relative;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #page-feedback .rotator-word.exit {
+    opacity: 0;
+    transform: translateY(-30%);
+  }
+
+  #page-feedback .hero-sub {
+    font-family: var(--sage-text);
+    font-size: clamp(16px, 1.5vw, 20px);
+    color: var(--text-muted);
+    max-width: 540px;
+    line-height: 1.55;
+    margin: 0 auto;
+  }
+
+  #page-feedback .wrapper {
+    width: min(100% - 48px, 620px);
+    max-width: none;
+    margin: 0 auto;
+    padding: 46px 0 80px;
+  }
+
+  #page-feedback .form-card,
+  #page-feedback .success-card {
+    border: 1px solid var(--soft-line);
+    border-radius: var(--radius-xl);
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255,255,255,0.075), transparent 58%),
+      rgba(255,255,255,0.045);
+    overflow: hidden;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 24px 80px rgba(0,0,0,0.34);
+    padding: clamp(22px, 3vw, 32px);
+  }
+
+  body.light #page-feedback .form-card,
+  body.light #page-feedback .success-card {
+    background: rgba(255,255,255,0.78);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 20px 60px rgba(0,0,0,0.08);
+  }
+
+  #page-feedback .form-grid { display: grid; gap: 18px; }
+  #page-feedback .feedback-field { display: grid; gap: 8px; margin-bottom: 0; }
+
+  #page-feedback .feedback-label {
+    font-family: var(--sage-ui);
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 0;
+  }
+
+  #page-feedback .feedback-label span { color: var(--text-dim); font-weight: 500; }
+
+  #page-feedback .feedback-select,
+  #page-feedback .feedback-input,
+  #page-feedback .feedback-textarea {
+    width: 100%;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 14px 15px;
+    font-family: var(--sage-ui);
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    line-height: 1.55;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  body.light #page-feedback .feedback-select,
+  body.light #page-feedback .feedback-input,
+  body.light #page-feedback .feedback-textarea { background: rgba(255,255,255,0.78); }
+
+  #page-feedback .feedback-textarea { min-height: 150px; resize: vertical; }
+  #page-feedback .feedback-input { border-radius: 999px; }
+
+  #page-feedback .feedback-select {
+    border-radius: 999px;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A8A8A' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+  }
+
+  #page-feedback .feedback-select:focus,
+  #page-feedback .feedback-input:focus,
+  #page-feedback .feedback-textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+  }
+
+  #page-feedback .feedback-select::placeholder,
+  #page-feedback .feedback-input::placeholder,
+  #page-feedback .feedback-textarea::placeholder { color: var(--text-dim); }
+
+  #page-feedback .feedback-select option {
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  #page-feedback .error-message {
+    display: none;
+    color: var(--error, #ff7a7a);
+    font-family: var(--sage-ui);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+
+  #page-feedback .error-message.active { display: block; }
+
+  #page-feedback .idea-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    transition: opacity 0.25s ease, max-height 0.3s ease;
+    max-height: 120px;
+    overflow: hidden;
+  }
+
+  #page-feedback .idea-pills.hidden {
+    opacity: 0;
+    max-height: 0;
+    pointer-events: none;
+    margin: 0;
+  }
+
+  #page-feedback .idea-pill {
+    border: 1px solid var(--soft-line);
+    border-radius: 999px;
+    padding: 7px 13px;
+    font-family: var(--sage-ui);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: rgba(255,255,255,0.025);
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+  }
+
+  #page-feedback .idea-pill:hover {
+    color: var(--text);
+    border-color: rgba(255,255,255,0.35);
+    transform: none;
+  }
+
+  #page-feedback .idea-pill.active {
+    background: var(--accent-dim);
+    border-color: var(--accent-border);
+    color: var(--accent);
+  }
+
+  body.light #page-feedback .idea-pill {
+    background: rgba(0,0,0,0.02);
+    border-color: rgba(0,0,0,0.14);
+  }
+
+  body.light #page-feedback .idea-pill:hover { border-color: rgba(0,0,0,0.3); }
+
+  #page-feedback .actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  #page-feedback button {
+    appearance: none;
+    border: 1px solid var(--soft-line);
+    padding: 13px 20px;
+    border-radius: 999px;
+    font-family: var(--sage-ui);
+    font-size: 15px;
+    font-weight: 750;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease, opacity 180ms ease;
+  }
+
+  #page-feedback button:hover { transform: translateY(-2px); }
+
+  #page-feedback .primary-action {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #031107;
+    min-width: 158px;
+  }
+
+  #page-feedback .primary-action:hover { opacity: 0.88; }
+
+  #page-feedback .secondary-action {
+    background: rgba(255,255,255,0.025);
+    color: var(--text-muted);
+    border-color: var(--soft-line);
+  }
+
+  body.light #page-feedback .secondary-action {
+    background: rgba(0,0,0,0.025);
+    border-color: rgba(0,0,0,0.16);
+    color: rgba(0,0,0,0.68);
+  }
+
+  #page-feedback .secondary-action:hover {
+    color: var(--accent);
+    border-color: var(--accent-border);
+    background: var(--accent-dim);
+  }
+
+  #page-feedback .email-line {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    font-family: var(--sage-text);
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  #page-feedback .success-card {
+    display: none;
+    text-align: center;
+  }
+
+  #page-feedback .success-card.active { display: block; }
+  #page-feedback .form-card.hidden { display: none; }
+
+  #page-feedback .success-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background: var(--accent);
+    color: #031107;
+    font-weight: 900;
+    font-size: 22px;
+    margin: 0 auto 20px;
+  }
+
+  #page-feedback .success-title {
+    font-family: var(--sage-headline);
+    font-size: clamp(34px, 4.5vw, 48px);
+    line-height: 1;
+    letter-spacing: -0.055em;
+    margin-bottom: 14px;
+  }
+
+  #page-feedback .success-copy {
+    font-family: var(--sage-text);
+    color: var(--text-muted);
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 auto 24px;
+  }
+
+  #page-feedback footer {
+    text-align: center;
+    padding-top: 38px;
+    color: var(--text-dim);
+    font-family: var(--sage-ui);
+    font-size: 12px;
+    border-top: 0;
+    margin-top: 0;
+  }
+
+  @media (max-width: 820px) {
+    #page-feedback .feedback-hero { padding: 66px 20px 38px; }
+    #page-feedback .hero-title { font-size: clamp(48px, 13vw, 70px); }
+    #page-feedback .wrapper { width: min(100% - 22px, 620px); padding: 34px 0 48px; }
+    #page-feedback .form-card,
+    #page-feedback .success-card { border-radius: 22px; }
+    #page-feedback .actions { display: grid; grid-template-columns: 1fr; }
+    #page-feedback .actions button { width: 100%; }
+  }
+
 </style>
 </head>
 <body>
@@ -3358,49 +3611,87 @@
 </div>
 <!-- Feedback -->
 <div class="page" id="page-feedback">
-  <div class="wrapper">
-    <header>
-      <div class="header-tag">From the MA&amp;A Team</div>
-      <h1>Help make<br>this <span>better.</span></h1>
-      <p class="subtitle">What's working? What's missing? Your feedback shapes the next version.</p>
-    </header>
-    <div class="feedback-wrap">
-      <div id="feedback-form">
-        <div class="feedback-field">
-          <div class="feedback-label">Which prompts have you found most useful?</div>
-          <textarea class="feedback-textarea" id="fb-useful" rows="3" placeholder="e.g. the So what? one, the meeting prep..."></textarea>
-        </div>
-        <div class="feedback-field">
-          <div class="feedback-label">What's missing or not working for you?</div>
-          <textarea class="feedback-textarea" id="fb-missing" rows="3" placeholder="Anything that doesn't fit your workflow..."></textarea>
-        </div>
-        <div class="feedback-field">
-          <div class="feedback-label">Got a prompt to add? Share it.</div>
-          <textarea class="feedback-textarea" id="fb-prompt" rows="3" placeholder="Share a prompt that works well for you — we'll test it and add the best ones..."></textarea>
-        </div>
-        <div class="feedback-field">
-          <div class="feedback-label">Your name <span style="font-weight:400; color:var(--text-dim)">(optional)</span></div>
-          <input class="feedback-input" id="fb-name" type="text" placeholder="Leave blank to stay anonymous">
-        </div>
-        <div class="feedback-actions">
-          <button class="feedback-submit" onclick="submitFeedback()">Submit feedback</button>
-          <span class="feedback-direct">or reach out directly:</span>
-          <a href="mailto:victor.egunlae@sage.com" class="feedback-email-link">Email →</a>
-        </div>
-      </div>
-      <div id="feedback-success" style="display:none;">
-        <div class="success-state">
-          <div class="success-icon">🙌</div>
-          <div class="success-title">Thank you</div>
-          <div class="success-sub">That genuinely helps. If you want to follow up directly, drop a line at<br><a href="mailto:victor.egunlae@sage.com" style="color:var(--accent); text-decoration:none; font-weight:600;">victor.egunlae@sage.com</a></div>
-          <button class="reset-btn" onclick="resetFeedback()">Leave another response</button>
-        </div>
-      </div>
-    </div>
-    <footer data-shared-footer></footer>
-  </div>
-</div>
+  <main class="feedback-page-shell">
+    <section class="feedback-hero" aria-labelledby="feedback-title">
+      <div class="hero-tag"><span class="hero-dot"></span>From the MA&amp;A Team</div>
+      <h1 class="hero-title" id="feedback-title">
+        Share your<br>
+        <span class="feedback-rotator">
+          <span class="rotator-word active">feedback.</span>
+          <span class="rotator-word">ideas.</span>
+          <span class="rotator-word">prompts.</span>
+        </span>
+      </h1>
+      <p class="hero-sub">Good, bad, or anything you'd like to see. Your feedback helps shape v2.</p>
+    </section>
 
+    <div class="wrapper">
+      <div class="form-card" id="feedback-form-card">
+        <form class="form-grid" id="feedback-form" onsubmit="submitFeedback(event)">
+          <div class="feedback-field">
+            <label class="feedback-label" for="fb-type">What's this about?</label>
+            <select class="feedback-select" id="fb-type" onchange="updateForm()">
+              <option value="suggestion">Suggest an improvement</option>
+              <option value="prompt">Share a prompt</option>
+              <option value="issue">Report an issue</option>
+              <option value="general">General feedback</option>
+            </select>
+          </div>
+
+          <div class="idea-pills" id="idea-pills">
+            <button type="button" class="idea-pill" onclick="togglePill(this)">New feature</button>
+            <button type="button" class="idea-pill" onclick="togglePill(this)">New page</button>
+            <button type="button" class="idea-pill" onclick="togglePill(this)">Layout</button>
+            <button type="button" class="idea-pill" onclick="togglePill(this)">Button</button>
+            <button type="button" class="idea-pill" onclick="togglePill(this)">Filter</button>
+            <button type="button" class="idea-pill" onclick="togglePill(this)">Remove</button>
+            <button type="button" class="idea-pill" onclick="togglePill(this)">Something else</button>
+          </div>
+
+          <div class="feedback-field" id="single-field">
+            <label class="feedback-label" for="fb-message">Tell us more</label>
+            <textarea class="feedback-textarea" id="fb-message" rows="6" placeholder="No idea too big or small. What would make this more useful for you?"></textarea>
+          </div>
+
+          <div class="feedback-field" id="prompt-field-1" style="display:none;">
+            <label class="feedback-label" for="fb-prompt-text">Paste your prompt</label>
+            <textarea class="feedback-textarea" id="fb-prompt-text" rows="6" placeholder="Paste a prompt you've used or found useful."></textarea>
+          </div>
+
+          <div class="feedback-field" id="prompt-field-2" style="display:none;">
+            <label class="feedback-label" for="fb-prompt-context">What does it help with? <span>(optional)</span></label>
+            <input class="feedback-input" id="fb-prompt-context" type="text" placeholder="Add a short line on what it helped you do." />
+          </div>
+
+          <div class="feedback-field">
+            <label class="feedback-label" for="fb-name">Your name or team <span>(optional)</span></label>
+            <input class="feedback-input" id="fb-name" type="text" placeholder="Optional" autocomplete="name" />
+          </div>
+
+          <div class="error-message" id="feedback-error">Write something before sending.</div>
+
+          <div class="actions">
+            <button class="primary-action" type="submit">Send feedback</button>
+            <button class="secondary-action" type="button" onclick="copyFeedbackText(this)">Copy text</button>
+          </div>
+        </form>
+
+        <div class="email-line">
+          Clicking send opens a pre-filled email in your mail app. Use Copy text if it doesn't open.
+        </div>
+      </div>
+
+      <div class="success-card" id="feedback-success" aria-live="polite">
+        <div class="success-icon">✓</div>
+        <div class="success-title">Sent, thank you</div>
+        <p class="success-copy">Your email app should have the message ready to go. Hit send on that and we'll take it from there.</p>
+        <button class="secondary-action" type="button" onclick="resetFeedback()">Send another</button>
+      </div>
+
+      <footer data-shared-footer></footer>
+    </div>
+  </main>
+</div>
   <!-- Shared Surprise Me Modal -->
   <div class="surprise-overlay" id="surprise-overlay" onclick="handleOverlayClick(event)" aria-hidden="true">
     <div class="surprise-card" id="surprise-card" role="dialog" aria-modal="true" aria-labelledby="surprise-title">
@@ -4303,37 +4594,192 @@ function startPersonaliserRandomButtonShimmer() {
   window.setInterval(shimmer, 12000);
 }
 
-function submitFeedback() {
-  const useful = document.getElementById('fb-useful').value.trim();
-  const missing = document.getElementById('fb-missing').value.trim();
-  const prompt = document.getElementById('fb-prompt').value.trim();
+const feedbackPlaceholders = {
+  suggestion: 'No idea too big or small. What would make this more useful for you?',
+  issue: 'What did not work as expected? Mention the page, button, prompt, or behaviour if you can.',
+  general: 'What worked, what felt confusing, or anything else you want to share? Big or small, it all helps.'
+};
+
+let feedbackPillOrder = [];
+let feedbackRotatorStarted = false;
+
+function togglePill(el) {
+  const label = el.textContent;
+  if (el.classList.contains('active')) {
+    el.classList.remove('active');
+    feedbackPillOrder = feedbackPillOrder.filter(l => l !== label);
+  } else {
+    el.classList.add('active');
+    feedbackPillOrder.push(label);
+  }
+  rebuildPillText();
+}
+
+function rebuildPillText() {
+  const textarea = document.getElementById('fb-message');
+  const allPillTexts = new Set(Array.from(document.querySelectorAll('#idea-pills .idea-pill')).map(p => p.textContent));
+  const lines = textarea.value.split('\n');
+  const userLines = [];
+
+  for (let i = lines.length - 1; i >= 0; i -= 1) {
+    const clean = lines[i].replace(/:$/, '').trim();
+    if (!allPillTexts.has(clean) && lines[i].trim() !== '') {
+      userLines.unshift(lines[i]);
+    } else {
+      break;
+    }
+  }
+
+  const prefix = feedbackPillOrder.length ? feedbackPillOrder.map(l => l + ':').join('\n') + '\n' : '';
+  textarea.value = prefix + userLines.join('\n');
+  textarea.focus();
+  textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+}
+
+function updateForm() {
+  const type = document.getElementById('fb-type').value;
+  const singleField = document.getElementById('single-field');
+  const promptField1 = document.getElementById('prompt-field-1');
+  const promptField2 = document.getElementById('prompt-field-2');
+  const pills = document.getElementById('idea-pills');
+
+  document.getElementById('feedback-error').classList.remove('active');
+  document.querySelectorAll('#idea-pills .idea-pill').forEach(p => p.classList.remove('active'));
+  feedbackPillOrder = [];
+
+  if (type === 'prompt') {
+    singleField.style.display = 'none';
+    promptField1.style.display = 'grid';
+    promptField2.style.display = 'grid';
+    pills.classList.add('hidden');
+  } else {
+    singleField.style.display = 'grid';
+    promptField1.style.display = 'none';
+    promptField2.style.display = 'none';
+    document.getElementById('fb-message').placeholder = feedbackPlaceholders[type] || feedbackPlaceholders.suggestion;
+
+    if (type === 'suggestion') pills.classList.remove('hidden');
+    else pills.classList.add('hidden');
+  }
+}
+
+function getFeedbackPayload() {
+  const type = document.getElementById('fb-type');
+  const typeValue = type.value;
+  const typeLabel = type.options[type.selectedIndex].text;
   const name = document.getElementById('fb-name').value.trim();
-  if (!useful && !missing && !prompt) return;
-  const subject = encodeURIComponent('MA&A Prompt Library — Feedback');
-  const body = encodeURIComponent(
-    `From: ${name || 'Anonymous'}\n\n` +
-    `Most useful prompts:\n${useful || '—'}\n\n` +
-    `What's missing / not working:\n${missing || '—'}\n\n` +
-    `Prompt suggestion:\n${prompt || '—'}`
-  );
+
+  if (typeValue === 'prompt') {
+    const promptText = document.getElementById('fb-prompt-text').value.trim();
+    const promptContext = document.getElementById('fb-prompt-context').value.trim();
+    return {
+      typeLabel,
+      message: promptText,
+      name,
+      text:
+        `From: ${name || 'Anonymous'}\n` +
+        `Type: ${typeLabel}\n\n` +
+        `Prompt:\n${promptText || '-'}\n\n` +
+        `What it helps with:\n${promptContext || '-'}`
+    };
+  }
+
+  const message = document.getElementById('fb-message').value.trim();
+  return {
+    typeLabel,
+    message,
+    name,
+    text:
+      `From: ${name || 'Anonymous'}\n` +
+      `Type: ${typeLabel}\n\n` +
+      `${message || '-'}`
+  };
+}
+
+function validateFeedback(payload) {
+  const error = document.getElementById('feedback-error');
+  const valid = Boolean(payload.message);
+  error.classList.toggle('active', !valid);
+  return valid;
+}
+
+function submitFeedback(event) {
+  if (event) event.preventDefault();
+  const payload = getFeedbackPayload();
+  if (!validateFeedback(payload)) return;
+
+  const subject = encodeURIComponent('MA&A Prompt Library - ' + payload.typeLabel);
+  const body = encodeURIComponent(payload.text);
   window.location.href = `mailto:victor.egunlae@sage.com?subject=${subject}&body=${body}`;
-  setTimeout(() => {
-    document.getElementById('feedback-form').style.display = 'none';
-    document.getElementById('feedback-success').style.display = 'block';
-  }, 500);
+
+  window.setTimeout(() => {
+    document.getElementById('feedback-form-card').classList.add('hidden');
+    document.getElementById('feedback-success').classList.add('active');
+  }, 350);
+}
+
+function copyFallback(text) {
+  const temp = document.createElement('textarea');
+  temp.value = text;
+  temp.setAttribute('readonly', '');
+  temp.style.position = 'absolute';
+  temp.style.left = '-9999px';
+  document.body.appendChild(temp);
+  temp.select();
+  document.execCommand('copy');
+  document.body.removeChild(temp);
+}
+
+function copyFeedbackText(btn) {
+  const payload = getFeedbackPayload();
+  if (!validateFeedback(payload)) return;
+
+  const original = btn.textContent;
+  const done = () => {
+    btn.textContent = '✓ Copied';
+    window.setTimeout(() => { btn.textContent = original; }, 1600);
+  };
+
+  copyText(payload.text).then(done).catch(() => {
+    copyFallback(payload.text);
+    done();
+  });
 }
 
 function resetFeedback() {
-  document.getElementById('fb-useful').value = '';
-  document.getElementById('fb-missing').value = '';
-  document.getElementById('fb-prompt').value = '';
+  document.getElementById('fb-message').value = '';
+  document.getElementById('fb-prompt-text').value = '';
+  document.getElementById('fb-prompt-context').value = '';
   document.getElementById('fb-name').value = '';
-  document.getElementById('feedback-form').style.display = 'block';
-  document.getElementById('feedback-success').style.display = 'none';
+  document.getElementById('fb-type').selectedIndex = 0;
+  document.querySelectorAll('#idea-pills .idea-pill').forEach(p => p.classList.remove('active'));
+  feedbackPillOrder = [];
+  updateForm();
+  document.getElementById('feedback-error').classList.remove('active');
+  document.getElementById('feedback-form-card').classList.remove('hidden');
+  document.getElementById('feedback-success').classList.remove('active');
 }
 
+function startFeedbackRotator() {
+  if (feedbackRotatorStarted) return;
+  const words = document.querySelectorAll('#page-feedback .rotator-word');
+  if (words.length < 2) return;
+  feedbackRotatorStarted = true;
+  let current = 0;
 
-    function setActiveNav(page) {
+  window.setInterval(() => {
+    words[current].classList.add('exit');
+    words[current].classList.remove('active');
+    const next = (current + 1) % words.length;
+
+    window.setTimeout(() => {
+      words[current].classList.remove('exit');
+      current = next;
+      words[current].classList.add('active');
+    }, 450);
+  }, 2800);
+}
+function setActiveNav(page) {
       document.querySelectorAll('.nav-tab[data-page]').forEach((tab) => {
         tab.classList.toggle('active', tab.dataset.page === page);
       });
@@ -4369,6 +4815,8 @@ function resetFeedback() {
     document.addEventListener('DOMContentLoaded', function () {
       renderSharedFooters();
       initialisePersonaliser();
+      updateForm();
+      startFeedbackRotator();
       startPersonaliserRandomButtonShimmer();
 
       document.querySelectorAll('[data-page]').forEach((el) => {
