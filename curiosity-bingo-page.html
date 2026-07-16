@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Curiosity Bingo · MA&amp;A AI Prompt Library</title>
+<style>
+@font-face{font-family:"Sage Headline";src:url("fonts/Sage_Headline-Black.woff2") format("woff2"),url("fonts/Sage_Headline-Black.woff") format("woff");font-weight:900;font-style:normal;font-display:swap}
+@font-face{font-family:"Sage UI";src:url("fonts/Sage_UI-Regular.woff2") format("woff2"),url("fonts/Sage_UI-Regular.woff") format("woff");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Sage UI";src:url("fonts/Sage_UI-Medium.woff2") format("woff2"),url("fonts/Sage_UI-Medium.woff") format("woff");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"Sage UI";src:url("fonts/Sage_UI-Bold.woff2") format("woff2"),url("fonts/Sage_UI-Bold.woff") format("woff");font-weight:700;font-style:normal;font-display:swap}
+:root{
+  --sage-headline:"Sage Headline","Segoe UI",system-ui,sans-serif;
+  --sage-ui:"Sage UI","Segoe UI",system-ui,sans-serif;
+  --bg:#000;--surface:#141414;--surface2:#1c1c1c;--surface3:#222;--border:#2a2a2a;
+  --accent:#00d639;--accent-soft:rgba(0,214,57,.10);--accent-border:rgba(0,214,57,.34);
+  --text:#fff;--muted:#c8c8c8;--dim:#8a8a8a;--soft-line:rgba(255,255,255,.22);
+  --complete:#00d639;--complete-text:#041007;
+}
+body.light{
+  --bg:#f5f5f5;--surface:#fff;--surface2:#eee;--surface3:#e7e7e7;--border:#ddd;
+  --accent:#00b830;--accent-soft:rgba(0,184,48,.10);--accent-border:rgba(0,184,48,.28);
+  --text:#111;--muted:#444;--dim:#777;--soft-line:rgba(0,0,0,.18);--complete:#00b830;--complete-text:#041007;
+}
+*{box-sizing:border-box} [hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font-family:var(--sage-ui);transition:background .2s,color .2s}
+button,a{font:inherit} button{cursor:pointer} button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.site-nav{position:sticky;top:0;z-index:100;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;transition:background .3s,border-color .3s}
+body.light .site-nav{background:rgba(245,245,245,.95)}
+.nav-left{display:flex;align-items:center;gap:16px}
+.nav-brand{font-family:var(--sage-ui);font-size:13px;font-weight:700;letter-spacing:.04em;color:var(--accent);text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.nav-tabs{display:flex;gap:4px}
+.nav-tab{position:relative;font-family:var(--sage-ui);font-size:13px;font-weight:500;letter-spacing:.01em;padding:14px 16px 13px;border:none;cursor:pointer;color:var(--dim);background:none;text-decoration:none;white-space:nowrap;transition:color .2s}
+.nav-tab::after{content:"";position:absolute;left:18%;right:18%;bottom:5px;height:2px;background:var(--accent);border-radius:999px;opacity:0;transform:scaleX(0);transform-origin:center;transition:transform 220ms ease,opacity 180ms ease;pointer-events:none}
+.nav-tab:hover{color:var(--text)}
+.nav-tab:hover::after,.nav-tab.active::after{opacity:1;transform:scaleX(1)}
+.nav-tab.active{color:var(--accent);font-weight:600}
+.theme-toggle{width:34px;height:34px;padding:0;border-radius:50%;border:1px solid var(--accent-border);background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:15px;transition:background .2s,color .2s,transform .2s}
+.theme-toggle:hover{background:var(--accent);color:#000;transform:translateY(-1px)}
+.page{width:min(1120px,100%);margin:0 auto;padding:52px 18px 34px}
+.hero{text-align:center;margin-bottom:28px}
+.hero-title{font-family:var(--sage-headline);font-size:clamp(48px,7vw,86px);line-height:.95;letter-spacing:-.055em;margin:0 0 18px}
+.hero-line{display:block}
+.rotator-wrap{display:inline-flex;align-items:baseline;gap:.14em;justify-content:center;flex-wrap:wrap}
+.rotator-label{color:var(--text)}
+.rotator{display:inline-block;height:1em;overflow:hidden;vertical-align:bottom;min-width:5.15em;color:var(--accent);text-align:left}
+.rotator-track{display:flex;flex-direction:column;transform:translateY(calc(var(--i,0) * -1em));transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.rotator-word{height:1em;line-height:1;display:block;white-space:nowrap}
+.intro{max-width:800px;margin:0 auto;color:var(--muted);line-height:1.65;font-size:17px}.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:30px 0 22px}
+.pill-btn,.link-btn{border:1px solid var(--soft-line);background:rgba(255,255,255,.025);color:var(--text);border-radius:999px;min-height:46px;padding:0 18px;font-weight:800;font-size:14px;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;transition:transform .18s,border-color .18s,background .18s,color .18s,opacity .18s}
+.pill-btn:hover,.link-btn:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.34);background:rgba(255,255,255,.055)}.pill-btn.primary,.link-btn.primary{background:var(--accent);border-color:var(--accent);color:#000}.reset{color:var(--dim)}
+.surprise-trace{min-width:154px;position:relative;overflow:hidden;isolation:isolate;background:rgba(8,10,12,.78);color:var(--text);border-color:rgba(255,255,255,.12);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.surprise-trace:hover{border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.055)}.surprise-trace::before{content:"";position:absolute;inset:-2px;border-radius:inherit;background:conic-gradient(from var(--trace-angle),transparent 0deg,transparent 245deg,rgba(0,214,57,.10) 285deg,var(--accent) 320deg,rgba(0,214,57,.10) 352deg,transparent 360deg);z-index:-2;opacity:0;transition:opacity .35s ease}.surprise-trace.is-tracing::before{opacity:1;animation:traceRound 4.6s linear infinite}.surprise-trace::after{content:"";position:absolute;inset:1px;border-radius:inherit;background:rgba(8,10,12,.96);z-index:-1}body.light .surprise-trace{color:#000;background:#fff}body.light .surprise-trace::after{background:#fff}
+.landing-surprise-label{position:relative;z-index:2}.landing-surprise-shimmer{position:absolute;inset:-45%;z-index:1;pointer-events:none;opacity:0;transform:translateX(-95%);background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.55) 48%,transparent 60%)}.surprise-trace.is-shimmering .landing-surprise-shimmer{animation:shimmer 1100ms ease-in-out both}.surprise-trace.is-pulsing{animation:softPulse 950ms ease-in-out both}.surprise-trace.is-bouncing{animation:gentleBounce 900ms ease-in-out both}.surprise-trace.is-wiggling{animation:tinyWiggle 900ms ease-in-out both;transform-origin:50% 80%}
+@property --trace-angle{syntax:"<angle>";initial-value:0deg;inherits:false}@keyframes traceRound{to{--trace-angle:360deg}}@keyframes shimmer{0%{opacity:0;transform:translateX(-95%)}15%{opacity:1}85%{opacity:.8}100%{opacity:0;transform:translateX(95%)}}@keyframes gentleBounce{0%,100%{transform:translateY(0)}35%{transform:translateY(-7px)}62%{transform:translateY(0)}82%{transform:translateY(-3px)}}@keyframes softPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}@keyframes tinyWiggle{0%,100%{transform:rotate(0)}28%{transform:rotate(-2.5deg)}54%{transform:rotate(2.5deg)}78%{transform:rotate(-1deg)}}
+.progress{width:min(760px,100%);margin:0 auto 18px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:15px 16px;text-align:left;box-shadow:0 18px 54px rgba(0,0,0,.16)}.progress-row{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin-bottom:11px;flex-wrap:wrap}.pct{font-size:30px;font-weight:900;color:var(--accent);letter-spacing:-.03em}.meta{color:var(--dim);font-size:12px;font-weight:700;letter-spacing:.03em}.track{height:9px;border-radius:999px;background:var(--surface2);border:1px solid var(--border);overflow:hidden}.fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),#62ff8c);transition:width .32s}.fill.hot{box-shadow:0 0 16px rgba(0,214,57,.72)}
+.board-shell{width:min(760px,100%);margin:auto;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:24px;box-shadow:0 18px 54px rgba(0,0,0,.18);overflow-x:auto}.board{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;min-width:0}.cell{position:relative;width:100%;aspect-ratio:1/1;border:1px solid rgba(255,255,255,.32);border-radius:14px;background:#0b0b0b;color:#fff;padding:22px 12px 12px;text-align:center;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:border-color .18s,transform .18s,box-shadow .18s,background .18s;box-shadow:inset 0 1px 0 rgba(255,255,255,.045)}
+.cell:hover,.cell:focus-visible{border-color:rgba(255,255,255,.66);background:radial-gradient(circle at 50% 0%,rgba(255,255,255,.085),transparent 64%),linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.018)),#0d0d0d;transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 24px 70px rgba(0,0,0,.56)}.cell-title{font-size:clamp(11.5px,1.1vw,14.5px);line-height:1.18;font-weight:850;letter-spacing:-.025em;padding:0 4px}.cell-cat{position:absolute;top:9px;left:10px;right:34px;text-align:left;font-size:8.5px;font-weight:900;letter-spacing:.11em;text-transform:uppercase;color:rgba(255,255,255,.40);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.expand-ico{position:absolute;top:10px;right:10px;width:17px;height:17px;color:var(--accent);opacity:0;transform:scale(.92) translateY(4px);transition:opacity .16s,transform .16s;pointer-events:none}.cell:hover .expand-ico,.cell:focus-visible .expand-ico{opacity:1;transform:scale(1) translateY(0)}.cell.done{background:var(--complete);border-color:var(--complete);color:var(--complete-text)}.cell.done .cell-cat{color:rgba(4,16,7,.62)}.cell.done .expand-ico{display:none}.cell.done:after{content:"Done";position:absolute;top:8px;right:9px;border:1px solid rgba(0,0,0,.16);border-radius:999px;padding:3px 8px;font-size:10px;font-weight:900;background:rgba(255,255,255,.32);color:var(--complete-text)}.cell.free{
+cursor:default;
+background:
+  linear-gradient(rgba(0,214,57,var(--free-progress,0)), rgba(0,214,57,var(--free-progress,0))),
+  #0b0b0b;
+color:var(--free-text,var(--text));
+border-color:transparent;
+box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+}
+.cell.free .cell-title{
+  color:inherit;
+}
+.cell.free.started{
+  border-color:var(--complete);
+}
+.cell.free.full-house{
+  background:var(--complete);
+  color:var(--complete-text);
+  animation:freeGlow 2.2s ease-in-out infinite;
+}
+.cell.free .cell-cat{color:var(--accent)}
+.cell.win{
+  background:var(--complete);
+  border-color:var(--complete);
+  color:var(--complete-text);
+  transform:none;
+}
+@keyframes freeGlow{
+  0%,100%{
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.05),
+      0 0 0 1px rgba(0,214,57,.22),
+      0 0 12px rgba(0,214,57,.14);
+  }
+  50%{
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.06),
+      0 0 0 1px rgba(0,214,57,.30),
+      0 0 18px rgba(0,214,57,.22);
+  }
+}
+  50%{box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 0 0 1px rgba(0,214,57,.30),0 0 18px rgba(0,214,57,.22)}
+}
+body.light .cell{background:#fff;border-color:rgba(0,0,0,.18);color:#000;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 16px 42px rgba(0,0,0,.07)}body.light .cell:hover{background:radial-gradient(circle at 50% 0%,rgba(0,0,0,.035),transparent 64%),linear-gradient(180deg,rgba(0,0,0,.025),rgba(0,0,0,.006)),#fff;border-color:rgba(0,0,0,.34);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 22px 60px rgba(0,0,0,.1)}body.light .cell-cat{color:rgba(0,0,0,.42)}body.light .cell.done,body.light .cell.win{background:var(--complete);border-color:var(--complete);color:var(--complete-text)}
+body.light .cell.free{
+background:
+  linear-gradient(rgba(0,184,48,var(--free-progress,0)), rgba(0,184,48,var(--free-progress,0))),
+  #fff;
+color:var(--free-text,#111);
+border-color:transparent;
+box-shadow:inset 0 1px 0 rgba(255,255,255,.95);
+}
+body.light .cell.free.started{border-color:var(--complete)}
+body.light .cell.free.full-house{background:var(--complete);color:var(--complete-text)}
+.footer{max-width:760px;margin:18px auto 0;color:var(--muted);font-size:14px;line-height:1.5;text-align:center}.reset-wrap{display:flex;justify-content:center;margin-top:18px}.backdrop,.surprise-overlay{position:fixed;inset:0;background:rgba(0,0,0,.86);display:none;place-items:center;padding:24px;z-index:300;backdrop-filter:blur(22px) saturate(.55);-webkit-backdrop-filter:blur(22px) saturate(.55)}.backdrop.show,.surprise-overlay.active{display:grid}.modal,.surprise-card{width:min(740px,100%);max-height:84vh;overflow:auto;background:radial-gradient(circle at 50% 0%,rgba(255,255,255,.085),transparent 64%),linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.018)),#0b0b0b;border:1px solid rgba(255,255,255,.34);border-radius:16px;padding:28px;text-align:left;box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 32px 110px rgba(0,0,0,.72);animation:modalIn .22s ease both}.surprise-card.rolling{animation:surpriseShake .35s ease infinite}@keyframes modalIn{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes surpriseShake{0%,100%{transform:rotate(0)}25%{transform:rotate(-.45deg) translateX(-2px)}75%{transform:rotate(.45deg) translateX(2px)}}
+.modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:16px}.modal h2,.surprise-title{font-family:var(--sage-headline);font-size:clamp(34px,5vw,50px);font-weight:900;letter-spacing:-.055em;line-height:1;margin:0;color:var(--text)}.label{font-family:var(--sage-ui);color:var(--accent);text-transform:uppercase;letter-spacing:.14em;font-size:11px;font-weight:900;margin-bottom:8px}.modal p,.modal li{color:rgba(255,255,255,.84);line-height:1.62}.hint,.surprise-prompt{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:18px 20px;color:rgba(255,255,255,.84);line-height:1.55;margin-top:10px;white-space:pre-line}.tip-box{margin-top:14px}.tip-box summary{list-style:none}.tip-box summary::-webkit-details-marker{display:none}.tip-trigger{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.035);color:var(--text);border-radius:999px;min-height:40px;padding:0 14px;font-weight:800;font-size:13px;cursor:pointer;user-select:none}.tip-trigger:hover{border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.06)}.tip-trigger::after{content:"+";font-size:16px;line-height:1;opacity:.8}.tip-box[open] .tip-trigger::after{content:"−"}.actions,.surprise-actions{display:grid;grid-template-columns:1fr 1fr 0.86fr;gap:12px;margin-top:18px}.actions.two{grid-template-columns:1fr 1fr}.actions.one{grid-template-columns:1fr}.close{flex:0 0 auto;width:34px;height:34px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:none;color:var(--dim);display:flex;align-items:center;justify-content:center}.close:hover{border-color:var(--accent);color:var(--accent)}.surprise-topline{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.surprise-goodfor{font-size:13px;color:var(--muted)}.surprise-divider{height:1px;background:rgba(255,255,255,.1);margin:16px 0}.surprise-badge{display:inline-flex;margin-top:12px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:5px 11px;border-radius:7px;background:rgba(0,214,57,.1);color:var(--accent);border:1px solid rgba(0,214,57,.24)}
+
+.share-modal{width:min(820px,100%)}
+.share-intro{margin-top:0}
+.share-preview-wrap{background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:12px;display:flex;justify-content:center}
+.share-preview{display:block;width:100%;max-width:680px;border-radius:12px;background:#000}
+.share-caption{margin-top:16px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:16px 18px}
+.share-caption-preview{margin:0;white-space:pre-line;line-height:1.6}
+.share-caption-preview .placeholder{color:var(--accent);font-weight:800}
+.share-caption-input{display:block;width:100%;min-height:170px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 16px;color:var(--text);font:inherit;line-height:1.6;resize:vertical}
+.share-caption-input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.share-actions{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-top:16px}
+.share-note{margin:14px 0 0;color:var(--muted);font-size:13px}
+body.light .share-caption{background:rgba(0,0,0,.025);border-color:rgba(0,0,0,.1)}
+body.light .share-caption-input{background:#fff;border-color:rgba(0,0,0,.12);color:#111}
+@media(max-width:720px){.share-actions{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.share-actions{grid-template-columns:1fr}}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--surface);border:1px solid var(--accent-border);color:var(--text);padding:11px 15px;border-radius:999px;opacity:0;transition:.2s;z-index:600;font-weight:800;box-shadow:0 14px 40px rgba(0,0,0,.28)}.toast.show{opacity:1;transform:translate(-50%,0)}
+body.light .backdrop,body.light .surprise-overlay{background:rgba(247,245,240,.78)}body.light .modal,body.light .surprise-card{background:radial-gradient(circle at top,rgba(0,214,57,.1),transparent 54%),linear-gradient(180deg,rgba(255,255,255,.98),rgba(244,242,236,.98));border-color:rgba(0,0,0,.12);box-shadow:0 30px 90px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.75)}body.light .modal h2,body.light .surprise-title{color:#000}body.light .modal p,body.light .modal li,body.light .hint,body.light .surprise-prompt{color:rgba(0,0,0,.78)}body.light .hint,body.light .surprise-prompt{background:rgba(0,0,0,.025);border-color:rgba(0,0,0,.1)}body.light .tip-trigger{border-color:rgba(0,0,0,.12);background:rgba(0,0,0,.025);color:#111}body.light .tip-trigger:hover{border-color:rgba(0,0,0,.22);background:rgba(0,0,0,.045)}body.light .close{border-color:rgba(0,0,0,.12);color:rgba(0,0,0,.52)}
+@media(max-width:820px){.site-nav{padding:0 14px}.nav-tabs{display:none}.board-shell{width:100%}.board{min-width:760px}.hero{text-align:center}.progress-row{align-items:flex-start}.page{padding-left:12px;padding-right:12px}}@media(max-width:560px){.page{padding-top:40px}.controls{display:grid;grid-template-columns:1fr;width:100%}.controls .pill-btn{width:100%}.backdrop,.surprise-overlay{padding:16px;align-items:flex-end}.modal,.surprise-card{padding:22px;width:100%;max-height:calc(100dvh - 32px)}.actions,.actions.two,.surprise-actions{grid-template-columns:1fr}.actions .pill-btn,.actions .link-btn,.surprise-actions .pill-btn,.surprise-actions .link-btn{width:100%}}
+
+@media(max-width:620px){h1{font-size:clamp(38px,12vw,58px)}.rotator-line{font-size:clamp(17px,5vw,22px);gap:5px}.rotator{min-width:120px}.page{padding-top:40px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<nav class="site-nav" aria-label="Main navigation">
+  <div class="nav-left">
+    <a class="nav-brand" href="index.html#home">MA&amp;A · AI Prompts</a>
+    <div class="nav-tabs">
+      <a class="nav-tab" href="index.html#home">Home</a>
+      <a class="nav-tab" href="index.html#library">Library</a>
+      <a class="nav-tab" href="index.html#personaliser">Personaliser</a>
+      <a class="nav-tab" href="index.html#feedback">Feedback</a>
+      <a class="nav-tab active" href="curiosity-bingo-page.html" aria-current="page">Curiosity Bingo</a>
+    </div>
+  </div>
+  <button class="theme-toggle" id="theme" type="button" title="Toggle light/dark" aria-label="Toggle light and dark mode">☀</button>
+</nav>
+<main class="page">
+  <section class="hero">
+    <h1 class="hero-title">
+      <span class="hero-line">Curiosity Bingo</span>
+      <span class="hero-line rotator-wrap"><span class="rotator-label">Fuel your</span><span class="rotator" id="rotator"><span class="rotator-track" id="rotatorTrack"></span></span></span>
+    </h1>
+    <p class="intro">Pick a square, try the challenge and mark it complete. Complete a line to hit BINGO.</p>
+  </section>
+  <nav class="controls" aria-label="Bingo controls"><button class="pill-btn" id="howBtn" type="button">How to play</button><button class="pill-btn surprise-trace" id="surprise" type="button"><span class="landing-surprise-shimmer" aria-hidden="true"></span><span class="landing-surprise-label">Surprise me ✦</span></button><button class="pill-btn" id="share" type="button">Share progress</button></nav>
+  <section class="progress" aria-label="Progress"><div class="progress-row"><div><span class="pct" id="pct">0%</span> <span class="meta" id="count">0 of 24 completed</span></div><span class="meta" id="saved">Progress saved on this device</span></div><div class="track"><div class="fill" id="fill"></div></div></section>
+  <section class="board-shell" aria-label="Curiosity Bingo board"><div class="board" id="board"></div></section>
+  <p class="footer">Complete a line. Keep going for the full card.</p>
+  <div class="reset-wrap"><button class="pill-btn reset" id="reset" type="button">Reset card</button></div>
+</main>
+<div class="backdrop" id="challenge" role="dialog" aria-modal="true" aria-labelledby="ctitle"><article class="modal"><div class="modal-head"><div><div class="label" id="ccat">Challenge</div><h2 id="ctitle"></h2></div><button class="close" data-close="challenge" type="button" aria-label="Close">×</button></div><p id="cdesc"></p><details class="tip-box" id="tipBox" hidden><summary class="tip-trigger">Tip</summary><div class="hint" id="chint"></div></details><div class="actions" id="cardActions"><a class="link-btn" id="resource" href="#" target="_blank" rel="noopener">Open resource</a><button class="pill-btn primary" id="complete" type="button">Mark as complete</button><button class="pill-btn" id="rollAgain" type="button" hidden>Roll again</button></div></article></div>
+<div class="surprise-overlay" id="surpriseOverlay" aria-hidden="true"><article class="surprise-card" id="surpriseCard" role="dialog" aria-modal="true" aria-labelledby="surpriseTitle"><div class="surprise-topline"><div><div class="label">Picked for you</div><div class="surprise-goodfor" id="surpriseGoodFor">Rolling through unfinished squares</div></div><button class="close" id="surpriseClose" type="button" aria-label="Close surprise challenge">×</button></div><h2 class="surprise-title" id="surpriseTitle">Surprise me</h2><div class="surprise-divider"></div><div class="surprise-prompt" id="surprisePrompt">Pick one unfinished square and give it a go.</div><div class="surprise-badge" id="surpriseBadge">Curiosity Bingo</div><div class="surprise-actions" id="surpriseActions"><button class="pill-btn primary" id="surpriseComplete" type="button">Mark complete</button><a class="link-btn" id="surpriseResource" href="#" target="_blank" rel="noopener" hidden>Open resource</a><button class="pill-btn" id="surpriseRoll" type="button">Roll again</button></div></article></div>
+<div class="backdrop" id="how" role="dialog" aria-modal="true" aria-labelledby="howTitle"><article class="modal"><div class="modal-head"><div><div class="label">How to play</div><h2 id="howTitle">Play the card your way</h2></div><button class="close" data-close="how" type="button" aria-label="Close">×</button></div><ol><li>Choose any square or use Surprise me to pick one unfinished challenge.</li><li>Open the linked resource where one is provided.</li><li>Try the challenge, then mark it complete.</li><li>Finish a row, column or diagonal to hit BINGO.</li><li>Take it further by completing the whole card.</li><li>Completed a line or full house? Share one thing you tried, what you learned and one tip for the cohort.</li></ol></article></div>
+<div class="backdrop" id="win" role="dialog" aria-modal="true" aria-labelledby="wtitle"><article class="modal" style="text-align:center"><button class="close" data-close="win" type="button" aria-label="Close">×</button><div class="label">Progress milestone</div><h2 id="wtitle">BINGO</h2><p id="wtext">You completed a line. Keep going to see how far your curiosity takes you.</p><button class="pill-btn primary" data-close="win" type="button" style="margin-top:14px">Back to my card</button></article></div>
+
+<div class="backdrop" id="shareModal" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
+  <article class="modal share-modal">
+    <div class="modal-head">
+      <div>
+        <div class="label">Share progress</div>
+        <h2 id="shareTitle">Share your Curiosity Bingo</h2>
+      </div>
+      <button class="close" data-close="shareModal" type="button" aria-label="Close">×</button>
+    </div>
+    <p class="share-intro">Here is a share-ready image of your current card.</p>
+    <div class="share-preview-wrap">
+      <img id="sharePreview" class="share-preview" alt="Preview of current Curiosity Bingo progress">
+    </div>
+    <div class="share-caption">
+      <div class="label">Suggested message</div>
+      <div id="shareCaptionPreview" class="share-caption-preview"></div>
+      <textarea id="shareCaptionInput" class="share-caption-input" hidden></textarea>
+    </div>
+    <div class="share-actions">
+      <button class="pill-btn primary" id="nativeShare" type="button">Share</button>
+      <button class="pill-btn" id="saveImage" type="button">Save image</button>
+      <button class="pill-btn" id="personaliseMessage" type="button">Personalise message</button>
+      <button class="pill-btn" id="copyCaption" type="button">Copy message</button>
+    </div>
+    <p class="share-note">Share it with a team member or post it with <strong>#MSCopilotWin</strong>.</p>
+  </article>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite">Progress copied</div>
+<script>
+const challenges=[
+{title:"Take the AI Persona Quiz",cat:"Discover",level:"easy",desc:"Find your AI starting style and use it as a conversation starter.",hint:"Notice one strength and one habit you want to build next.",link:"https://sage365.sharepoint.com/sites/MarketingAIHub/SitePages/persona-quiz.aspx",resource:"AI Persona Quiz"},
+{title:"Use AI to prepare for a meeting",cat:"Practical AI",level:"easy",desc:"Ask Copilot for likely questions, talking points, risks and a simple agenda.",hint:"Give it the meeting purpose, audience and what a good outcome looks like."},
+{title:"Try a prompt from the Prompt Library",cat:"Prompting",level:"easy",desc:"Choose one reusable prompt and adapt it to a real task you have this week.",hint:"Pick a prompt, add your own context and save the version that worked best.",link:"https://prompt-library-ve.vercel.app/",resource:"Prompt Library"},
+{title:"Ask AI to challenge your thinking",cat:"Check",level:"medium",desc:"Share an idea, plan or decision and ask AI to identify assumptions, risks or gaps.",hint:"Ask: ‘What might I be overlooking?’ or ‘What would someone who disagrees with this say?’"},
+{title:"Explore the AI Toolkit",cat:"Learn",level:"easy",desc:"Open the toolkit and save one resource, prompt or idea worth coming back to.",hint:"Look near the examples and challenge prompts first.",link:"https://sage365.sharepoint.com/:b:/s/LDCoEProgrammes/IQDy2YIvTmR_T6Udd85M3FtwAZAY70j51DWrQh1VjnKjWTU?e=FVBODk",resource:"AI Toolkit"},
+{title:"Summarise a meeting you missed",cat:"Practical AI",level:"easy",desc:"Use Copilot in Teams to pull out the decisions, actions and owners from a meeting recording.",hint:"Check the summary, then verify one important point with someone who was there."},
+{title:"Explain an AI term without jargon",cat:"Learn",level:"easy",desc:"Pick a term from the AI Jargon Buster and write a plain-English explanation for your team.",hint:"Post it in your team chat. If someone says, ‘That actually makes sense,’ you have completed it.",link:"https://m365.cloud.microsoft/chat/?titleId=T_29dc35f1-6589-f54f-2bc5-6e586b2b5954",resource:"AI Jargon Buster"},
+{title:"Build your first Copilot agent",cat:"Stretch",level:"hard",desc:"Think of a task you repeat or something you regularly need help with. Create a simple agent designed to support that task.",hint:"Open Copilot, choose New agent, then start with a template or describe what you want it to do. Test it with a real example, improve the instructions, then share it with someone else to try."},
+{title:"Explore an agent from the catalogue",cat:"Discover",level:"medium",desc:"Find one existing agent that could support your role or workflow.",hint:"Open an agent card and note what it does, who owns it and whether it could help you.",link:"https://sage365.sharepoint.com/sites/MarketingAIHub/SitePages/Bots-catalogue.aspx",resource:"Agent Catalogue"},
+{title:"Brainstorm 10 ideas, then pick the best",cat:"Practical AI",level:"easy",desc:"Use AI to generate options, then apply your own criteria.",hint:"Ask for 10 ideas, choose two or three criteria, then select the strongest option."},
+{title:"Share a #MSCopilotWin",cat:"Share",level:"medium",desc:"Share one useful Copilot example that could help someone else get started.",hint:"Describe the challenge, what Copilot helped you do and one tip for someone trying it.",link:"https://sage365.sharepoint.com/:b:/s/LDCoEProgrammes/IQDy2YIvTmR_T6Udd85M3FtwAZAY70j51DWrQh1VjnKjWTU?e=bFOvpu",resource:"#MSCopilotWin challenge"},
+{title:"Teach a colleague one Copilot trick",cat:"Share",level:"medium",desc:"Show someone one useful prompt, feature or shortcut.",hint:"Choose something genuinely useful and let them try it themselves."},
+{title:"STAY CURIOUS",cat:"",level:"free",desc:"Keep asking what else is possible.",hint:"",free:true},
+{title:"Improve one recurring task with AI",cat:"Stretch",level:"hard",desc:"Choose something repetitive and test one small improvement.",hint:"Start with the smallest useful part rather than trying to automate everything."},
+{title:"Try a blank-canvas prompt from the Toolkit",cat:"Practical AI",level:"medium",desc:"Open the ‘Start with a blank canvas’ page, choose a prompt for Word, Excel, PowerPoint, Outlook or Teams, then see what Copilot builds from nothing.",hint:"For example: ‘Create a How I Work at Sage guide that summarises my role, the work I do, the tools I use and which recurring tasks could benefit from Copilot.’"},
+{title:"Rewrite something for a different audience",cat:"Practical AI",level:"easy",desc:"Take an existing document, email or brief and ask Copilot to reframe it for a different reader.",hint:"Try an executive, client or new joiner. Compare the two versions and note what changed."},
+{title:"Have an AI conversation with your manager",cat:"Stretch",level:"hard",desc:"Discuss where AI could support your role and development.",hint:"Use one conversation starter from the AI Toolkit and agree one small next step.",link:"https://sage365.sharepoint.com/:b:/s/LDCoEProgrammes/IQDy2YIvTmR_T6Udd85M3FtwAZAY70j51DWrQh1VjnKjWTU?e=FVBODk",resource:"AI Toolkit"},
+{title:"Catch Copilot getting something wrong",cat:"Check",level:"medium",desc:"Verify one confident-sounding claim against a trusted source.",hint:"Check the source, date and whether the answer is backed up."},
+{title:"Use AI to make sense of something",cat:"Practical AI",level:"medium",desc:"Choose a document, report, email, article or piece of information that feels difficult to understand.",hint:"Ask what stands out, why it matters and how it could be explained more simply. Take it further by asking AI to visualise the meaning as a table, flow, diagram or analogy."},
+{title:"Ask Copilot: What am I not asking?",cat:"Reflect",level:"easy",desc:"Use AI to uncover gaps or alternative angles.",hint:"Run this after your first answer and compare what new questions appear."},
+{title:"Ask Copilot to critique your writing",cat:"Practical AI",level:"easy",desc:"Ask what is unclear, repetitive or missing.",hint:"Ask for specific issues, not just a rewrite."},
+{title:"Try Copilot in an app you have never used it in",cat:"Discover",level:"medium",desc:"Use Copilot in a Microsoft app you have not tried it in before.",hint:"If you usually use it in Teams, try Excel or PowerPoint. Note one thing it did that surprised you."},
+{title:"Run a 15-minute AI experiment",cat:"Reflect",level:"easy",desc:"Pick one real task and do it once with AI and once without AI.",hint:"Note the difference in time or quality, then share the result with your pair."},
+{title:"Meet someone from another office",cat:"Connect",level:"medium",desc:"Swap one thing you have each learned about AI.",hint:"Ask what they have tried, what worked and what they would recommend."},
+{title:"Build a 3-item starter kit for your team",cat:"Reflect",level:"easy",desc:"Collect one prompt, one agent and one tip that would genuinely help your team.",hint:"Share the starter kit in your team channel with a one-line explanation of why each item is useful."}
+];
+const lines=[[0,1,2,3,4],[5,6,7,8,9],[10,11,12,13,14],[15,16,17,18,19],[20,21,22,23,24],[0,5,10,15,20],[1,6,11,16,21],[2,7,12,17,22],[3,8,13,18,23],[4,9,14,19,24],[0,6,12,18,24],[4,8,12,16,20]];
+const storageKey="curiosity-bingo-v22",themeKey="curiosity-bingo-theme-v22";
+const done=new Set(JSON.parse(localStorage.getItem(storageKey)||"[]"));let active=null,bingoShown=false,fullShown=false,winners=new Set(),surpriseTimers=[],surpriseActive=null,surpriseRolling=false;const $=id=>document.getElementById(id);const isDone=i=>challenges[i].free||done.has(i);const wins=()=>lines.filter(l=>l.every(isDone));
+function icon(){return '<svg class="expand-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"></path><path d="M21 3l-7 7"></path><path d="M8 21H3v-5"></path><path d="M3 21l7-7"></path></svg>'}
+function refreshWinners(){winners=new Set(wins().flat())}
+function save(){localStorage.setItem(storageKey,JSON.stringify([...done]));$("saved").textContent="Progress saved ✓";setTimeout(()=>$("saved").textContent="Progress saved on this device",1200)}
+function toast(t){$("toast").textContent=t;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),1800)}
+function render(){
+  const board=$("board");
+  board.innerHTML="";
+  const count=done.size;
+  const pct=Math.round(count/24*100);
+  const progressRatio=count/24;
+  const fullHouse=count===24;
+  const isLight=document.body.classList.contains("light");
+
+  challenges.forEach((item,i)=>{
+    const cell=document.createElement("button");
+    cell.type="button";
+    cell.className="cell"+(item.free?" free":"")+(done.has(i)?" done":"")+(winners.has(i)?" win":"");
+    if(item.free && count>0) cell.className += " started";
+    if(item.free && fullHouse) cell.className += " full-house";
+    cell.innerHTML=`<span class="cell-title">${item.title}</span>${item.free?"":icon()}`;
+
+    if(item.free){
+      cell.disabled=true;
+      cell.style.setProperty("--free-progress", progressRatio.toFixed(3));
+      cell.style.setProperty("--free-text", progressRatio >= 0.55 ? "var(--complete-text)" : (isLight ? "#111" : "var(--text)"));
+    }else{
+      cell.addEventListener("click",()=>openCard(i,false))
+    }
+
+    board.appendChild(cell)
+  });
+
+  $("pct").textContent=pct+"%";
+  $("count").textContent=count+" of 24 completed";
+  $("fill").style.width=pct+"%";
+  $("fill").classList.toggle("hot",pct>=75);
+  $("theme").textContent=document.body.classList.contains("light")?"☾":"☀"
+}
+function configureResource(anchor,item){if(item.link){anchor.hidden=false;anchor.href=item.link;anchor.textContent="Open "+(item.resource||"resource");anchor.target="_blank";anchor.rel="noopener"}else{anchor.hidden=true;anchor.removeAttribute("href")}}
+function setActions(container,hasResource,hasRoll){container.className="actions "+((hasResource?1:0)+1+(hasRoll?1:0)===1?"one":((hasResource?1:0)+1+(hasRoll?1:0)===2?"two":""))}
+function openCard(i,fromSurprise){const item=challenges[i];active=i;$("ccat").textContent=item.cat||"Challenge";$("ctitle").textContent=item.title;$("cdesc").textContent=item.desc||"Try the challenge.";const tipBox=$("tipBox");if(item.hint){$("chint").textContent=item.hint;tipBox.hidden=false;tipBox.open=false}else{$("chint").textContent="";tipBox.hidden=true;tipBox.open=false}$("complete").textContent=done.has(i)?"Mark as incomplete":"Mark as complete";$("rollAgain").hidden=!fromSurprise;configureResource($("resource"),item);setActions($("cardActions"),Boolean(item.link),fromSurprise);$("challenge").classList.add("show")}
+function pickUnfinished(){const remaining=challenges.map((_,i)=>i).filter(i=>!challenges[i].free&&!done.has(i));return remaining.length?remaining[Math.floor(Math.random()*remaining.length)]:null}
+function renderSurpriseCard(i){const item=challenges[i];surpriseActive=i;$("surpriseTitle").textContent=item.title;$("surpriseGoodFor").textContent=(item.cat||"Challenge")+" · unfinished square";$("surprisePrompt").textContent=(item.desc||"Try the challenge.")+(item.hint?"\n\nHint: "+item.hint:"");$("surpriseBadge").textContent=item.resource||item.cat||"Curiosity Bingo";$("surpriseComplete").textContent=done.has(i)?"Mark incomplete":"Mark complete";configureResource($("surpriseResource"),item);$("surpriseActions").className="surprise-actions";}
+function rollSurpriseSequence(){if(surpriseRolling)return;const remaining=challenges.map((_,i)=>i).filter(i=>!challenges[i].free&&!done.has(i));if(!remaining.length){toast("Full house already complete");return}const card=$("surpriseCard"),reduce=window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches,steps=reduce?1:8;surpriseTimers.forEach(clearTimeout);surpriseTimers=[];surpriseRolling=true;if(card)card.classList.add("rolling");$("surpriseRoll").textContent="Rolling...";for(let i=0;i<steps;i++){surpriseTimers.push(setTimeout(()=>{const picked=remaining[Math.floor(Math.random()*remaining.length)];renderSurpriseCard(picked);if(i===steps-1){surpriseRolling=false;if(card)card.classList.remove("rolling");$("surpriseRoll").textContent="Roll again"}},reduce?0:70*i*(1+i*.18)))}}
+function surprise(){const first=pickUnfinished();if(first===null){toast("Full house already complete");return}renderSurpriseCard(first);$("surpriseOverlay").classList.add("active");$("surpriseOverlay").setAttribute("aria-hidden","false");document.body.style.overflow="hidden";rollSurpriseSequence()}
+function closeSurprise(){surpriseTimers.forEach(clearTimeout);surpriseTimers=[];surpriseRolling=false;$("surpriseCard").classList.remove("rolling");$("surpriseOverlay").classList.remove("active");$("surpriseOverlay").setAttribute("aria-hidden","true");document.body.style.overflow=""}
+function closeModal(id){$(id).classList.remove("show")}
+function checkMilestones(){const hasBingo=wins().length>0,isFull=challenges.every((_,i)=>isDone(i));if(isFull&&!fullShown){fullShown=true;$("wtitle").textContent="Full house";$("wtext").textContent="You completed the full card. Share one thing you tried, what you learned and one tip for the cohort.";$("win").classList.add("show")}else if(hasBingo&&!bingoShown){bingoShown=true;$("wtitle").textContent="BINGO";$("wtext").textContent="You completed a line. Keep going to see how far your curiosity takes you.";$("win").classList.add("show")}}
+$("complete").addEventListener("click",()=>{if(active===null)return;done.has(active)?done.delete(active):done.add(active);save();refreshWinners();render();closeModal("challenge");checkMilestones()});
+$("rollAgain").addEventListener("click",()=>{closeModal("challenge");surprise()});$("surprise").addEventListener("click",surprise);$("surpriseRoll").addEventListener("click",rollSurpriseSequence);$("surpriseClose").addEventListener("click",closeSurprise);$("surpriseComplete").addEventListener("click",()=>{if(surpriseActive===null)return;done.has(surpriseActive)?done.delete(surpriseActive):done.add(surpriseActive);save();refreshWinners();render();renderSurpriseCard(surpriseActive);closeSurprise();checkMilestones()});$("surpriseOverlay").addEventListener("click",e=>{if(e.target===$("surpriseOverlay"))closeSurprise()});$("howBtn").addEventListener("click",()=>$("how").classList.add("show"));$("theme").addEventListener("click",()=>{document.body.classList.toggle("light");localStorage.setItem(themeKey,document.body.classList.contains("light")?"light":"dark");render()});$("reset").addEventListener("click",()=>{if(confirm("Reset the whole bingo card?")){done.clear();localStorage.setItem(storageKey,"[]");winners=new Set();bingoShown=false;fullShown=false;render();toast("Card reset")}});
+function getDefaultShareCaption(){
+  const completed=done.size;
+  const pct=Math.round(completed/24*100);
+  const bingo=wins().length>0;
+  return `I’m ${pct}% through Curiosity Bingo with ${completed} of 24 challenges completed${bingo?" and I’ve hit BINGO.":"."}
+
+One thing I tried: [add yours]
+One thing I learned: [add yours]
+
+#MSCopilotWin`;
+}
+
+function escapeHtml(str){
+  return str
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;");
+}
+
+function renderShareCaptionPreview(text){
+  const preview=$("shareCaptionPreview");
+  preview.innerHTML=escapeHtml(text)
+    .replace(/\[add yours\]/gi,'<span class="placeholder">[add yours]</span>')
+    .replace(/\n/g,"<br>");
+}
+
+function roundedRect(ctx,x,y,w,h,r){
+  const radius=Math.min(r,w/2,h/2);
+  ctx.beginPath();
+  ctx.moveTo(x+radius,y);
+  ctx.arcTo(x+w,y,x+w,y+h,radius);
+  ctx.arcTo(x+w,y+h,x,y+h,radius);
+  ctx.arcTo(x,y+h,x,y,radius);
+  ctx.arcTo(x,y,x+w,y,radius);
+  ctx.closePath();
+}
+
+function wrapCanvasText(ctx,text,maxWidth){
+  const words=text.split(/\s+/);
+  const lines=[];
+  let line="";
+  words.forEach(word=>{
+    const test=line?line+" "+word:word;
+    if(ctx.measureText(test).width>maxWidth && line){
+      lines.push(line);
+      line=word;
+    }else{
+      line=test;
+    }
+  });
+  if(line)lines.push(line);
+  return lines.slice(0,4);
+}
+
+function drawShareCard(){
+  const canvas=document.createElement("canvas");
+  const scale=2;
+  const width=1200;
+  const height=1450;
+  canvas.width=width*scale;
+  canvas.height=height*scale;
+  const ctx=canvas.getContext("2d");
+  ctx.scale(scale,scale);
+
+  const bg="#000000";
+  const panel="#141414";
+  const card="#0b0b0b";
+  const green="#00d639";
+  const white="#ffffff";
+  const muted="#c8c8c8";
+  const border="#4a4a4a";
+
+  ctx.fillStyle=bg;
+  ctx.fillRect(0,0,width,height);
+
+  ctx.fillStyle=white;
+  ctx.textAlign="center";
+  ctx.textBaseline="top";
+  ctx.font='900 78px "Segoe UI", Arial, sans-serif';
+  ctx.fillText("Curiosity Bingo",width/2,60);
+
+  const completed=done.size;
+  const pct=Math.round(completed/24*100);
+  ctx.fillStyle=green;
+  ctx.font='900 44px "Segoe UI", Arial, sans-serif';
+  ctx.fillText(`${pct}% complete`,width/2,155);
+
+  ctx.fillStyle=muted;
+  ctx.font='700 26px "Segoe UI", Arial, sans-serif';
+  ctx.fillText(`${completed} of 24 challenges completed${wins().length?" • BINGO":""}`,width/2,212);
+
+  const boardX=80;
+  const boardY=285;
+  const boardW=1040;
+  const gap=12;
+  const cell=(boardW-gap*4)/5;
+
+  roundedRect(ctx,boardX-18,boardY-18,boardW+36,boardW+36,28);
+  ctx.fillStyle=panel;
+  ctx.fill();
+
+  challenges.forEach((item,i)=>{
+    const row=Math.floor(i/5);
+    const col=i%5;
+    const x=boardX+col*(cell+gap);
+    const y=boardY+row*(cell+gap);
+    const complete=item.free||done.has(i);
+
+    roundedRect(ctx,x,y,cell,cell,18);
+    ctx.fillStyle=complete?green:card;
+    ctx.fill();
+    ctx.lineWidth=2;
+    ctx.strokeStyle=complete?green:border;
+    ctx.stroke();
+
+    ctx.fillStyle=complete?"#041007":white;
+    ctx.textAlign="center";
+    ctx.textBaseline="middle";
+    ctx.font='800 23px "Segoe UI", Arial, sans-serif';
+    const lines=wrapCanvasText(ctx,item.title,cell-34);
+    const lineHeight=27;
+    const startY=y+cell/2-(lines.length-1)*lineHeight/2;
+    lines.forEach((line,index)=>ctx.fillText(line,x+cell/2,startY+index*lineHeight));
+
+    if(done.has(i) && !item.free){
+      ctx.textAlign="right";
+      ctx.textBaseline="top";
+      ctx.font='900 14px "Segoe UI", Arial, sans-serif';
+      ctx.fillText("DONE",x+cell-12,y+12);
+    }
+  });
+
+  const footerY=boardY+boardW+65;
+  ctx.textAlign="center";
+  ctx.textBaseline="top";
+  ctx.fillStyle=white;
+  ctx.font='900 34px "Segoe UI", Arial, sans-serif';
+  ctx.fillText("What have you tried?",width/2,footerY);
+
+  ctx.fillStyle=muted;
+  ctx.font='700 24px "Segoe UI", Arial, sans-serif';
+  ctx.fillText("Share one thing you learned with your team.",width/2,footerY+52);
+
+  ctx.fillStyle=green;
+  ctx.font='900 26px "Segoe UI", Arial, sans-serif';
+  ctx.fillText("#MSCopilotWin",width/2,footerY+96);
+
+  return canvas;
+}
+
+async function canvasToFile(canvas){
+  const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/png"));
+  return new File([blob],"curiosity-bingo-progress.png",{type:"image/png"});
+}
+
+let currentShareCanvas=null;
+let currentShareFile=null;
+
+function getCurrentShareCaption(){
+  return $("shareCaptionInput").value || getDefaultShareCaption();
+}
+
+$("share").addEventListener("click",async()=>{
+  currentShareCanvas=drawShareCard();
+  currentShareFile=await canvasToFile(currentShareCanvas);
+  $("sharePreview").src=currentShareCanvas.toDataURL("image/png");
+  $("shareCaptionInput").value=getDefaultShareCaption();
+  $("shareCaptionInput").hidden=true;
+  $("shareCaptionPreview").hidden=false;
+  renderShareCaptionPreview($("shareCaptionInput").value);
+  $("personaliseMessage").textContent="Personalise message";
+  $("shareCaptionInput").dataset.editing="false";
+  $("nativeShare").hidden=!(navigator.share && navigator.canShare && navigator.canShare({files:[currentShareFile]}));
+  $("shareModal").classList.add("show");
+});
+
+$("saveImage").addEventListener("click",()=>{
+  if(!currentShareCanvas)return;
+  const link=document.createElement("a");
+  link.download="curiosity-bingo-progress.png";
+  link.href=currentShareCanvas.toDataURL("image/png");
+  link.click();
+  toast("Image saved");
+});
+
+$("personaliseMessage").addEventListener("click",()=>{
+  const input=$("shareCaptionInput");
+  const preview=$("shareCaptionPreview");
+  const editing=input.dataset.editing==="true";
+
+  if(!editing){
+    input.hidden=false;
+    preview.hidden=true;
+    input.dataset.editing="true";
+    $("personaliseMessage").textContent="Done editing";
+    input.focus();
+    input.setSelectionRange(input.value.length,input.value.length);
+  }else{
+    input.hidden=true;
+    preview.hidden=false;
+    input.dataset.editing="false";
+    $("personaliseMessage").textContent="Personalise message";
+    renderShareCaptionPreview(input.value);
+  }
+});
+
+$("shareCaptionInput").addEventListener("input",()=>{
+  renderShareCaptionPreview($("shareCaptionInput").value);
+});
+
+$("copyCaption").addEventListener("click",async()=>{
+  try{
+    await navigator.clipboard.writeText(getCurrentShareCaption());
+    toast("Message copied");
+  }catch{
+    toast("Could not copy message");
+  }
+});
+
+$("nativeShare").addEventListener("click",async()=>{
+  if(!currentShareFile)return;
+  try{
+    await navigator.share({
+      title:"Curiosity Bingo",
+      text:getCurrentShareCaption(),
+      files:[currentShareFile]
+    });
+  }catch(err){
+    if(err.name!=="AbortError")toast("Could not open sharing");
+  }
+});
+
+document.querySelectorAll("[data-close]").forEach(btn=>btn.addEventListener("click",()=>closeModal(btn.dataset.close)));["challenge","how","win","shareModal"].forEach(id=>$(id).addEventListener("click",e=>{if(e.target===$(id))closeModal(id)}));document.addEventListener("keydown",e=>{if(e.key==="Escape"){["challenge","how","win","shareModal"].forEach(id=>closeModal(id));closeSurprise()}});
+const rotatorWords=["confidence","ideas","experiments","curiosity."];
+let rotatorIndex=0;
+function startRotator(){
+  const track=$("rotatorTrack");
+  track.innerHTML=rotatorWords.map(word=>`<span class="rotator-word">${word}</span>`).join("");
+  track.style.setProperty("--i",0);
+  setTimeout(rotateWord,1200);
+}
+function rotateWord(){
+  rotatorIndex=(rotatorIndex+1)%rotatorWords.length;
+  $("rotatorTrack").style.setProperty("--i",rotatorIndex);
+  setTimeout(rotateWord,rotatorWords[rotatorIndex]==="curiosity."?3200:1200);
+}
+function startSurpriseNudges(){const btn=$("surprise");if(window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches)return;const seq=["is-shimmering","is-pulsing","is-bouncing","is-wiggling"];let i=0;setTimeout(()=>btn.classList.add("is-tracing"),2600);const run=()=>{seq.forEach(c=>btn.classList.remove(c));void btn.offsetWidth;btn.classList.add(seq[i]);setTimeout(()=>{btn.classList.remove(seq[i]);i=(i+1)%seq.length;setTimeout(run,i===0?5000:900)},1050)};setTimeout(run,5000)}
+if(localStorage.getItem(themeKey)==="light")document.body.classList.add("light");refreshWinners();render();startRotator();startSurpriseNudges();checkMilestones();
+</script>
+</body>
+</html>
