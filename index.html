@@ -2333,6 +2333,50 @@
     animation: modalIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
+  .lib-modal,
+  .lib-personaliser {
+    --dialog-scroll-thumb: rgba(255,255,255,0.32);
+    --dialog-scroll-hover: #00D639;
+    color-scheme: dark;
+    scrollbar-width: thin;
+    scrollbar-color: var(--dialog-scroll-thumb) transparent;
+    scrollbar-gutter: stable;
+    overscroll-behavior: contain;
+  }
+
+  body.light .lib-modal,
+  body.light .lib-personaliser {
+    --dialog-scroll-thumb: rgba(0,0,0,0.28);
+    --dialog-scroll-hover: #008a25;
+    color-scheme: light;
+  }
+
+  @supports selector(::-webkit-scrollbar) {
+    .lib-modal,
+    .lib-personaliser { scrollbar-width: auto; scrollbar-color: auto; }
+
+    .lib-modal::-webkit-scrollbar,
+    .lib-personaliser::-webkit-scrollbar { width: 8px; }
+
+    .lib-modal::-webkit-scrollbar-track,
+    .lib-personaliser::-webkit-scrollbar-track { background: transparent; margin-block: 16px; }
+
+    .lib-modal::-webkit-scrollbar-thumb,
+    .lib-personaliser::-webkit-scrollbar-thumb {
+      background: var(--dialog-scroll-thumb);
+      border: 2px solid transparent;
+      background-clip: padding-box;
+      border-radius: 999px;
+      min-height: 40px;
+    }
+
+    .lib-modal::-webkit-scrollbar-thumb:hover,
+    .lib-personaliser::-webkit-scrollbar-thumb:hover { background-color: var(--dialog-scroll-hover); }
+
+    .lib-modal::-webkit-scrollbar-button,
+    .lib-personaliser::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+  }
+
   .lib-modal-close-row { display: flex; justify-content: flex-end; margin-bottom: 4px; }
 
   .lib-modal-close {
@@ -2367,6 +2411,26 @@
     white-space: pre-wrap;
     word-break: break-word;
   }
+
+  .lib-modal-prompt p,
+  .lib-live-preview p,
+  .surprise-prompt p,
+  .preview-text p { margin: 0 0 16px; }
+
+  .lib-modal-prompt ol,
+  .lib-live-preview ol,
+  .surprise-prompt ol,
+  .preview-text ol { margin: 0 0 16px; padding-left: 24px; }
+
+  .lib-modal-prompt li,
+  .lib-live-preview li,
+  .surprise-prompt li,
+  .preview-text li { margin-bottom: 10px; }
+
+  .lib-modal-prompt > :last-child,
+  .lib-live-preview > :last-child,
+  .surprise-prompt > :last-child,
+  .preview-text > :last-child { margin-bottom: 0; }
 
   .lib-modal-source {
     margin-top: 20px;
@@ -3859,10 +3923,10 @@ const words = ['tried', 'tested', 'refined', 'used'];
           { title: "Build hypotheses from data", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I'm seeing [observation] in my data. Help me build 3 hypotheses for why this might be happening." },
           { title: "Sense check analysis", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Here's my analysis and conclusion: [paste]. Can you sense check my logic and flag anything I might have missed?" },
           { title: "Analyse churn drivers", tool: "Copilot", source: "Team submission", prompt: "You are a data analyst. Analyse the following customer data and identify the top drivers of churn. Focus on patterns related to complexity score, engagement metrics, and support interactions. Provide a summary of findings and recommend actions to reduce churn. [paste data]" },
-          { title: "Analyse A/B test results", tool: "Claude", source: "Team submission", prompt: "Analyse the results of an A/B test in Power BI using DAX. The test compares two versions of [describe test]. Calculate statistical significance, identify the winning variant, and summarise the key takeaways. [paste data or DAX code]" },
+          { title: "Analyse A/B test results", tool: "Claude", source: "Team submission", prompt: "Analyse the results of an A/B test in Power BI using DAX. The test compares two versions of [describe test]. Calculate statistical significance, identify the winning variant, and summarise the key takeaways. [paste data or dax code]" },
           { title: "Build a data dashboard", tool: "ChatGPT", source: "Team submission", prompt: "Help me design a Power BI dashboard for [business area or team]. Suggest key metrics to include, how to structure the layout, and which visualisations would work best for the audience. The goal is to make it easy to spot trends and take action." },
           { title: "Compare organic vs brand search", tool: "Claude", source: "Team submission", prompt: "Analyse the following search data and compare organic vs brand search performance. Identify trends, highlight areas of concern, and suggest actions to improve organic visibility. [paste data]" },
-          { title: "Reconcile email performance data", tool: "Snowflake Cortex", source: "Team submission", prompt: "I have email performance data from two sources that don't match. Help me identify discrepancies between [source A] and [source B]. Highlight rows where metrics differ significantly and suggest reasons for the gaps. [paste data]" },
+          { title: "Reconcile email performance data", tool: "Snowflake Cortex", source: "Team submission", prompt: "I have email performance data from two sources that don't match. Help me identify discrepancies between [source a] and [source b]. Highlight rows where metrics differ significantly and suggest reasons for the gaps. [paste data]" },
           { title: "Analyse email fatigue", tool: "Snowflake Cortex", source: "Team submission", prompt: "Using the following email engagement data, identify signs of audience fatigue. Look for declining open rates, increasing unsubscribes, and drop-off patterns over time. Recommend actions to re-engage the audience. [paste data]" },
         ]
       },
@@ -3881,6 +3945,7 @@ const words = ['tried', 'tested', 'refined', 'used'];
           { title: "Review and improve content", tool: "Copilot", source: "Team submission", prompt: "Review and improve the following written content. Make it clearer, more concise, and more engaging while keeping the original meaning. Highlight any changes you make and explain why. [paste content]" },
           { title: "Generate internal social posts", tool: "Copilot", source: "Team submission", prompt: "Write 3 Viva Engage posts about [topic] for an internal audience. Keep each post under 150 words. The tone should be [professional/conversational/inspiring]. Include a call to action in each post." },
           { title: "Rewrite email from notes", tool: "Copilot", source: "Team submission", prompt: "I have rough notes from a meeting or conversation. Turn them into a clear, professional email. Keep it concise, lead with the key message, and include a clear next step. [paste notes]" },
+          { title: "Rehearse a difficult conversation", tool: "ChatGPT, Copilot, Claude", source: "Team submission", prompt: "Help me rehearse [situation] with [person / audience]. My goal is [desired outcome], and the main difficulty is [constraint / tension]. Play the other person realistically, including reasonable objections and pushback. Start the conversation and wait for my reply. Respond to what I actually say, one turn at a time. After we finish, explain where my approach worked, where it weakened my position, and what I could say differently." },
         ]
       },
       {
@@ -3889,6 +3954,8 @@ const words = ['tried', 'tested', 'refined', 'used'];
         prompts: [
           { title: "Challenge ideas with devil's advocate", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Team submission", prompt: "Play devil's advocate on the following idea or plan. Identify the biggest risks, weaknesses, and assumptions. Be specific and constructive — the goal is to stress-test the thinking, not just criticise. [describe idea or paste plan]" },
           { title: "Research customer journey stages", tool: "ChatGPT", source: "Team submission", prompt: "Research and summarise the typical journey a [type of customer] goes through when [describe decision or process]. Identify the key stages, what they're thinking and feeling at each stage, and what information or support they need. Format this as a clear journey map." },
+          { title: "Borrow ideas from another industry", tool: "ChatGPT, Copilot, Claude", source: "Team submission", prompt: "What could [my industry / team / process] learn from [a different industry / field] to improve [specific problem]? Identify five transferable methods or systems. For each, explain how it works in its original setting, how we could adapt it, where the analogy breaks down, and one small experiment we could run. Prioritise useful, unexpected connections over superficial similarities." },
+          { title: "Explore the knock-on effects", tool: "ChatGPT, Copilot, Claude", source: "Team submission", prompt: "Explore the knock-on effects of [decision / event] in [context]. Start with the immediate effects, then trace what could happen as customers, colleagues, competitors or other affected groups respond. Follow the most important chains two or three steps further. For each, explain the causal link, assumptions and uncertainty. Identify unintended consequences, feedback loops and early signals we could monitor. Finish with what this should change about our decision." },
         ]
       },
       {
@@ -3896,7 +3963,7 @@ const words = ['tried', 'tested', 'refined', 'used'];
         desc: "Go deeper on anything.",
         prompts: [
           { title: "Learn a topic quickly", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Give me a clear, structured overview of [topic]. Include key concepts, a simple example, and when it's used in practice. Keep it concise." },
-          { title: "Compare two concepts", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "What's the difference between [concept A] and [concept B]? Use a real-world example." },
+          { title: "Compare two concepts", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "What's the difference between [concept a] and [concept b]? Use a real-world example." },
           { title: "Quiz me on a topic", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Quiz me on [topic] with 5 questions, starting easy and getting harder. After each answer, tell me if I'm right and explain why." },
           { title: "Recommend next learning step", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "I've just learned about [topic]. What should I explore next to go deeper?" },
           { title: "Explain using a simple diagram", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Explain how [concept] works using a simple text-based (ASCII) diagram and include a short explanation alongside it. Make it easy to follow and clearly show the structure or flow." },
@@ -3910,20 +3977,22 @@ const words = ['tried', 'tested', 'refined', 'used'];
         prompts: [
           { title: "Break down a topic from first principles", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Break [topic] down using first principles thinking. Start by identifying the common assumptions people make about this topic. Then strip those assumptions away and focus only on what is fundamentally true. Rebuild the concept step by step from these core truths. Show what changes when you remove inherited thinking." },
           { title: "Explain a topic simply (no jargon)", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Starter prompt", prompt: "Now explain [topic] as if I'm new to it. Use no jargon, no assumed knowledge, and include two different examples to make it clear. If anything is still unclear, simplify it further until it's genuinely easy to understand." },
+          { title: "Improve my prompt", tool: "ChatGPT, Copilot, Claude, Cortex", source: "Team submission", featured: true, prompt: "Review my prompt below and show how someone with relevant expertise would approach the task.\n\nBefore rewriting it, identify:\n\n1. **Missing substance:** What important question, consideration or step have I overlooked?\n2. **Better inputs:** What original evidence, source material or data would improve the work? Be specific about what I should provide.\n3. **Suitable methods:** What methods or tools would materially improve the result, and why?\n4. **Proof of quality:** What checks, tests or independent evidence would show whether the result is sound?\n\nThen rewrite my prompt as a clear, usable brief that incorporates the most valuable improvements. Preserve my original goal and constraints. Add depth where it improves the outcome; keep the scope proportionate to the task.\n\nUse placeholders for missing information. If an essential ambiguity prevents a useful rewrite, ask me a focused question first.\n\n**My prompt:** [paste your prompt]" },
+          { title: "Reverse-engineer an outcome", tool: "ChatGPT, Copilot, Claude", source: "Team submission", prompt: "Reverse-engineer [outcome / example — paste or attach it]. Work backwards from the result to identify the decisions, methods, resources and steps that likely produced it. Separate what the evidence shows from what you’re inferring. Identify which parts depend on circumstances I may not share. Then show me how to apply the underlying process to [my goal], starting with one practical experiment." },
         ]
       },
       {
         category: "Coding",
         desc: "Write, fix and improve code.",
         prompts: [
-          { title: "Fix a DAX formula", tool: "Claude", source: "Team submission", prompt: "I have a DAX formula that isn't working as expected. Review the code, identify the issue, and provide a corrected version with an explanation of what was wrong and why the fix works. [paste DAX code]" },
-          { title: "Generate UI code", tool: "Copilot", source: "Team submission", prompt: "Generate an Adaptive Card JSON for [describe the card's purpose and content]. It should include [list key elements e.g. title, body text, action buttons]. Make it clean and functional for use in [Teams / Outlook / Power Automate]." },
+          { title: "Fix a DAX formula", tool: "Claude", source: "Team submission", prompt: "I have a DAX formula that isn't working as expected. Review the code, identify the issue, and provide a corrected version with an explanation of what was wrong and why the fix works. [paste dax code]" },
+          { title: "Generate UI code", tool: "Copilot", source: "Team submission", prompt: "Generate an Adaptive Card JSON for [describe the card's purpose and content]. It should include [list key elements e.g. title, body text, action buttons]. Make it clean and functional for use in [teams / outlook / power automate]." },
           { title: "Fix bugs step by step", tool: "Claude", source: "Team submission", prompt: "I have a bug in my code that I can't resolve. Walk me through debugging it step by step. Ask me clarifying questions if needed, suggest what to check first, and help me identify the root cause before suggesting a fix. [paste code and describe the issue]" },
           { title: "Improve application code", tool: "Claude", source: "Team submission", prompt: "Review the following code and suggest improvements. Focus on readability, performance, and best practices. Explain each change you recommend and why it makes the code better. [paste code]" },
-          { title: "Check SQL query", tool: "Snowflake Cortex", source: "Team submission", prompt: "Review the following SQL query and check it for errors, inefficiencies, or logic issues. Suggest improvements and explain your reasoning. If the query can be simplified or optimised, show me how. [paste SQL]" },
-          { title: "Aggregate data using code", tool: "Claude", source: "Team submission", prompt: "Write a script to aggregate data from [describe data source or structure]. The goal is to [describe output e.g. summarise by region, calculate totals by month]. Use [R / Python / SQL] and include comments explaining each step. [paste data sample if available]" },
+          { title: "Check SQL query", tool: "Snowflake Cortex", source: "Team submission", prompt: "Review the following SQL query and check it for errors, inefficiencies, or logic issues. Suggest improvements and explain your reasoning. If the query can be simplified or optimised, show me how. [paste sql]" },
+          { title: "Aggregate data using code", tool: "Claude", source: "Team submission", prompt: "Write a script to aggregate data from [describe data source or structure]. The goal is to [describe output e.g. summarise by region, calculate totals by month]. Use [r / python / sql] and include comments explaining each step. [paste data sample if available]" },
           { title: "Aggregate CSV data", tool: "Claude", source: "Team submission", prompt: "I have a CSV file with the following structure: [describe columns and data]. Write an R script to load the file, aggregate the data by [field], and output a summary table showing [desired metrics]. Include error handling and comments." },
-          { title: "Convert date format", tool: "Copilot", source: "Team submission", prompt: "I have a column in Excel with dates in [current format e.g. DD/MM/YYYY]. Write a formula to convert them to [target format e.g. YYYY-MM-DD]. Explain how the formula works and how to apply it to the full column." },
+          { title: "Convert date format", tool: "Copilot", source: "Team submission", prompt: "I have a column in Excel with dates in [current format e.g. dd/mm/yyyy]. Write a formula to convert them to [target format e.g. yyyy-mm-dd]. Explain how the formula works and how to apply it to the full column." },
           { title: "Improve data model", tool: "Claude", source: "Team submission", prompt: "Review the following data model or notebook and suggest improvements. Focus on structure, clarity, and performance. Highlight any issues with the current approach and recommend a better way to organise or write the code. [paste code or describe model]" },
           { title: "Build a Workfront calculated field", tool: "Copilot", source: "Team submission", prompt: "Help me build a calculated field in Workfront for [describe the purpose]. The field should [describe logic or output]. Walk me through the formula syntax and how to set it up correctly in Workfront." },
         ]
@@ -3934,6 +4003,11 @@ const words = ['tried', 'tested', 'refined', 'used'];
         prompts: [
           { title: "Automate QA tasks", tool: "Copilot", source: "Team submission", prompt: "Help me automate the following quality assurance task in [tool or system]: [describe task]. Suggest a workflow or process that reduces manual effort, catches errors early, and can be repeated consistently. Include any formulas, scripts, or steps needed." },
           { title: "Apply brand styling to app", tool: "Claude", source: "Team submission", prompt: "I have a Streamlit app and want to apply our brand colours and styling. Our primary colour is [hex code], secondary is [hex code], and font is [font name]. Update the app's CSS and layout to match these brand guidelines while keeping the functionality intact. [paste current code]" },
+          { title: "Build a usable calculator", tool: "ChatGPT, Copilot, Claude", source: "Team submission", prompt: "Build a simple interactive calculator to help [user / team] decide [decision] or calculate [result]. It should take [inputs] and return [outputs], using [rules / formulas, if known]. If essential calculation rules are missing, ask me before building. Make assumptions visible and editable, label units clearly, and handle missing or invalid inputs. Include a worked example so I can check the calculations. Deliver a working version I can use, with brief instructions." },
+          { title: "How can AI help me?", tool: "ChatGPT, Copilot, Claude", source: "Team submission", prompt: "What can you help me do in [tool name]? Show me a few concrete examples." },
+          { title: "Help me explore a tool", tool: "ChatGPT, Copilot, Claude", source: "Team submission", sortOrder: 1, prompt: "What can you help me do in [tool name]? Show me a few useful examples in a table with three columns: the task, what I’d need to give you, and what you could help me produce." },
+          { title: "Show me what I’m missing", tool: "ChatGPT, Copilot, Claude", source: "Team submission", prompt: "I use [tool name] for [what i currently do]. What else could you help me do with it that I might not think to ask? Give me a few specific examples." },
+          { title: "Show me how it works", tool: "ChatGPT, Copilot, Claude", source: "Team submission", prompt: "Show me how you could help me with [task] in [tool name]. Walk through a concrete example and use a simple diagram or visual walkthrough to make the process easier to understand." },
         ]
       },
       {
@@ -4044,10 +4118,22 @@ const words = ['tried', 'tested', 'refined', 'used'];
         .replace(/>/g, '&gt;');
     }
 
+    function formatPromptMarkup(html) {
+      const formatted = html.replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>');
+      if (!formatted.includes('\n')) return formatted;
+      return formatted.split(/\n\s*\n/).map((block) => {
+        const lines = block.split('\n');
+        if (lines.every((line) => /^\d+\.\s+/.test(line))) {
+          return '<ol>' + lines.map((line) => '<li>' + line.replace(/^\d+\.\s+/, '') + '</li>').join('') + '</ol>';
+        }
+        return '<p>' + block.replace(/\n/g, '<br>') + '</p>';
+      }).join('');
+    }
+
     function formatSurprisePrompt(prompt) {
-      return escSurpriseHtml(prompt).replace(/\[([^\]]*)\]/g, (match) => {
+      return formatPromptMarkup(escSurpriseHtml(prompt).replace(/\[([^\]]*)\]/g, (match) => {
         return '<span class="prompt-var-bracketed">' + match + '</span>';
-      });
+      }));
     }
 
     function renderSurpriseCard(prompt) {
@@ -4144,6 +4230,7 @@ const words = ['tried', 'tested', 'refined', 'used'];
           all.push({ ...prompt, category: section.category, sectionIndex, promptIndex, key: sectionIndex + '-' + promptIndex });
         });
       });
+      all.sort((a, b) => (a.sortOrder ?? (a.featured ? 0 : 2)) - (b.sortOrder ?? (b.featured ? 0 : 2)));
       if (!search) return all;
       return all.filter((p) =>
         p.title.toLowerCase().includes(search) ||
@@ -4164,8 +4251,10 @@ const words = ['tried', 'tested', 'refined', 'used'];
       return String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
-    function highlightLibraryVars(text) {
-      return escLibraryHtml(text).replace(/\[([^\]]*)\]/g, (match) => '<span class="lib-var">' + match + '</span>');
+    function highlightLibraryVars(text, compact = false) {
+      const content = compact ? text.replace(/\*\*/g, '').replace(/\s+/g, ' ') : text;
+      const html = escLibraryHtml(content).replace(/\[([^\]]*)\]/g, (match) => '<span class="lib-var">' + match + '</span>');
+      return compact ? html : formatPromptMarkup(html);
     }
 
     function extractLibraryVars(prompt) {
@@ -4205,7 +4294,7 @@ const words = ['tried', 'tested', 'refined', 'used'];
             <div>
               <div class="lib-card-category">${escLibraryHtml(p.category)}</div>
               <div class="lib-card-title">${escLibraryHtml(p.title)}</div>
-              <div class="lib-card-prompt">${highlightLibraryVars(p.prompt)}</div>
+              <div class="lib-card-prompt">${highlightLibraryVars(p.prompt, true)}</div>
             </div>
             <div class="lib-card-actions">
               <button class="trace-btn" data-action="personalise" data-prompt-key="${p.key}">
@@ -4231,6 +4320,7 @@ const words = ['tried', 'tested', 'refined', 'used'];
       document.getElementById('lib-modal-prompt').innerHTML = highlightLibraryVars(prompt.prompt);
       document.getElementById('lib-modal-copy').textContent = 'Copy';
       document.getElementById('lib-modal-overlay').hidden = false;
+      document.querySelector('.lib-modal').scrollTop = 0;
       document.body.style.overflow = 'hidden';
     }
 
@@ -4245,11 +4335,11 @@ const words = ['tried', 'tested', 'refined', 'used'];
       const prompt = libraryState.persPrompt;
       const preview = document.getElementById('lib-live-preview');
       if (!prompt || !preview) return;
-      preview.innerHTML = escLibraryHtml(prompt.prompt).replace(/\[([^\]]*)\]/g, (match, key) => {
+      preview.innerHTML = formatPromptMarkup(escLibraryHtml(prompt.prompt).replace(/\[([^\]]*)\]/g, (match, key) => {
         const value = libraryState.varValues[key];
         if (value && value.trim()) return '<span class="lib-var">' + escLibraryHtml(value.trim()) + '</span>';
         return '<span class="lib-var">' + escLibraryHtml(match) + '</span>';
-      });
+      }));
     }
 
     function openLibraryPersonaliser(prompt) {
@@ -4471,7 +4561,7 @@ function renderPromptWithVars(prompt) {
   }
 
   html += escHtml(prompt.slice(lastIndex));
-  return html;
+  return formatPromptMarkup(html);
 }
 
 function buildSelector(filter = '') {
@@ -4919,6 +5009,6 @@ function setActiveNav(page) {
       showPage(['home', 'library', 'personaliser', 'feedback'].includes(next) ? next : 'home', false);
     });
 </script>
-<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
+
